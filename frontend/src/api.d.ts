@@ -38,10 +38,178 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/repair-fixture": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Repair Fixture */
+        get: operations["repair_fixture_repair_fixture_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/draft-plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Generate Draft */
+        post: operations["generate_draft_draft_plans_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/draft-plans/{plan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Inspect Draft */
+        get: operations["inspect_draft_draft_plans__plan_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Activity */
+        Activity: {
+            /** Id */
+            id: string;
+            /** Section Id */
+            section_id: string;
+            /** Teacher Id */
+            teacher_id: string;
+            /** Label */
+            label: string;
+            /** Kind */
+            kind: string;
+            /** Room Types */
+            room_types: ("classroom" | "outdoor" | "lab")[];
+            /** Original Period Id */
+            original_period_id: string;
+            /** Original Room Id */
+            original_room_id: string;
+            /** Permitted Period Ids */
+            permitted_period_ids: string[];
+            /** Permitted Room Ids */
+            permitted_room_ids: string[];
+            /**
+             * Fixed
+             * @default false
+             */
+            fixed: boolean;
+            /** Approved Alternatives */
+            approved_alternatives?: components["schemas"]["Alternative"][];
+            /**
+             * Allow Deferral
+             * @default false
+             */
+            allow_deferral: boolean;
+        };
+        /** Alternative */
+        Alternative: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /** Kind */
+            kind: string;
+            /** Room Types */
+            room_types: ("classroom" | "outdoor" | "lab")[];
+            /** Room Ids */
+            room_ids: string[];
+        };
+        /** Baseline */
+        Baseline: {
+            /** Placements */
+            placements: components["schemas"]["Placement"][];
+            validation: components["schemas"]["Validation"];
+        };
+        /** Counts */
+        Counts: {
+            /**
+             * Changed Periods
+             * @default 0
+             */
+            changed_periods: number;
+            /**
+             * Substitutions
+             * @default 0
+             */
+            substitutions: number;
+            /**
+             * Deferrals
+             * @default 0
+             */
+            deferrals: number;
+            /**
+             * Room Moves
+             * @default 0
+             */
+            room_moves: number;
+        };
+        /** Difference */
+        Difference: {
+            /** Activity Id */
+            activity_id: string;
+            original: components["schemas"]["Placement"];
+            proposed: components["schemas"]["Placement"];
+        };
+        /** DraftPlan */
+        DraftPlan: {
+            /** Id */
+            id: string;
+            input_versions: components["schemas"]["InputVersions"];
+            /**
+             * Solver Status
+             * @enum {string}
+             */
+            solver_status: "OPTIMAL" | "FEASIBLE" | "INFEASIBLE" | "UNKNOWN" | "MODEL_INVALID";
+            /** Successful */
+            successful: boolean;
+            /**
+             * Recommendation
+             * @enum {string}
+             */
+            recommendation: "baseline" | "repair" | "none";
+            baseline: components["schemas"]["Baseline"];
+            /** Placements */
+            placements: components["schemas"]["Placement"][];
+            validation?: components["schemas"]["Validation"] | null;
+            counts?: components["schemas"]["Counts"] | null;
+            /** Differences */
+            differences?: components["schemas"]["Difference"][];
+            /** Diagnostic */
+            diagnostic?: string | null;
+            input_snapshot: components["schemas"]["RepairInput"];
+        };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
         /** Health */
         Health: {
             /**
@@ -62,6 +230,100 @@ export interface components {
              * @constant
              */
             data_mode: "SYNTHETIC";
+        };
+        /** InputVersions */
+        InputVersions: {
+            /** School */
+            school: string;
+            /** Timetable */
+            timetable: string;
+            /** Restrictions */
+            restrictions: string;
+        };
+        /** Period */
+        Period: {
+            /** Id */
+            id: string;
+            /** Day */
+            day: string;
+            /** Number */
+            number: number;
+        };
+        /** Placement */
+        Placement: {
+            /** Activity Id */
+            activity_id: string;
+            /** Period Id */
+            period_id: string | null;
+            /** Room Id */
+            room_id: string | null;
+            /** Alternative Id */
+            alternative_id?: string | null;
+            /**
+             * Deferred
+             * @default false
+             */
+            deferred: boolean;
+        };
+        /** RepairInput */
+        RepairInput: {
+            /**
+             * Mode
+             * @constant
+             */
+            mode: "SYNTHETIC";
+            /** School Id */
+            school_id: string;
+            versions: components["schemas"]["InputVersions"];
+            /** Affected Day */
+            affected_day: string;
+            /** Sections */
+            sections: components["schemas"]["Section"][];
+            /** Periods */
+            periods: components["schemas"]["Period"][];
+            /** Teachers */
+            teachers: components["schemas"]["Teacher"][];
+            /** Rooms */
+            rooms: components["schemas"]["Room"][];
+            /** Activities */
+            activities: components["schemas"]["Activity"][];
+            /** Restrictions */
+            restrictions?: components["schemas"]["Restriction"][];
+        };
+        /** Restriction */
+        Restriction: {
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @constant
+             */
+            kind: "outdoor_prohibited";
+            /** Period Ids */
+            period_ids: string[];
+            /** Section Ids */
+            section_ids: string[];
+            /**
+             * Administrator Confirmed
+             * @constant
+             */
+            administrator_confirmed: true;
+            /** Confirmed By */
+            confirmed_by: string;
+        };
+        /** Room */
+        Room: {
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "classroom" | "outdoor" | "lab";
+            /** Capacity */
+            capacity: number;
+            /** Available Period Ids */
+            available_period_ids: string[];
         };
         /** School */
         School: {
@@ -90,6 +352,38 @@ export interface components {
             label: string;
             /** Size */
             size: number;
+        };
+        /** Teacher */
+        Teacher: {
+            /** Id */
+            id: string;
+            /** Available Period Ids */
+            available_period_ids: string[];
+            /** Supervised Kinds */
+            supervised_kinds: string[];
+        };
+        /** Validation */
+        Validation: {
+            /** Valid */
+            valid: boolean;
+            /** Errors */
+            errors: string[];
+            counts: components["schemas"]["Counts"];
+            /** Differences */
+            differences: components["schemas"]["Difference"][];
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
         };
     };
     responses: never;
@@ -136,6 +430,90 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["School"];
+                };
+            };
+        };
+    };
+    repair_fixture_repair_fixture_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RepairInput"];
+                };
+            };
+        };
+    };
+    generate_draft_draft_plans_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RepairInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DraftPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    inspect_draft_draft_plans__plan_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DraftPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

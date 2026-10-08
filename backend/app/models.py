@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Contract(BaseModel):
@@ -16,7 +16,7 @@ class Health(Contract):
 class Section(Contract):
     id: str
     label: str
-    size: int
+    size: int = Field(gt=0)
 
 
 class School(Contract):

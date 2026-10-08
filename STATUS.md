@@ -1,6 +1,27 @@
-# Packet A status - 2026-10-08 (IST)
+# AirWise Schools status - 2026-10-08 (IST)
 
-## Current verified checkpoint
+## Packet B1 local checkpoint
+
+Typed local repair API, approved-alternative baseline, CP-SAT repair and independent
+plain-Python validator implemented. Synthetic fixture: six sections, five days,
+eight discrete periods, 240 stable activity IDs; only Monday is repaired.
+Live API returned OPTIMAL and recommended the baseline: 6-a:Mon-2 stays at Mon-2,
+substitutes approved indoor movement and moves from field to room-6-a. Counts:
+0 changed periods, 1 substitution, 0 deferrals, 1 room move. All activities retained;
+fixed lessons and other days unchanged. Exact request and final checks: docs/REPAIR.md.
+OpenAPI frontend types regenerated; no UI changes. No AWS operations, Docker, AI,
+approval or parallel agents in B1. Existing AWS runtime gate remains passed.
+Final checks: 41 backend tests passed (two existing warnings), pip check passed,
+OpenAPI type generation and TypeScript/Vite production build passed.
+Local API at http://127.0.0.1:8001 .
+
+Limitations: single-period activities; same-day explicit permissions; administrator
+confirmation is input, not authenticated identity. Versions are preserved, not
+checked against durable canonical data. Draft storage is process-local, latest
+100 only, lost on restart. UNKNOWN does not prove infeasibility. Next packet needs
+durable/version-aware storage before approval or activation.
+
+## Packet A verified checkpoint
 
 AWS runtime gate PASSED in ap-southeast-2 using profile airwise and the existing
 console-uploaded object airwise-runtime-smoke.zip. No rebuild or upload occurred.
