@@ -30,8 +30,9 @@ Frontend uses Vite's development proxy; a production API origin is deferred.
 
 ## ZIP attempt
 
-Latest private runtime spike: see [AWS_SMOKE.md](docs/AWS_SMOKE.md). Deployment
-is blocked before creation by an organization SCP; no Lambda execution yet.
+Latest private runtime spike: see [AWS_SYDNEY.md](docs/AWS_SYDNEY.md). Confirmed
+region is ap-southeast-2. Private bucket created; ZIP upload transport is blocked,
+so no Lambda execution yet. Historical SCP record: docs/AWS_SMOKE.md.
 `scripts/aws_smoke.py` is the dedicated create-only tooling for this follow-up.
 The older script below only updates an explicitly supplied existing smoke target.
 

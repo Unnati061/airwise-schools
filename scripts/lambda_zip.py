@@ -47,7 +47,7 @@ def deploy(archive: Path) -> None:
     from botocore.config import Config
 
     config = Config(connect_timeout=5, read_timeout=15, retries={"max_attempts": 0})
-    session = boto3.Session(region_name="us-east-1")
+    session = boto3.Session(profile_name="airwise", region_name="ap-southeast-2")
     if session.get_credentials() is None:
         raise RuntimeError("AWS credentials unavailable; no upload or runtime invocation performed")
     session.client("sts", config=config).get_caller_identity()

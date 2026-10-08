@@ -1,10 +1,14 @@
 # Packet A status - 2026-10-08 (IST)
 
-Local foundation complete and checked. AWS runtime gate remains BLOCKED.
-Follow-up private Lambda attempt: AWS profile airwise is authenticated, but
-lambda:GetFunction in us-east-1 is explicitly denied by an organization SCP.
-Collision preflight stopped before any cloud writes. Zero resources created;
-no AWS solver result. Prepared ZIP/configuration and commands: docs/AWS_SMOKE.md.
+Local foundation complete and checked. AWS runtime gate remains BLOCKED by S3
+upload transport failure. User confirmed Sydney ap-southeast-2 in AWS Settings;
+the airwise profile and deployment tooling now use this region explicitly.
+Sydney Lambda preflight passed (unused function name returned ResourceNotFound).
+Created only the private Sydney artifact bucket; no role, log group or Lambda.
+Uploads failed with TLS EOF/ConnectionClosedError and a read timeout; final check
+found no completed object or incomplete multipart uploads. No AWS solver result.
+Current record and resume instructions: docs/AWS_SYDNEY.md. docs/AWS_SMOKE.md
+preserves the historical us-east-1 SCP denial, which was a wrong-region assumption.
 User request takes precedence over blueprint's container-first and broader AWS
 spike. No Docker, Bedrock, SQS, Cognito, DynamoDB or parallel agents were used.
 
@@ -32,10 +36,11 @@ spike. No Docker, Bedrock, SQS, Cognito, DynamoDB or parallel agents were used.
 
 ## Next task blockers
 
-AWS: organization/account administrator must resolve the explicit SCP deny or
-confirm the intended allowed account for profile airwise. Dedicated S3/role/
-Lambda/log-group creation tooling is prepared; it never overwrites existing names.
-Then invoke backend.app.lambda_smoke.handler through the authenticated CLI.
+AWS: complete ZIP upload to the existing private Sydney bucket, for example using
+the S3 console after reviewing docs/AWS_SYDNEY.md. Then run the guarded
+resume-upload action and invoke the dedicated handler through the CLI. Credentials
+are currently usable; Sydney Lambda access is not denied. No account/SCP changes
+are required by the observed failure. The underlying transport cause is unproven.
 Linux wheel resolution is not proof of Lambda compatibility. Only a reproduced
 native compatibility failure permits the proposed separate Docker fallback test.
 No Docker fallback has been proposed or tested because that condition was not met.

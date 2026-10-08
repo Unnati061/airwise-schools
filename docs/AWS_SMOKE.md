@@ -1,6 +1,8 @@
 # Private Lambda runtime smoke - 2026-10-08 IST
 
-Status: BLOCKED by AWS organization policy before any resource creation.
+Historical us-east-1 attempt; superseded by the user-confirmed Sydney region.
+Current configuration uses ap-southeast-2. See AWS_SYDNEY.md for the latest outcome.
+Status of the original attempt: BLOCKED by AWS organization policy before any resource creation.
 Local configuration and package checks passed; real Lambda execution did not run.
 No AWS solver result or runtime compatibility success is claimed.
 
@@ -102,9 +104,9 @@ retry, not automatic deletion or reuse of unrelated resources.
 The following commands are PREPARED, NOT EXECUTED because deployment was blocked:
 
 ```powershell
-aws lambda invoke --function-name airwise-runtime-smoke-a1f7411817 --profile airwise --region us-east-1 --invocation-type RequestResponse --log-type Tail --payload '{}' --cli-binary-format raw-in-base64-out work/aws-smoke-response.json
+aws lambda invoke --function-name airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2 --invocation-type RequestResponse --log-type Tail --payload '{}' --cli-binary-format raw-in-base64-out work/aws-smoke-response.json
 Get-Content work/aws-smoke-response.json
-aws logs filter-log-events --log-group-name /aws/lambda/airwise-runtime-smoke-a1f7411817 --profile airwise --region us-east-1
+aws logs filter-log-events --log-group-name /aws/lambda/airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2
 ```
 
 Inspect FunctionError and payload, decode LogResult if needed, and match the actual
@@ -115,17 +117,18 @@ and logs before considering dependency changes or a separate Docker fallback.
 
 ## Cleanup
 
-No cleanup is currently necessary: zero resources were created. After a later
+The original attempt created zero resources. For the Sydney deployment, see
+AWS_SYDNEY.md and inspect the manifest before cleanup. After a later
 successful or partial deployment, inspect the manifest and confirm ownership/tags
 before running only commands for resources actually created by this spike:
 
 ```powershell
-aws lambda delete-function --function-name airwise-runtime-smoke-a1f7411817 --profile airwise --region us-east-1
-aws logs delete-log-group --log-group-name /aws/lambda/airwise-runtime-smoke-a1f7411817 --profile airwise --region us-east-1
-aws iam delete-role-policy --role-name airwise-smoke-role-a1f7411817 --policy-name airwise-smoke-logging --profile airwise
-aws iam delete-role --role-name airwise-smoke-role-a1f7411817 --profile airwise
-aws s3api delete-object --bucket airwise-smoke-artifacts-a1f7411817 --key runtime-smoke.zip --profile airwise --region us-east-1
-aws s3api delete-bucket --bucket airwise-smoke-artifacts-a1f7411817 --profile airwise --region us-east-1
+aws lambda delete-function --function-name airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2
+aws logs delete-log-group --log-group-name /aws/lambda/airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2
+aws iam delete-role-policy --role-name airwise-smoke-role-a1f7411817 --policy-name airwise-smoke-logging --profile airwise --region ap-southeast-2
+aws iam delete-role --role-name airwise-smoke-role-a1f7411817 --profile airwise --region ap-southeast-2
+aws s3api delete-object --bucket airwise-smoke-artifacts-a1f7411817 --key runtime-smoke.zip --profile airwise --region ap-southeast-2
+aws s3api delete-bucket --bucket airwise-smoke-artifacts-a1f7411817 --profile airwise --region ap-southeast-2
 ```
 
 No recursive deletion, IAM policy broadening or organization-policy editing is

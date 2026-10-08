@@ -19,8 +19,10 @@ and an explicit existing function target before updating any function.
 No IAM, gateway, database or authentication infrastructure is created here.
 Follow-up private runtime spike is prepared in scripts/aws_smoke.py; its separate
 role, bucket, function and retained log group are authorized only for native
-verification. Deployment is currently blocked before creation by an organization
-policy denial. See AWS_SMOKE.md; no public API was deployed.
+verification. The confirmed region is ap-southeast-2. Bucket creation succeeded;
+artifact upload is currently blocked by transport errors. See AWS_SYDNEY.md.
+The earlier us-east-1 policy denial was a wrong-region assumption. No public API
+was deployed; the application and CP-SAT problem remain unchanged.
 Only a demonstrated OR-Tools/native runtime compatibility failure can trigger a
 separate minimal Docker fallback test; missing credentials is not that failure.
 
