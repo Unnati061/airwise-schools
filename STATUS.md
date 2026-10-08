@@ -1,6 +1,39 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
-## Packet D1 current checkpoint
+## Packet D2 prepared checkpoint: upload blocked
+
+Fresh current-application Linux Python 3.12/x86_64 ZIP built without Docker:
+87,392,618 compressed / 240,716,360 extracted bytes including dependencies.
+Below 250 MiB extracted limit; static wheel/native/ZIP/source/hash checks passed.
+The old successful smoke ZIP/Lambda remain separate and unchanged.
+
+Added Lambda role-credential/nonsecret environment configuration, deployed
+status-only health/protected route surface, guarded exact-scope Lambda/HTTP API
+deployment, JWT access scope and independent token checks, finite SDK limits,
+planned concurrency 5/throttling/seven-day logs and normal frontend environment
+support. Local defaults and solver/validator/approval flow preserved.
+
+Sydney profile authentication and resource/capacity preflights passed. Standard
+IAM first timed out, then worked after mobile reconnection. One S3 upload failed;
+post-failure HeadObject returned 404. First helper did not retain the exception
+class: concrete cause unproven; fixed recording for future attempts, no retry.
+Created D2 resources: NONE. API URL: NONE. No D2 model calls, browser-password
+operations, runtime verification or frontend connection to a deployed API occurred.
+
+74 backend tests passed (two existing warnings), pip check/frontend build, package
+source/checksum checks and controlled five-size D1 browser regression passed.
+Actual deployed workflow and cold/warm analysis/planning latency remain blocked.
+Read-only local component timing on canonical input: reads 3,516 ms, repair and
+validation 203 ms / OPTIMAL / 240 activities. No draft saved; not API latency.
+Durable-background-job need is unresolved until measurements; no untracked work
+or timeout-as-success claim. See docs/AWS_APP.md for exact console-upload path,
+size/hash, resume command, planned resources and scoped cleanup instructions.
+
+Next: user console-upload of work/airwise-app-d2.zip to the exact documented key;
+resume using existing-object verification, then real private Cognito demonstration
+and latency checks. D2 is NOT complete or deployed. Local app remains usable.
+
+## Packet D1 previous checkpoint
 
 Five connected React views implemented: Today, Evidence & restrictions, Plan
 comparison, Teacher inbox and Review. Existing Cognito identity and backend

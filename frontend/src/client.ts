@@ -5,6 +5,7 @@ export type Actor = Schema<'Actor'>;
 type Session = { username: string; access: string; refresh: string; expires: number };
 type AuthConfig = Schema<'PublicAuthConfig'>;
 const KEY = 'airwise.session.v1';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 let session: Session | null = null;
 let refreshFlight: Promise<void> | null = null;
 const listeners = new Set<() => void>();
@@ -42,10 +43,14 @@ async function transport(url: string, options: RequestInit, timeout = 45000): Pr
   finally { window.clearTimeout(timer); }
 }
 
-let authConfig: AuthConfig | null = null;
+let authConfig: AuthConfig | null = import.meta.env.VITE_COGNITO_CLIENT_ID ? {
+  region: import.meta.env.VITE_COGNITO_REGION,
+  pool_id: import.meta.env.VITE_COGNITO_POOL_ID,
+  client_id: import.meta.env.VITE_COGNITO_CLIENT_ID,
+} : null;
 async function cognito(flow: string, parameters: Record<string, string>) {
   if (!authConfig) {
-    const response = await transport('/api/auth/config', {}, 10000);
+    const response = await transport(`${API_BASE}/auth/config`, {}, 10000);
     if (!response.ok) throw new ApiError(response.status, 'Sign-in configuration is unavailable.');
     authConfig = await response.json();
   }
@@ -90,7 +95,7 @@ async function freshSession() {
 
 export async function api<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
   await freshSession();
-  const response = await transport(`/api${path}`, {
+  const response = await transport(`${API_BASE}${path}`, {
     method, headers: { Authorization: `Bearer ${session!.access}`, ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) },
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
   }, method === 'POST' && path === '/notice-analyses' ? 60000 : 45000);

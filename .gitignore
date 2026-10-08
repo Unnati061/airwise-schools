@@ -6,4 +6,6 @@ dist/
 .vite/
 work/
 .env
+.env.*
+!.env.example
 *.zip

@@ -20,6 +20,10 @@ See docs/EVIDENCE.md for source provenance, review gates and daily limits.
 Packet D1 adds a local authenticated interface only. No new AWS resources or
 deployment. See docs/INTERFACE.md; Vite proxies the local backend on port 8002.
 Docker is conditional on demonstrated ZIP native compatibility failure.
+Packet D2 authorizes the dedicated Sydney application Lambda/role/HTTP API and
+logs, reusing existing data/auth/model resources. See docs/AWS_APP.md. Upload is
+currently blocked: no repeated upload attempts or smoke Lambda changes. Measure
+actual integration latency before deciding synchronous slow paths are adequate.
 
 From repository root (PowerShell):
 - `.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8002`

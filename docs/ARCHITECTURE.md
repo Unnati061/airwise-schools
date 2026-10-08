@@ -134,3 +134,15 @@ real versus controlled browser verification and request retry behavior.
 
 References: https://docs.aws.amazon.com/lambda/latest/dg/python-package.html
 and https://developers.google.com/optimization/cp/cp_solver .
+
+## Packet D2 prepared deployment
+
+Deployment is not complete: fresh ZIP exists, upload failed once, object absent;
+no application cloud resources or API URL. See AWS_APP.md for the actual gate.
+Prepared path: local SPA environment-configured API origin -> HTTP API JWT scope
+authorizer -> dedicated Mangum Lambda surface -> existing DynamoDB/Nova. Backend
+also verifies access token/client and trusted identity bindings. Public health is
+status-only; local foundation metadata stays out of the deployed surface. Lambda
+uses its role credentials, not the ignored local profile/manifest. Existing local
+defaults and smoke function remain intact. Planned finite budgets do not prove
+latency reliability; measure real cold/warm operations before choosing durable jobs.

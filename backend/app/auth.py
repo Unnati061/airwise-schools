@@ -1,4 +1,5 @@
 import json
+import os
 from functools import lru_cache
 from pathlib import Path
 
@@ -24,6 +25,12 @@ bearer = HTTPBearer(auto_error=False)
 
 @lru_cache
 def settings():
+    if os.environ.get("AIRWISE_RUNTIME") == "lambda":
+        config = {"region": os.environ.get("AWS_REGION"), "table": os.environ.get("AIRWISE_TABLE"),
+                  "pool_id": os.environ.get("AIRWISE_POOL_ID", ""), "client_id": os.environ.get("AIRWISE_CLIENT_ID")}
+        if config["region"] != REGION or config["table"] != "airwise-b2-data-a1f7411817" or not config["pool_id"].startswith(REGION + "_") or not config["client_id"]:
+            raise HTTPException(503, "Unexpected deployed resource configuration")
+        return config
     if not CONFIG.exists():
         raise HTTPException(503, "B2 resources are not configured; authentication remains required")
     config = json.loads(CONFIG.read_text())
@@ -33,6 +40,10 @@ def settings():
 
 
 def runtime_client(config, service="dynamodb"):
+    if os.environ.get("AIRWISE_RUNTIME") == "lambda":
+        limits = Config(connect_timeout=2, read_timeout=3 if service == "dynamodb" else 18,
+                        retries={"total_max_attempts": 1})
+        return boto3.Session(region_name=REGION).client(service, config=limits)
     source = boto3.Session(profile_name="airwise", region_name=REGION).client("sts", config=AWS_CONFIG)
     def refresh():
         credentials = source.assume_role(RoleArn=config["runtime_role_arn"], RoleSessionName="airwise-local-b2", DurationSeconds=900)["Credentials"]
