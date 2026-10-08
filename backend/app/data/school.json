@@ -1,0 +1,14 @@
+{
+  "id": "synthetic-school-001",
+  "name": "AirWise Demonstration School",
+  "mode": "SYNTHETIC",
+  "timezone": "Asia/Kolkata",
+  "sections": [
+    {"id": "6-a", "label": "6A", "size": 30},
+    {"id": "6-b", "label": "6B", "size": 28},
+    {"id": "7-a", "label": "7A", "size": 32},
+    {"id": "7-b", "label": "7B", "size": 30},
+    {"id": "8-a", "label": "8A", "size": 29},
+    {"id": "8-b", "label": "8B", "size": 31}
+  ]
+}
