@@ -7,6 +7,8 @@ Use synthetic aggregate school data only; never commit secrets or child data.
 Keep LIVE, REPLAY and SYNTHETIC evidence distinct; never infer legal activation.
 Future plans require independent validation, authorized approval and version checks.
 No paid services or broader AWS infrastructure in this foundation packet.
+The user authorized a separate private S3/IAM/Lambda/log-group runtime smoke
+spike; see docs/AWS_SMOKE.md. Do not change organization policies to bypass denial.
 Docker is conditional on demonstrated ZIP native compatibility failure.
 
 From repository root (PowerShell):

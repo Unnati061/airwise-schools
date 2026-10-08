@@ -1,6 +1,10 @@
 # Packet A status - 2026-10-08 (IST)
 
 Local foundation complete and checked. AWS runtime gate remains BLOCKED.
+Follow-up private Lambda attempt: AWS profile airwise is authenticated, but
+lambda:GetFunction in us-east-1 is explicitly denied by an organization SCP.
+Collision preflight stopped before any cloud writes. Zero resources created;
+no AWS solver result. Prepared ZIP/configuration and commands: docs/AWS_SMOKE.md.
 User request takes precedence over blueprint's container-first and broader AWS
 spike. No Docker, Bedrock, SQS, Cognito, DynamoDB or parallel agents were used.
 
@@ -28,8 +32,10 @@ spike. No Docker, Bedrock, SQS, Cognito, DynamoDB or parallel agents were used.
 
 ## Next task blockers
 
-AWS: configure credentials and explicit deployment target; add a minimal S3 ZIP
-upload route, then invoke backend.app.lambda_smoke.handler on real Lambda.
+AWS: organization/account administrator must resolve the explicit SCP deny or
+confirm the intended allowed account for profile airwise. Dedicated S3/role/
+Lambda/log-group creation tooling is prepared; it never overwrites existing names.
+Then invoke backend.app.lambda_smoke.handler through the authenticated CLI.
 Linux wheel resolution is not proof of Lambda compatibility. Only a reproduced
 native compatibility failure permits the proposed separate Docker fallback test.
 No Docker fallback has been proposed or tested because that condition was not met.
@@ -39,3 +45,5 @@ CP-SAT constraints and independent validator. No current output is a valid schoo
 repair plan; no authentication, live evidence, persistence or approvals exist.
 
 See docs/CHECKS.md for commands, failures, file inventory and verified pins.
+The original check history above describes the first local Packet A checkpoint;
+the private-runtime follow-up is documented separately in docs/AWS_SMOKE.md.

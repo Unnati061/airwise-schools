@@ -17,6 +17,10 @@ Install Linux binary wheels into a separate staging directory, never upload
 Windows site-packages. Package code and data at the ZIP root. Check AWS identity
 and an explicit existing function target before updating any function.
 No IAM, gateway, database or authentication infrastructure is created here.
+Follow-up private runtime spike is prepared in scripts/aws_smoke.py; its separate
+role, bucket, function and retained log group are authorized only for native
+verification. Deployment is currently blocked before creation by an organization
+policy denial. See AWS_SMOKE.md; no public API was deployed.
 Only a demonstrated OR-Tools/native runtime compatibility failure can trigger a
 separate minimal Docker fallback test; missing credentials is not that failure.
 

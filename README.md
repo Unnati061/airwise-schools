@@ -30,6 +30,11 @@ Frontend uses Vite's development proxy; a production API origin is deferred.
 
 ## ZIP attempt
 
+Latest private runtime spike: see [AWS_SMOKE.md](docs/AWS_SMOKE.md). Deployment
+is blocked before creation by an organization SCP; no Lambda execution yet.
+`scripts/aws_smoke.py` is the dedicated create-only tooling for this follow-up.
+The older script below only updates an explicitly supplied existing smoke target.
+
 ```powershell
 .venv\Scripts\python scripts/lambda_zip.py --deploy
 ```
