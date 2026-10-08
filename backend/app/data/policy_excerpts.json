@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ncdc-2025-school-5ii",
+    "title": "Health Advisory on Air Pollution - Annexure IV: School Children",
+    "issuer": "NCDC / DGHS / Ministry of Health and Family Welfare, Government of India",
+    "document_date": "2025-11-01",
+    "date_precision": "day",
+    "jurisdiction": "India national public-health advisory, including Greater Noida; not a school-closure order",
+    "classification": "ADVISORY",
+    "source_url": "https://ncdc.mohfw.gov.in/uploads/pdf/air2.pdf",
+    "reference": "Cover D.O. dated 01.11.2025; PDF page 26, printed page 22, Annexure IV paragraph 5(ii)",
+    "excerpt": "Schools to limit outdoor activities during days of higher pollution levels",
+    "document_sha256": "1f536f1c2bda53d3a82bb5ce6d77ffdcae2dd39b0d61f1555bbb2c6880a7e701",
+    "verified_at": "2026-10-08T17:17:32Z",
+    "limitation": "Advisory, not verified active legal order; qualitative wording supplies no model-concentration trigger. Cover date belongs to accompanying Ministry letter."
+  },
+  {
+    "id": "ncdc-2022-annex1-9",
+    "title": "Health Advisory on Air Pollution under NPCCHH, September 2022",
+    "issuer": "NCDC / DGHS / Ministry of Health and Family Welfare, Government of India",
+    "document_date": "2022-09",
+    "date_precision": "month",
+    "jurisdiction": "India national public-health advisory; general public and vulnerable populations, not a local order",
+    "classification": "ADVISORY",
+    "source_url": "https://ncdc.mohfw.gov.in/uploads/pdf/air4.pdf",
+    "reference": "PDF page 15, printed page 14, Annexure I / I. General Population / item 9; cover states September 2022",
+    "excerpt": "Reschedule outdoor activities as per AQI, and remain indoors on days with poor to severe AQI.",
+    "document_sha256": "b91fc3b6b50fc3a3638948e7ab74eb0df1a7c9286522e2066061095cd899fc34",
+    "verified_at": "2026-10-08T17:17:32Z",
+    "limitation": "Historical advisory context, not proof of current GRAP activation; no AQI is inferred from instantaneous model concentrations."
+  },
+  {
+    "id": "internal-review-only-v1",
+    "title": "AirWise synthetic-school evidence review policy",
+    "issuer": "AirWise application policy (not government)",
+    "document_date": "2026-10-08",
+    "date_precision": "internal",
+    "jurisdiction": "Fictional demonstration school only",
+    "classification": "INTERNAL_POLICY",
+    "source_url": "internal://evidence-review-only-v1",
+    "reference": "Application rule v1, paragraph 1",
+    "excerpt": "Regional forecasts prompt administrator review only; they do not activate legal orders, closures, or timetable restrictions automatically.",
+    "document_sha256": "internal",
+    "verified_at": "2026-10-08T17:17:32Z",
+    "limitation": "No numerical pollution thresholds or legal powers; authenticated review is always required."
+  }
+]

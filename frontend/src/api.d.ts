@@ -226,6 +226,125 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/evidence/forecast": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Forecast */
+        get: operations["forecast_evidence_forecast_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/evidence/{evidence_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Snapshot */
+        get: operations["snapshot_evidence__evidence_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/policy-excerpts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Policies */
+        get: operations["policies_policy_excerpts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notice-analyses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Interpret */
+        post: operations["interpret_notice_analyses_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notice-analyses/{analysis_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Analysis */
+        get: operations["analysis_notice_analyses__analysis_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/notice-analyses/{analysis_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm */
+        post: operations["confirm_notice_analyses__analysis_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/draft-plans/{draft_id}/explanation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Explanation */
+        get: operations["explanation_draft_plans__draft_id__explanation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -310,6 +429,15 @@ export interface components {
              */
             allow_deferral: boolean;
         };
+        /** AffectedDate */
+        AffectedDate: {
+            /** Raw Text */
+            raw_text: string;
+            /** Start */
+            start: string | null;
+            /** End */
+            end: string | null;
+        };
         /** Alternative */
         Alternative: {
             /** Id */
@@ -322,6 +450,75 @@ export interface components {
             room_types: ("classroom" | "outdoor" | "lab")[];
             /** Room Ids */
             room_ids: string[];
+        };
+        /** AnalysisRequest */
+        AnalysisRequest: {
+            /** Notice */
+            notice: string;
+            /** Evidence Id */
+            evidence_id: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "LIVE" | "REPLAY";
+            /** Policy Ids */
+            policy_ids: string[];
+        };
+        /** AnalysisResult */
+        AnalysisResult: {
+            /** Id */
+            id: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "LIVE" | "REPLAY";
+            /** Evidence Id */
+            evidence_id: string;
+            /** Input Revision */
+            input_revision: string;
+            /** Notice Sha256 */
+            notice_sha256: string;
+            /**
+             * Notice Status
+             * @default UNVERIFIED
+             * @constant
+             */
+            notice_status: "UNVERIFIED";
+            /**
+             * Requires Review
+             * @default true
+             * @constant
+             */
+            requires_review: true;
+            /** Review Reasons */
+            review_reasons: string[];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "SUCCESS" | "MODEL_FAILURE" | "INVALID_OUTPUT" | "PENDING";
+            interpretation: components["schemas"]["NoticeInterpretation"] | null;
+            /** Model */
+            model: string;
+            /**
+             * Region
+             * @default ap-southeast-2
+             * @constant
+             */
+            region: "ap-southeast-2";
+            /** Usage */
+            usage: {
+                [key: string]: number;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Policy Ids */
+            policy_ids: string[];
         };
         /** ApprovedPlan */
         ApprovedPlan: {
@@ -377,6 +574,7 @@ export interface components {
             actor: string;
             /** Timestamp */
             timestamp: string;
+            evidence_binding?: components["schemas"]["EvidenceBinding"] | null;
         };
         /** Counts */
         Counts: {
@@ -444,6 +642,111 @@ export interface components {
             /** Diagnostic */
             diagnostic?: string | null;
             input_snapshot: components["schemas"]["RepairInput"];
+        };
+        /** EvidenceBinding */
+        EvidenceBinding: {
+            /** Analysis Id */
+            analysis_id: string;
+            /** Evidence Id */
+            evidence_id: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "LIVE" | "REPLAY";
+            /**
+             * Calendar Date
+             * Format: date
+             */
+            calendar_date: string;
+            /** Reviewed By */
+            reviewed_by: string;
+            /**
+             * Reviewed At
+             * Format: date-time
+             */
+            reviewed_at: string;
+        };
+        /** EvidenceSnapshot */
+        EvidenceSnapshot: {
+            /** Id */
+            id: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "LIVE" | "REPLAY";
+            /**
+             * Kind
+             * @default REGIONAL_FORECAST
+             * @constant
+             */
+            kind: "REGIONAL_FORECAST";
+            /** Source */
+            source: string;
+            /** Source Url */
+            source_url: string;
+            /** Requested Latitude */
+            requested_latitude: number;
+            /** Requested Longitude */
+            requested_longitude: number;
+            /** Grid Latitude */
+            grid_latitude: number;
+            /** Grid Longitude */
+            grid_longitude: number;
+            /**
+             * Retrieved At
+             * Format: date-time
+             */
+            retrieved_at: string;
+            /** Model Issue Time */
+            model_issue_time?: string | null;
+            /**
+             * Model Issue Time Status
+             * @default not_provided
+             * @constant
+             */
+            model_issue_time_status: "not_provided";
+            /**
+             * Resolution
+             * @default CAMS global 0.4 degrees (~45 km), native 3-hourly output served hourly
+             */
+            resolution: string;
+            /** Source Units */
+            source_units: {
+                [key: string]: string;
+            };
+            /** Raw Sha256 */
+            raw_sha256: string;
+            /** Points */
+            points: components["schemas"]["PollutantPoint"][];
+            /** Limitations */
+            limitations: string[];
+        };
+        /** EvidenceView */
+        EvidenceView: {
+            snapshot: components["schemas"]["EvidenceSnapshot"];
+            /**
+             * Freshness
+             * @enum {string}
+             */
+            freshness: "FRESH" | "STALE" | "MISSING_VALUES" | "REPLAY";
+            /**
+             * Checked At
+             * Format: date-time
+             */
+            checked_at: string;
+            /**
+             * Observations Available
+             * @default false
+             * @constant
+             */
+            observations_available: false;
+            /**
+             * Observation Limitation
+             * @default No privately configured OpenAQ key and verified fresh suitable station; station observations unavailable
+             */
+            observation_limitation: string;
         };
         /** ExceptionSummary */
         ExceptionSummary: {
@@ -529,6 +832,19 @@ export interface components {
             /** Restrictions */
             restrictions: string;
         };
+        /** NoticeInterpretation */
+        NoticeInterpretation: {
+            /** Affected Dates */
+            affected_dates: components["schemas"]["AffectedDate"][];
+            /** Activities */
+            activities: string[];
+            /** Proposed Restrictions */
+            proposed_restrictions: components["schemas"]["ProposedRestriction"][];
+            /** Citation Ids */
+            citation_ids: string[];
+            /** Ambiguities */
+            ambiguities: string[];
+        };
         /** Period */
         Period: {
             /** Id */
@@ -553,6 +869,115 @@ export interface components {
              * @default false
              */
             deferred: boolean;
+        };
+        /** PlanExplanation */
+        PlanExplanation: {
+            /** Draft Id */
+            draft_id: string;
+            /** Text */
+            text: string;
+            /** Fact Ids */
+            fact_ids: string[];
+            /** Model */
+            model: string | null;
+            /**
+             * Grounded
+             * @default true
+             * @constant
+             */
+            grounded: true;
+            /**
+             * Model Status
+             * @enum {string}
+             */
+            model_status: "SUCCESS" | "MODEL_FAILURE" | "INVALID_OUTPUT";
+        };
+        /** PolicyExcerpt */
+        PolicyExcerpt: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+            /** Issuer */
+            issuer: string;
+            /** Document Date */
+            document_date: string;
+            /**
+             * Date Precision
+             * @enum {string}
+             */
+            date_precision: "day" | "month" | "internal";
+            /** Jurisdiction */
+            jurisdiction: string;
+            /**
+             * Classification
+             * @enum {string}
+             */
+            classification: "ADVISORY" | "HISTORICAL_ORDER" | "INTERNAL_POLICY";
+            /**
+             * Active Order Verified
+             * @default false
+             * @constant
+             */
+            active_order_verified: false;
+            /** Source Url */
+            source_url: string;
+            /** Reference */
+            reference: string;
+            /** Excerpt */
+            excerpt: string;
+            /** Excerpt Sha256 */
+            excerpt_sha256: string;
+            /** Document Sha256 */
+            document_sha256: string;
+            /**
+             * Verified At
+             * Format: date-time
+             */
+            verified_at: string;
+            /** Limitation */
+            limitation: string;
+        };
+        /** PollutantPoint */
+        PollutantPoint: {
+            /**
+             * Pollutant
+             * @enum {string}
+             */
+            pollutant: "PM2.5" | "PM10";
+            /** Value */
+            value: number | null;
+            /**
+             * Units
+             * @default ug/m3
+             * @constant
+             */
+            units: "ug/m3";
+            /**
+             * Valid Time
+             * Format: date-time
+             */
+            valid_time: string;
+            /**
+             * Averaging Period
+             * @default instantaneous_model_output
+             * @constant
+             */
+            averaging_period: "instantaneous_model_output";
+        };
+        /** ProposedRestriction */
+        ProposedRestriction: {
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "outdoor_prohibited" | "unsupported";
+            /** Activity Ids */
+            activity_ids: string[];
+            /** Citation Ids */
+            citation_ids: string[];
         };
         /** RepairInput */
         RepairInput: {
@@ -624,6 +1049,30 @@ export interface components {
             administrator_confirmed: true;
             /** Confirmed By */
             confirmed_by: string;
+        };
+        /** ReviewConfirmation */
+        ReviewConfirmation: {
+            /** Expected Revision */
+            expected_revision: string;
+            /** Proposal Ids */
+            proposal_ids: string[];
+            /**
+             * Calendar Date
+             * Format: date
+             */
+            calendar_date: string;
+            /** Period Ids */
+            period_ids: string[];
+            /**
+             * Notice Reviewed
+             * @constant
+             */
+            notice_reviewed: true;
+            /**
+             * Ambiguities Reviewed
+             * @constant
+             */
+            ambiguities_reviewed: true;
         };
         /** Room */
         Room: {
@@ -1121,6 +1570,218 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AuditEvent"][];
+                };
+            };
+        };
+    };
+    forecast_evidence_forecast_get: {
+        parameters: {
+            query?: {
+                mode?: "LIVE" | "REPLAY";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    snapshot_evidence__evidence_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                evidence_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EvidenceView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    policies_policy_excerpts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PolicyExcerpt"][];
+                };
+            };
+        };
+    };
+    interpret_notice_analyses_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnalysisRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnalysisResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    analysis_notice_analyses__analysis_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                analysis_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnalysisResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    confirm_notice_analyses__analysis_id__confirm_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                analysis_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewConfirmation"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfirmedInput"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    explanation_draft_plans__draft_id__explanation_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                draft_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanExplanation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

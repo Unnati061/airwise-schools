@@ -7,9 +7,11 @@ from fastapi.responses import JSONResponse
 
 from .models import Health, School
 from .workflow_api import router
+from .evidence_api import router as evidence_router
 
 app = FastAPI(title="AirWise Schools", version="0.1.0")
 app.include_router(router)
+app.include_router(evidence_router)
 
 
 @app.exception_handler(BotoCoreError)

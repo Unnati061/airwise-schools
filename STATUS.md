@@ -1,6 +1,58 @@
 # AirWise Schools status - 2026-10-08 (IST)
 
-## Packet B2 current checkpoint
+## Packet C current checkpoint
+
+Implemented authenticated pollution evidence, curated advisory excerpts and bounded
+Sydney Nova Lite notice interpretation. One fictional school / single-period
+activities / one affected weekday retained. Solver, independent validator, teacher
+execution and atomic approval behavior preserved. No parallel agents or UI expansion.
+
+Actual Open-Meteo / CAMS global PM2.5/PM10 fetch passed at 17:25:12.562767 UTC;
+five-day hourly model horizon through October 12, grid 28.5/77.5. Retrieval age
+2m42.5s at completed verification; model issue time unavailable, not invented.
+Regional ~45 km model output, not campus observations or Indian AQI. Live/replay
+caches and provenance are separate. No private OpenAQ key or verified fresh station;
+observation discovery stopped early within its cap and observations are unavailable.
+Verified official NCDC advisory PDF dates, passages and exact byte hashes: November
+1, 2025 (school Annexure IV 5(ii)) and September 2022 (Annexure I item 9).
+No active GRAP/closure order established; no numerical legal trigger invented.
+
+Working model amazon.nova-lite-v1:0, direct ap-southeast-2. Availability preflight and
+bounded JSON probe passed (23 tokens). Real authenticated demonstration passed:
+live fetch -> Nova interpretation (771 input / 195 output tokens) -> explicit
+administrator notice/date/period review -> confirmed restriction -> OPTIMAL draft
+and independent validation -> grounded explanation -> separate approval. Teacher
+confirmation/approval denied; identical analysis cached without another call.
+6-a:Mon-2 keeps its period, uses approved indoor-movement and moves field -> room-6-a.
+Counts: 0 changed periods, 1 substitution, 0 deferrals, 1 room move; 240 activities
+retained. Demonstrated approved version: 12826b9f-8209-49c3-ac24-e8d95bfe821a.
+
+Existing B2 table/pool/runtime role reused. Only AWS change: airwise-c-nova-lite
+inline role policy, exact Sydney Nova Lite InvokeModel. No new resources or S3,
+no Packet A Lambda changes, SCP/account-setting changes or cross-region calls.
+Persisted snapshots, policy excerpts, analysis/cache, daily allowance and usage
+records use the existing repository storage. Notices remain UNVERIFIED; model
+output never confirms/approves automatically. Ten server-enforced attempts per
+authenticated administrator per India-calendar day; failures count, duplicates cache.
+
+Final verification: 65 backend tests passed, two existing deprecation warnings;
+pip check, policy-byte/excerpt re-verification, generated API types, frontend
+TypeScript/Vite build and git diff checks passed. Unscoped pytest initially collected
+ignored historical ZIP staging dependencies and failed; targeted backend/tests passed,
+with staging files preserved. Protected backend remains http://127.0.0.1:8002.
+No dependency additions. Exact demonstration: .venv\Scripts\python -m scripts.c_demo.
+Source hashes, actual freshness/results, resources, endpoints, limits and cleanup:
+docs/EVIDENCE.md. Original notice text is not logged; credentials remain private.
+
+Remaining limitations: no station observations, no verified current legal orders,
+no polished evidence UI; pending model claims need deliberate recovery after a
+process crash; no production retention/backup/MFA/session operations. Advisory
+citations do not prove notice authenticity or semantic entailment. Fresh retrieval
+cannot establish model issuance freshness or campus conditions. Grounded explanation
+wording is deterministic fact assembly, not unconstrained model prose. All school
+data and demonstration notices are synthetic; live forecasts remain separately labelled.
+
+## Packet B2 historical checkpoint
 
 Durable authenticated local workflow implemented in ap-southeast-2, profile airwise.
 Created on-demand encrypted table airwise-b2-data-a1f7411817; Cognito LITE pool

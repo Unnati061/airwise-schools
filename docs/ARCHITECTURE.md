@@ -29,8 +29,8 @@ separate minimal Docker fallback test; missing credentials is not that failure.
 Public foundation health/synthetic-school endpoints remain read-only. Operational
 endpoints now require Cognito authentication (B2 below). Bind to loopback. Future paid or
 mutation actions need server-side identity, school authorization and input caps.
-Future evidence keeps provider/source/timestamps/units and mode; future approval
-checks plan and input versions atomically. No automatic legal activation.
+Evidence keeps provider/source/timestamps/units and mode; approval checks plan and
+input versions atomically. No automatic legal activation.
 
 ## Local B1 repair path
 
@@ -86,6 +86,41 @@ changes. Totals derive from these unique records, never retry-sensitive incremen
 Teacher reporting requires their current approved version and assigned activity;
 administrator resolution notes are separate, idempotent by request UUID.
 No approval or identity override exists in the public API. See WORKFLOW.md.
+
+## C evidence and bounded model interpretation
+
+EvidenceService uses the same authenticated administrator/school scope and DynamoStore.
+EVIDENCE/EVIDENCE_RAW retain immutable normalized snapshots, parsed provider JSON
+and the original HTTP-body SHA-256; FORECAST_CACHE has separate LIVE/REPLAY pointers.
+No raw public-response bucket is needed. A 15-minute cache preserves retrieval time;
+failed refresh never relabels old data or substitutes replay into the live path.
+One-hour retrieval freshness and missing/future-value checks gate analysis/review.
+Provider model issue time is explicitly unknown; retrieval freshness is not proof
+of model-cycle freshness. No station observations or AQI conversion exists.
+
+POLICY records retain curated exact excerpts, references, document/excerpt hashes
+and verification times. They are advisory/internal-policy evidence, not active orders.
+NovaProvider uses existing boto3 scoped-role credential refresh and a single in-region
+Converse call. Only bedrock:InvokeModel on amazon.nova-lite-v1:0 in Sydney was added
+to the existing role. No Strands, streaming or cross-region profile. Schemas and
+citation/activity membership are checked independently of model instructions.
+
+MODEL_CACHE pending claims and daily ANALYSIS_ALLOWANCE counters are committed
+atomically before a call, preventing duplicate concurrent requests and limiting
+each authenticated administrator to ten attempts per India-calendar day. Durable
+MODEL_USAGE records contain actor/time/model/usage/hash/error class, not prompt text.
+ANALYSIS records contain validated results or explicit failure; model-cache records
+are private output, not application logs. Original notice input is hashed, not
+directly stored. Failed attempts consume allowance; no automatic model retry.
+
+Confirmation is a separate authenticated operation. It checks current input revision,
+evidence freshness/mode, explicit calendar-to-weekday mapping, permitted proposal
+kind and explicit affected-day periods. Confirmation persists EvidenceBinding in
+the immutable input revision; draft versions refer to that revision. Approval still
+uses the unchanged independent validator and B2 atomic version/pointer checks.
+No model output writes confirmation flags or current-plan pointers. Explanations
+select only server-supplied fact IDs; final wording and counts are deterministic.
+No solver, validation or teacher-execution logic changed. See EVIDENCE.md.
 
 References: https://docs.aws.amazon.com/lambda/latest/dg/python-package.html
 and https://developers.google.com/optimization/cp/cp_solver .

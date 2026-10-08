@@ -1,8 +1,12 @@
-# AirWise Schools: Packet A
+# AirWise Schools: Packet C
 
-Local-first foundation based on AirWise-Schools-Build-Blueprint.md, narrowed by
-the user's Packet A request. Synthetic school data only. No live evidence,
-schedule repair, approval, authentication or persistence is implemented yet.
+Local-first synthetic-school workflow: regional pollution forecasts, reviewed
+notice interpretation, timetable repair, independent validation, authenticated
+approval and teacher execution reporting. Cognito/DynamoDB and bounded Nova Lite
+use the existing Sydney resources. Forecasts are not campus observations or Indian
+AQI; pasted notices are unverified and never directly approve a plan.
+Current results: STATUS.md. Private setup: docs/WORKFLOW.md. Evidence and exact
+end-to-end demo command: [EVIDENCE.md](docs/EVIDENCE.md).
 
 ## Local setup (PowerShell)
 
@@ -30,9 +34,10 @@ Frontend uses Vite's development proxy; a production API origin is deferred.
 
 ## ZIP attempt
 
-Latest private runtime spike: see [AWS_SYDNEY.md](docs/AWS_SYDNEY.md). Confirmed
-region is ap-southeast-2. Private bucket created; ZIP upload transport is blocked,
-so no Lambda execution yet. Historical SCP record: docs/AWS_SMOKE.md.
+Private native runtime spike passed in ap-southeast-2: OR-Tools returned OPTIMAL
+on real Python 3.12/x86_64 Lambda. See [AWS_SMOKE.md](docs/AWS_SMOKE.md).
+The existing Packet A ZIP/function were not rebuilt or redeployed for B/C; the
+authenticated application and evidence workflow run locally, not on that Lambda.
 `scripts/aws_smoke.py` is the dedicated create-only tooling for this follow-up.
 The older script below only updates an explicitly supplied existing smoke target.
 
@@ -51,8 +56,8 @@ as the production API. An existing staging directory is deliberately not erased.
 See STATUS.md for executed results, package sizes and blockers. Linux wheel
 resolution does not establish Lambda native compatibility. Docker is a fallback
 only after a demonstrated native compatibility failure in the ZIP path.
-The measured ZIP exceeds direct upload size; an S3 upload route is needed before
-deployment can proceed. To reuse an inspected archive without rebuilding, pass
+The measured ZIP exceeds direct upload size; the successful spike used S3.
+To reuse an inspected archive without rebuilding in a separately authorized task, pass
 `--existing-zip work/airwise-lambda.zip --deploy`.
 
 Optional browser verification uses Playwright and installed Chrome:

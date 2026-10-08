@@ -54,7 +54,7 @@ class Workflow:
         except Conflict:
             raise HTTPException(409, "Concurrent modification; refresh and retry") from None
 
-    def confirm(self, actor, update):
+    def confirm(self, actor, update, *, evidence_binding=None):
         admin(actor)
         school = self.school(actor)
         data = update.input.model_copy(deep=True)
@@ -74,7 +74,7 @@ class Workflow:
         data.versions.restrictions = revision
         for restriction in data.restrictions:
             restriction.confirmed_by = actor.sub
-        confirmed = ConfirmedInput(revision=revision, input=data, actor=actor.sub, timestamp=now())
+        confirmed = ConfirmedInput(revision=revision, input=data, actor=actor.sub, timestamp=now(), evidence_binding=evidence_binding)
         state = dict(revision=revision, etag=str(uuid4()), current=old["current"] if old else None,
                      needs_review=bool(old and old["current"]))
         self.transact([self.store.put(school, f"INPUT#{revision}", confirmed.model_dump(mode="json"), create=True),

@@ -13,6 +13,10 @@ Packet B2 authorizes only its DynamoDB table, Cognito pool/client/synthetic user
 and least-privilege local runtime role in Sydney. Protected APIs require real
 Cognito access tokens; never add a runtime memory/authentication bypass.
 Do not alter the Packet A smoke Lambda for B2. See docs/WORKFLOW.md.
+Packet C authorizes bounded Sydney Nova Lite calls through the existing runtime
+role and evidence persistence in the existing table. No new infrastructure,
+cross-region inference, automatic legal activation or model-driven approval.
+See docs/EVIDENCE.md for source provenance, review gates and daily limits.
 Docker is conditional on demonstrated ZIP native compatibility failure.
 
 From repository root (PowerShell):

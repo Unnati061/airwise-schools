@@ -4,6 +4,7 @@ from uuid import UUID
 from pydantic import Field
 
 from .models import Contract
+from .evidence_contracts import EvidenceBinding
 from .repair_contracts import InputVersions, Placement, RepairInput
 
 
@@ -19,6 +20,7 @@ class ConfirmedInput(Contract):
     input: RepairInput
     actor: str
     timestamp: str
+    evidence_binding: EvidenceBinding | None = None
 
 
 class InputUpdate(Contract):

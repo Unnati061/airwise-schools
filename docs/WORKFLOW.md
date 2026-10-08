@@ -1,5 +1,9 @@
 # Packet B2 durable local workflow
 
+Packet C preserves this flow and adds authenticated evidence review before input
+confirmation. See EVIDENCE.md for live/replay provenance, notice interpretation,
+daily model limits and the verified forecast-to-approval demonstration.
+
 ## Actual resources
 
 All in ap-southeast-2, profile airwise. Project=AirWiseSchools, Packet=B2,

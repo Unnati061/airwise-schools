@@ -11,7 +11,8 @@ The attached blueprint is planning context; the user's explicit exclusions and
 deployment order govern this implementation.
 
 One fictional NCR school, six sections, aggregate sizes only. All fixture data is
-SYNTHETIC, with no live pollution values, child identities or medical records.
+SYNTHETIC, with no child identities or medical records. Packet C adds separately
+labelled LIVE regional forecasts and a synthetic REPLAY, never campus measurements.
 No claim of legal restrictions or health benefits. B1 provides independently
 validated local drafts, not approved or activated school schedules.
 
@@ -25,4 +26,10 @@ administrator exception resolutions. Approval revalidates and checks current inp
 versions; input updates mark the old approved plan for review without replacing it.
 Acknowledgement is not execution. Teachers see only their own approved assignments.
 Synthetic-only, single-period MVP remains; no automatic schedule activation.
-Evidence adapters, polished UI, Bedrock, SQS and messaging remain deferred.
+Packet C adds regional Open-Meteo PM forecasts, curated advisory excerpts and
+bounded Sydney Nova Lite notice interpretation. Pasted notices remain unverified;
+administrator review explicitly resolves dates and period scope. Analysis never
+confirms restrictions, approves a plan or establishes an active legal order.
+Grounded explanations use independently recomputed facts and deterministic counts.
+Station observations are unavailable; no AQI or numerical legal trigger is inferred.
+Polished UI, SQS and messaging remain deferred. See EVIDENCE.md.

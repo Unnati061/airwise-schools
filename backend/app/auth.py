@@ -32,7 +32,7 @@ def settings():
     return config
 
 
-def runtime_client(config):
+def runtime_client(config, service="dynamodb"):
     source = boto3.Session(profile_name="airwise", region_name=REGION).client("sts", config=AWS_CONFIG)
     def refresh():
         credentials = source.assume_role(RoleArn=config["runtime_role_arn"], RoleSessionName="airwise-local-b2", DurationSeconds=900)["Credentials"]
@@ -41,7 +41,8 @@ def runtime_client(config):
     session = botocore.session.get_session()
     session._credentials = DeferredRefreshableCredentials(refresh_using=refresh, method="assume-role")
     session.set_config_variable("region", REGION)
-    return boto3.Session(botocore_session=session).client("dynamodb", config=AWS_CONFIG)
+    service_config = AWS_CONFIG if service == "dynamodb" else Config(connect_timeout=5, read_timeout=20, retries={"total_max_attempts": 1})
+    return boto3.Session(botocore_session=session).client(service, config=service_config)
 
 
 @lru_cache
