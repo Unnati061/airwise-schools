@@ -2,7 +2,7 @@ import pytest
 import base64
 import hashlib
 
-from scripts.aws_smoke import upload_inspected_zip, validate_plan
+from scripts.aws_smoke import upload_inspected_zip, validate_plan, verify_existing_artifact
 
 
 def plan():
@@ -68,3 +68,26 @@ def test_failed_upload_cancels_only_its_own_incomplete_transfer(tmp_path):
     with pytest.raises(RuntimeError, match="network failure"):
         upload_inspected_zip(Client(), archive, {**plan(), "sha256": "fixture"})
     assert cancelled == ["owned-upload"]
+
+
+def test_custom_metadata_cannot_substitute_for_s3_checksum(tmp_path):
+    archive = tmp_path / "archive.zip"
+    archive.write_bytes(b"fixture")
+    head = {"ContentLength": 7, "Metadata": {"sha256": "claimed-hash"}}
+    with pytest.raises(RuntimeError, match="checksum is unavailable"):
+        verify_existing_artifact(head, archive, {"compressed_bytes": 7})
+
+
+def test_existing_object_checksum_matches_local_bytes(tmp_path):
+    from awscrt.checksums import crc64nvme
+    import struct
+
+    archive = tmp_path / "archive.zip"
+    archive.write_bytes(b"fixture")
+    checksum = base64.b64encode(struct.pack(">Q", crc64nvme(b"fixture"))).decode()
+    head = {"ContentLength": 7, "ChecksumType": "FULL_OBJECT", "ChecksumCRC64NVME": checksum}
+    evidence = verify_existing_artifact(head, archive, {"compressed_bytes": 7})
+    assert evidence["matches_local"] and not evidence["metadata_used_as_checksum"]
+    archive.write_bytes(b"changed")
+    with pytest.raises(RuntimeError, match="checksum differs"):
+        verify_existing_artifact(head, archive, {"compressed_bytes": 7})

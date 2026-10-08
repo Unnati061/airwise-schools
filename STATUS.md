@@ -1,6 +1,23 @@
 # Packet A status - 2026-10-08 (IST)
 
-Local foundation complete and checked. AWS runtime gate remains BLOCKED by S3
+## Current verified checkpoint
+
+AWS runtime gate PASSED in ap-southeast-2 using profile airwise and the existing
+console-uploaded object airwise-runtime-smoke.zip. No rebuild or upload occurred.
+S3 full-object CRC64NVME matched local bytes; Lambda CodeSha256 matched the local
+SHA-256 after Base64 encoding. Invocation returned HTTP 200, no FunctionError,
+OPTIMAL, periods [3, 2, 1], objective 6, OR-Tools 9.15.6755 and Python 3.12.14/x86_64.
+CloudWatch confirms the result and seven-day retention. Created the dedicated
+execution role, log group and Lambda; existing private bucket retained.
+Targeted backend suite: 12 passed, two existing deprecation warnings; pip check
+passed. No Docker needed. No runtime blocker remains; cleanup and any broader
+application deployment require a separate task. See docs/AWS_SMOKE.md for names,
+commands, verification evidence and cleanup. Previous uncommitted tooling/tests
+were preserved and verified. Local application and solver were not changed.
+
+## Historical checkpoint (superseded)
+
+Local foundation complete and checked. AWS runtime gate was BLOCKED by S3
 upload transport failure. User confirmed Sydney ap-southeast-2 in AWS Settings;
 the airwise profile and deployment tooling now use this region explicitly.
 Sydney Lambda preflight passed (unused function name returned ResourceNotFound).

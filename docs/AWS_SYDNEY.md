@@ -1,5 +1,9 @@
 # Sydney runtime smoke - 2026-10-08 IST
 
+Historical upload-failure record below, superseded by the successful console
+upload and real Lambda invocation documented in AWS_SMOKE.md. Do not follow
+the old upload/resume instructions: deployment is complete and no upload is needed.
+
 User confirmed AWS Settings assigns this project to ap-southeast-2 (Sydney), with
 $100 credits remaining (user-reported, not independently checked). Corrects the
 earlier us-east-1 assumption. No region probing, account switch, advanced feature

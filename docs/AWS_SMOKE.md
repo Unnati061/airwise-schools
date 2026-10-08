@@ -1,5 +1,68 @@
 # Private Lambda runtime smoke - 2026-10-08 IST
 
+## Current verified Sydney deployment
+
+PASSED using airwise, explicitly ap-southeast-2. The first bounded CLI STS check
+had a read timeout; the standard IAM endpoint then returned NoSuchEntity for
+the planned role (not an SCP denial). The guarded SDK deployment successfully
+verified STS identity, checked role/function/log-group collisions, validated the
+existing bucket and object, and created only the missing authorized resources.
+No browser refresh, ZIP rebuild, upload, TLS bypass or account change occurred.
+
+Existing object: s3://airwise-smoke-artifacts-a1f7411817/airwise-runtime-smoke.zip.
+Size 61,637,194 bytes; extracted size 190,107,573 bytes including dependencies.
+S3 actual FULL_OBJECT CRC64NVME bmzb/vGbOCY= matched the locally calculated CRC.
+Custom metadata was empty and was not treated as checksum evidence. Multipart
+ETag was not treated as a full-file MD5. Local SHA-256 hex:
+b78df0eae964653c3ee7f5a7230fab35d11f391d89716262f548fd21b4584e7a.
+Lambda CodeSha256 and Base64-encoded local SHA-256 both equal
+t43w6ulkZTw+5/WnIw+rNdEfOR2JcWJi9Uj9IbRYTno=.
+
+Created this retry: role airwise-smoke-role-a1f7411817, inline policy
+airwise-smoke-logging, log group /aws/lambda/airwise-runtime-smoke-a1f7411817,
+and Lambda airwise-runtime-smoke-a1f7411817. Bucket was already present.
+All project resources use the agreed project tags. Execution role trusts only
+Lambda and permits only CreateLogStream/PutLogEvents on this function's streams.
+Verified Active, python3.12, x86_64, 1024 MB, timeout 30 seconds, no layers/VPC.
+No public endpoint, provisioned concurrency or application infrastructure added.
+Log retention verified as seven days.
+
+Actual authenticated CLI invocation: StatusCode 200, FunctionError null;
+health ok/SYNTHETIC; solver OPTIMAL, periods [3,2,1], objective 6.
+Runtime Python 3.12.14, x86_64. Dependencies: ortools 9.15.6755, numpy 2.5.3,
+pandas 3.0.6, protobuf 6.33.6, fastapi 0.143.0, pydantic 2.13.5, mangum 0.22.0.
+CloudWatch independently showed the same response: duration 169.36 ms,
+initialization 3494.84 ms, billed duration 3665 ms, maximum memory 195 MB.
+This verifies this ZIP's tiny solver on Lambda, not a production timetable load.
+No Docker needed; no native compatibility failure occurred.
+
+Commands actually run from repository root (PowerShell):
+
+```powershell
+$env:AWS_MAX_ATTEMPTS='1'
+aws sts get-caller-identity --profile airwise --region ap-southeast-2 --output json --no-cli-pager --cli-connect-timeout 5 --cli-read-timeout 15
+aws iam get-role --role-name airwise-smoke-role-a1f7411817 --profile airwise --region ap-southeast-2 --no-cli-pager --cli-connect-timeout 5 --cli-read-timeout 15
+.venv\Scripts\python scripts/aws_smoke.py deploy-existing
+.venv\Scripts\python -m pytest backend/tests -q
+aws lambda invoke --function-name airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2 --invocation-type RequestResponse --log-type Tail --payload '{}' --cli-binary-format raw-in-base64-out work/aws-smoke-response.json --no-cli-pager --cli-connect-timeout 5 --cli-read-timeout 45
+Get-Content work/aws-smoke-response.json
+aws lambda get-function-configuration --function-name airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2 --no-cli-pager --cli-connect-timeout 5 --cli-read-timeout 15
+Get-FileHash work/airwise-runtime-smoke.zip -Algorithm SHA256
+aws logs filter-log-events --log-group-name /aws/lambda/airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2 --no-cli-pager --cli-connect-timeout 5 --cli-read-timeout 15
+aws logs describe-log-groups --log-group-name-prefix /aws/lambda/airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2 --no-cli-pager --cli-connect-timeout 5 --cli-read-timeout 15
+.venv\Scripts\python -m pip check
+```
+
+Deployment SDK used standard endpoints, 5-second connect/30-second read timeouts
+and one transport attempt; IAM trust propagation was bounded separately.
+Tests: 12 passed, two existing dependency warnings; pip check passed.
+No remaining runtime gate blocker. Private artifacts/logs continue to incur small
+storage costs until cleanup; retention does not delete the group or other resources.
+Cleanup commands below now apply to all four owned resources, with the corrected
+object key airwise-runtime-smoke.zip. Inspect ownership before cleanup; none run.
+
+## Historical attempts (superseded)
+
 Historical us-east-1 attempt; superseded by the user-confirmed Sydney region.
 Current configuration uses ap-southeast-2. See AWS_SYDNEY.md for the latest outcome.
 Status of the original attempt: BLOCKED by AWS organization policy before any resource creation.
@@ -127,7 +190,7 @@ aws lambda delete-function --function-name airwise-runtime-smoke-a1f7411817 --pr
 aws logs delete-log-group --log-group-name /aws/lambda/airwise-runtime-smoke-a1f7411817 --profile airwise --region ap-southeast-2
 aws iam delete-role-policy --role-name airwise-smoke-role-a1f7411817 --policy-name airwise-smoke-logging --profile airwise --region ap-southeast-2
 aws iam delete-role --role-name airwise-smoke-role-a1f7411817 --profile airwise --region ap-southeast-2
-aws s3api delete-object --bucket airwise-smoke-artifacts-a1f7411817 --key runtime-smoke.zip --profile airwise --region ap-southeast-2
+aws s3api delete-object --bucket airwise-smoke-artifacts-a1f7411817 --key airwise-runtime-smoke.zip --profile airwise --region ap-southeast-2
 aws s3api delete-bucket --bucket airwise-smoke-artifacts-a1f7411817 --profile airwise --region ap-southeast-2
 ```
 

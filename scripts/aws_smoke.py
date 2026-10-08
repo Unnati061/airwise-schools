@@ -27,10 +27,31 @@ def validate_plan(record):
                         ("function", "airwise-runtime-smoke-")):
         if not re.fullmatch(re.escape(prefix) + r"[a-f0-9]{10}", record[key]):
             raise ValueError("Unexpected resource name")
-    if record["log_group"] != f"/aws/lambda/{record['function']}" or record["key"] != "runtime-smoke.zip":
+    if record["log_group"] != f"/aws/lambda/{record['function']}" or record["key"] not in ("runtime-smoke.zip", "airwise-runtime-smoke.zip"):
         raise ValueError("Unexpected log group or object key")
     if record["uncompressed_bytes"] > 250 * 1024 * 1024:
         raise ValueError("Package too large")
+
+
+def verify_existing_artifact(head, archive, record):
+    from awscrt.checksums import crc64nvme
+
+    if head["ContentLength"] != record["compressed_bytes"]:
+        raise RuntimeError("S3 object size differs from inspected ZIP")
+    if head.get("ChecksumType") != "FULL_OBJECT" or not head.get("ChecksumCRC64NVME"):
+        raise RuntimeError("Expected verifiable full-object CRC64/NVME checksum is unavailable")
+    crc = 0
+    with archive.open("rb") as stream:
+        while chunk := stream.read(1024 * 1024):
+            crc = crc64nvme(chunk, crc)
+    local = base64.b64encode(struct.pack(">Q", crc)).decode()
+    if local != head["ChecksumCRC64NVME"]:
+        raise RuntimeError("S3 checksum differs from inspected ZIP")
+    evidence = {"size_bytes": head["ContentLength"], "checksum_type": "FULL_OBJECT",
+                "algorithm": "CRC64NVME", "s3_checksum": local, "matches_local": True,
+                "custom_metadata": head.get("Metadata", {}), "metadata_used_as_checksum": False}
+    print(json.dumps(evidence), flush=True)
+    return evidence
 
 
 def upload_inspected_zip(s3, archive, record):
@@ -103,7 +124,7 @@ def prepare():
     print(json.dumps(record, indent=2))
 
 
-def deploy(resume_upload=False):
+def deploy(resume_upload=False, existing_object_only=False):
     record = json.loads(MANIFEST.read_text(encoding="utf-8"))
     validate_plan(record)
     if record["created"] and not (resume_upload and record["created"] == ["bucket"]):
@@ -153,24 +174,36 @@ def deploy(resume_upload=False):
         if actual_tags != tags:
             raise RuntimeError("Bucket ownership tags do not match this spike")
         try:
-            existing = s3.head_object(Bucket=record["bucket"], Key=record["key"])
+            existing = s3.head_object(Bucket=record["bucket"], Key=record["key"], ChecksumMode="ENABLED")
         except ClientError as error:
+            if existing_object_only:
+                raise RuntimeError("Existing object unavailable; no upload is permitted") from error
             if error.response["Error"]["Code"] != "404":
                 raise
         else:
-            if existing["ContentLength"] != record["compressed_bytes"] or existing.get("Metadata", {}).get("sha256") != record["sha256"]:
-                raise RuntimeError("Existing artifact does not match inspected ZIP")
+            if existing_object_only:
+                record["artifact_verification"] = verify_existing_artifact(existing, archive, record)
+                MANIFEST.write_text(json.dumps(record, indent=2), encoding="utf-8")
+            elif existing["ContentLength"] != record["compressed_bytes"] or existing.get("Metadata", {}).get("sha256") != record["sha256"]:
+                raise RuntimeError("Existing artifact metadata/size differs; use deploy-existing for checksum validation")
             artifact_exists = True
     else:
         s3.create_bucket(Bucket=record["bucket"], ObjectOwnership="BucketOwnerEnforced",
                          CreateBucketConfiguration={"LocationConstraint": "ap-southeast-2"})
         saved("bucket")
-    s3.put_public_access_block(Bucket=record["bucket"], PublicAccessBlockConfiguration={
-        name: True for name in ("BlockPublicAcls", "IgnorePublicAcls", "BlockPublicPolicy", "RestrictPublicBuckets")})
-    s3.put_bucket_tagging(Bucket=record["bucket"], Tagging={"TagSet": [{"Key": k, "Value": v} for k, v in tags.items()]})
-    s3.put_bucket_encryption(Bucket=record["bucket"], ServerSideEncryptionConfiguration={
-        "Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]})
+    if existing_object_only:
+        blocks = s3.get_public_access_block(Bucket=record["bucket"])["PublicAccessBlockConfiguration"]
+        if not all(blocks.get(name) for name in ("BlockPublicAcls", "IgnorePublicAcls", "BlockPublicPolicy", "RestrictPublicBuckets")):
+            raise RuntimeError("Bucket public-access blocks are not all enabled")
+    else:
+        s3.put_public_access_block(Bucket=record["bucket"], PublicAccessBlockConfiguration={
+            name: True for name in ("BlockPublicAcls", "IgnorePublicAcls", "BlockPublicPolicy", "RestrictPublicBuckets")})
+        s3.put_bucket_tagging(Bucket=record["bucket"], Tagging={"TagSet": [{"Key": k, "Value": v} for k, v in tags.items()]})
+        s3.put_bucket_encryption(Bucket=record["bucket"], ServerSideEncryptionConfiguration={
+            "Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]})
     if not artifact_exists:
+        if existing_object_only:
+            raise RuntimeError("No existing artifact; refusing upload")
         print("Starting inspected ZIP upload", flush=True)
         upload_inspected_zip(s3, archive, record)
     print("Inspected ZIP available through S3", flush=True)
@@ -208,10 +241,12 @@ def deploy(resume_upload=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", choices=["prepare", "deploy", "resume-upload"])
+    parser.add_argument("action", choices=["prepare", "deploy", "resume-upload", "deploy-existing"])
     args = parser.parse_args()
     try:
-        prepare() if args.action == "prepare" else deploy(resume_upload=args.action == "resume-upload")
+        prepare() if args.action == "prepare" else deploy(
+            resume_upload=args.action in ("resume-upload", "deploy-existing"),
+            existing_object_only=args.action == "deploy-existing")
     except ClientError as error:
         print(json.dumps({"aws_error_code": error.response["Error"]["Code"],
                           "message": re.sub(r"\b\d{12}\b", "[REDACTED]", error.response["Error"]["Message"])}))
