@@ -9,7 +9,8 @@ from .repair_engine import repair
 from .repair_validator import validate_plan
 from .workflow_contracts import (Acknowledgement, ApprovedPlan, Assignment, AuditEvent,
                                  ConfirmedInput, CurrentPlan, ExceptionSummary, ExecutionReport,
-                                 Resolution, TeacherAssignments)
+                                 Resolution, TeacherAssignments, ApprovedPlanDetail,
+                                 PlanVersionSummary, ExecutionReview, ExecutionCounts)
 
 SCHOOL = "synthetic-school-001"
 
@@ -89,6 +90,14 @@ class Workflow:
         state = self.state(actor)
         return ConfirmedInput.model_validate(self.store.read(actor.school_id, f"INPUT#{state['revision']}"))
 
+    def input_version(self, actor, revision):
+        admin(actor)
+        self.school(actor)
+        record = self.store.read(actor.school_id, f"INPUT#{revision}")
+        if not record:
+            raise HTTPException(404, "Input version not found")
+        return ConfirmedInput.model_validate(record)
+
     def draft(self, actor, data):
         admin(actor)
         canonical = self.inputs(actor).input
@@ -150,7 +159,7 @@ class Workflow:
 
     def teacher(self, actor, teacher_id):
         self.school(actor)
-        if actor.role != "teacher" or actor.teacher_id != teacher_id:
+        if actor.role != "teacher" or not teacher_id or actor.teacher_id != teacher_id:
             raise HTTPException(403, "Teacher assignment access denied")
 
     def approved_draft(self, actor, version):
@@ -163,12 +172,13 @@ class Workflow:
         # Receipts from the first B2 integration run reference immutable drafts.
         return DynamoPlanRepository(self.store, actor.school_id).get(version)
 
-    def assignments(self, actor, teacher_id):
+    def assignments(self, actor, teacher_id, version=None):
         self.teacher(actor, teacher_id)
         state = self.state(actor)
-        if not state["current"]:
+        selected = version or state["current"]
+        if not selected:
             raise HTTPException(404, "No approved plan")
-        plan = self.approved_draft(actor, state["current"])
+        plan = self.approved_draft(actor, selected)
         by_id = {a.id: a for a in plan.input_snapshot.activities}
         assignments = []
         for p in plan.placements:
@@ -177,9 +187,11 @@ class Workflow:
                 label = next((v.label for v in a.approved_alternatives if v.id == p.alternative_id), a.label)
                 assignments.append(Assignment(activity_id=a.id, label=a.label, proposed_label=label,
                                               section_id=a.section_id, placement=p))
-        return TeacherAssignments(teacher_id=teacher_id, plan_version=state["current"], needs_review=state["needs_review"],
-                                  acknowledged=bool(self.store.read(actor.school_id, f"ACK#{state['current']}#{teacher_id}")),
-                                  assignments=assignments)
+        confirmed = self.store.read(actor.school_id, f"INPUT#{plan.input_versions.timetable}")
+        binding = confirmed.get("evidence_binding") if confirmed else None
+        return TeacherAssignments(teacher_id=teacher_id, plan_version=selected, needs_review=bool(selected == state["current"] and state["needs_review"]),
+                                  acknowledged=bool(self.store.read(actor.school_id, f"ACK#{selected}#{teacher_id}")),
+                                  assignments=assignments, evidence_mode=binding["mode"] if binding else "MANUAL")
 
     def ack(self, actor, version):
         self.teacher(actor, actor.teacher_id)
@@ -265,3 +277,48 @@ class Workflow:
         admin(actor)
         self.school(actor)
         return [AuditEvent.model_validate(e) for e in self.store.query(actor.school_id, "AUDIT#")]
+
+    def history(self, actor):
+        self.school(actor)
+        if actor.role == "teacher":
+            self.teacher(actor, actor.teacher_id)
+        state = self.state(actor)
+        result = []
+        for record in self.store.query(actor.school_id, "APPROVED#"):
+            receipt = approval_receipt(record)
+            plan = DraftPlan.model_validate(record["plan"]) if "plan" in record else self.approved_draft(actor, receipt.plan_version)
+            if actor.role == "teacher" and not any(a.teacher_id == actor.teacher_id for a in plan.input_snapshot.activities):
+                continue
+            result.append(PlanVersionSummary(plan_version=receipt.plan_version, timestamp=receipt.timestamp,
+                current=receipt.plan_version == state["current"], needs_review=bool(receipt.plan_version == state["current"] and state["needs_review"]),
+                counts=plan.counts if actor.role == "administrator" else None))
+        return sorted(result, key=lambda r: (r.timestamp, r.plan_version), reverse=True)
+
+    def approved_detail(self, actor, version):
+        admin(actor)
+        self.school(actor)
+        plan = self.approved_draft(actor, version)
+        record = self.store.read(actor.school_id, f"APPROVED#{version}")
+        confirmed = self.store.read(actor.school_id, f"INPUT#{plan.input_versions.timetable}")
+        return ApprovedPlanDetail(approval=approval_receipt(record), plan=plan,
+                                  evidence_binding=confirmed.get("evidence_binding") if confirmed else None)
+
+    def teacher_reports(self, actor, teacher_id, version):
+        assignments = self.assignments(actor, teacher_id, version)
+        owned = {a.activity_id for a in assignments.assignments}
+        return [ExecutionReport.model_validate({k: v for k, v in r.items() if k != "etag"})
+                for r in self.store.query(actor.school_id, f"REPORT#{version}#")
+                if r["teacher_id"] == teacher_id and r["activity_id"] in owned]
+
+    def execution_review(self, actor, version):
+        admin(actor)
+        self.approved_draft(actor, version)
+        reports = self.reports(actor, version)
+        resolutions = [Resolution.model_validate(r) for r in self.store.query(actor.school_id, f"RESOLUTION#{version}#")]
+        # A new changed report reopens an exception; an older resolution is not current.
+        unresolved = sorted(r.activity_id for r in reports if r.status != "COMPLETED" and not any(
+            n.activity_id == r.activity_id and datetime.fromisoformat(n.timestamp) >= datetime.fromisoformat(r.timestamp) for n in resolutions))
+        return ExecutionReview(reports=reports, resolutions=resolutions, unresolved_activity_ids=unresolved,
+            counts=ExecutionCounts(reported=len(reports), completed=sum(r.status == "COMPLETED" for r in reports),
+                could_not_implement=sum(r.status == "COULD_NOT_IMPLEMENT" for r in reports),
+                needs_clarification=sum(r.status == "NEEDS_CLARIFICATION" for r in reports), unresolved=len(unresolved)))

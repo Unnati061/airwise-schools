@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "generate:api": "openapi-typescript http://127.0.0.1:8000/openapi.json -o src/api.d.ts"
+    "generate:api": "openapi-typescript http://127.0.0.1:8002/openapi.json -o src/api.d.ts"
   },
   "dependencies": {
     "lucide-react": "1.53.0",

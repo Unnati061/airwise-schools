@@ -17,10 +17,12 @@ Packet C authorizes bounded Sydney Nova Lite calls through the existing runtime
 role and evidence persistence in the existing table. No new infrastructure,
 cross-region inference, automatic legal activation or model-driven approval.
 See docs/EVIDENCE.md for source provenance, review gates and daily limits.
+Packet D1 adds a local authenticated interface only. No new AWS resources or
+deployment. See docs/INTERFACE.md; Vite proxies the local backend on port 8002.
 Docker is conditional on demonstrated ZIP native compatibility failure.
 
 From repository root (PowerShell):
-- `.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000`
+- `.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8002`
 - `.venv\Scripts\python -m backend.app.solver_smoke`
 - `.venv\Scripts\python -m pytest backend/tests -q`
 - `npm --prefix frontend ci`

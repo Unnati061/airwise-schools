@@ -5,7 +5,7 @@ from pydantic import Field
 
 from .models import Contract
 from .evidence_contracts import EvidenceBinding
-from .repair_contracts import InputVersions, Placement, RepairInput
+from .repair_contracts import Counts, DraftPlan, InputVersions, Placement, RepairInput
 
 
 class Actor(Contract):
@@ -56,6 +56,7 @@ class TeacherAssignments(Contract):
     needs_review: bool
     acknowledged: bool
     assignments: list[Assignment]
+    evidence_mode: Literal["LIVE", "REPLAY", "MANUAL"] = "MANUAL"
 
 
 class Acknowledgement(Contract):
@@ -104,3 +105,38 @@ class AuditEvent(Contract):
 class ExceptionSummary(Contract):
     reports: list[ExecutionReport]
     resolutions: list[Resolution]
+
+
+class PublicAuthConfig(Contract):
+    region: Literal["ap-southeast-2"]
+    pool_id: str
+    client_id: str
+
+
+class PlanVersionSummary(Contract):
+    plan_version: str
+    timestamp: str
+    current: bool
+    needs_review: bool
+    counts: Counts | None = None
+
+
+class ApprovedPlanDetail(Contract):
+    approval: ApprovedPlan
+    plan: DraftPlan
+    evidence_binding: EvidenceBinding | None = None
+
+
+class ExecutionCounts(Contract):
+    reported: int
+    completed: int
+    could_not_implement: int
+    needs_clarification: int
+    unresolved: int
+
+
+class ExecutionReview(Contract):
+    reports: list[ExecutionReport]
+    resolutions: list[Resolution]
+    unresolved_activity_ids: list[str]
+    counts: ExecutionCounts

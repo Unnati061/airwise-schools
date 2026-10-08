@@ -1,6 +1,46 @@
-# AirWise Schools status - 2026-10-08 (IST)
+# AirWise Schools status - 2026-10-09 (IST)
 
-## Packet C current checkpoint
+## Packet D1 current checkpoint
+
+Five connected React views implemented: Today, Evidence & restrictions, Plan
+comparison, Teacher inbox and Review. Existing Cognito identity and backend
+school/teacher authorization remain enforced. No password resets, role selector,
+new dependencies, AWS resources or deployments. Solver and independent validator
+preserved. Added compatible authenticated read contracts for immutable inputs,
+approved history/detail, own historical assignments/reports and execution summaries.
+
+Real Chrome workflow passed with privately entered administrator/teacher passwords:
+replay evidence -> actual Nova interpretation -> explicit administrator review and
+confirmation -> OPTIMAL independently validated draft -> approval -> teacher
+acknowledgement -> COULD_NOT_IMPLEMENT report -> browser refresh -> administrator
+exception and approval/audit history. Current version:
+aecb1ac8-fa27-4f54-912f-754aa01692e7. Activity 6-a:Mon-2 retains Monday period 2,
+uses its approved classroom movement alternative in room-6-a. Backend counts:
+0 changed periods, 1 substitution, 0 deferrals, 1 room move; baseline recommended.
+Review shows 1 reported activity, 0 completed, 1 could not implement, 0 needs
+clarification and 1 unresolved exception. Earlier reports/versions were retained.
+
+Initial real generation exposed a refresh race (backend 409, no stale draft saved).
+Fixed by waiting for refreshed data and fetching canonical inputs before generation;
+the resumed real approval passed without repeating interpretation. A fixed browser
+viewport clipped controls under Windows display scaling; real verification now
+uses the actual window viewport and a labelled Sign out button.
+
+Checks: 70 backend tests passed (two existing deprecation warnings), pip check,
+generated OpenAPI types and production frontend build passed. Explicit OFFLINE
+browser doubles passed five views at 1440, 1280, 1024, 768 and 390 pixels, page
+overflow/sign-out visibility, unsupported/ambiguous review, simulated stale 409,
+one explicit analysis request, session refresh/logout and permission navigation.
+Real checks prove sign-in, saved workflow, reload and review; expiry-triggered
+refresh and stale-race injection are controlled tests, not live Cognito expiry or
+real concurrent browser mutations. See docs/INTERFACE.md for limitations.
+
+Local UI http://127.0.0.1:5173 ; backend http://127.0.0.1:8002 . Private verification
+window closed after passing; normal local sign-in remains available. Station
+observations remain unavailable. Production hosting/security hardening, MFA
+challenge handling and paginated history are deferred. No D1 deployment occurred.
+
+## Packet C previous checkpoint
 
 Implemented authenticated pollution evidence, curated advisory excerpts and bounded
 Sydney Nova Lite notice interpretation. One fictional school / single-period

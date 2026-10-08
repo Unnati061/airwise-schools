@@ -122,5 +122,15 @@ No model output writes confirmation flags or current-plan pointers. Explanations
 select only server-supplied fact IDs; final wording and counts are deterministic.
 No solver, validation or teacher-execution logic changed. See EVIDENCE.md.
 
+## Packet D1 interface
+
+Five React views use generated OpenAPI contracts and existing authenticated APIs.
+Cognito browser sign-in and tab-scoped refresh precede backend-authorized reads
+and mutations; caller-selected roles are never trusted. Local Vite proxies port
+8002. New read queries expose immutable inputs, approved history, own historical
+teacher reports and deterministic administrator execution summaries. No new
+storage, deployment or AWS permissions. See INTERFACE.md for session limitations,
+real versus controlled browser verification and request retry behavior.
+
 References: https://docs.aws.amazon.com/lambda/latest/dg/python-package.html
 and https://developers.google.com/optimization/cp/cp_solver .

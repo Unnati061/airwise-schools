@@ -1,4 +1,4 @@
-# AirWise Schools: Packet C
+# AirWise Schools: Packet D1
 
 Local-first synthetic-school workflow: regional pollution forecasts, reviewed
 notice interpretation, timetable repair, independent validation, authenticated
@@ -7,6 +7,9 @@ use the existing Sydney resources. Forecasts are not campus observations or Indi
 AQI; pasted notices are unverified and never directly approve a plan.
 Current results: STATUS.md. Private setup: docs/WORKFLOW.md. Evidence and exact
 end-to-end demo command: [EVIDENCE.md](docs/EVIDENCE.md).
+The five connected local views and browser verification are documented in
+[INTERFACE.md](docs/INTERFACE.md). Sign in privately with existing Cognito users;
+the interface never resets passwords or selects an authorization role.
 
 ## Local setup (PowerShell)
 
@@ -15,7 +18,7 @@ From this repository root, with Python 3.12 and Node 22:
 ```powershell
 python -m venv .venv
 .venv\Scripts\python -m pip install -r backend/requirements-dev.txt
-.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
+.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8002
 ```
 
 In another terminal:
@@ -29,7 +32,7 @@ npm --prefix frontend run build
 npm --prefix frontend run dev -- --host 127.0.0.1
 ```
 
-Open http://127.0.0.1:5173 . Backend docs: http://127.0.0.1:8000/docs .
+Open http://127.0.0.1:5173 . Backend docs: http://127.0.0.1:8002/docs .
 Frontend uses Vite's development proxy; a production API origin is deferred.
 
 ## ZIP attempt

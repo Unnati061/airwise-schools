@@ -4,6 +4,108 @@
  */
 
 export interface paths {
+    "/auth/config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Auth Config */
+        get: operations["auth_config_auth_config_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Me */
+        get: operations["me_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/approved-plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** History */
+        get: operations["history_approved_plans_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/approved-plans/{version}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Approved Detail */
+        get: operations["approved_detail_approved_plans__version__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/approved-plans/{version}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Execution Review */
+        get: operations["execution_review_approved_plans__version__review_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/teachers/{teacher_id}/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Teacher Reports */
+        get: operations["teacher_reports_teachers__teacher_id__reports_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/repair-fixture": {
         parameters: {
             query?: never;
@@ -33,6 +135,23 @@ export interface paths {
         put?: never;
         /** Confirm Input */
         post: operations["confirm_input_inputs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/inputs/{revision}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Input Version */
+        get: operations["input_version_inputs__revision__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -429,6 +548,20 @@ export interface components {
              */
             allow_deferral: boolean;
         };
+        /** Actor */
+        Actor: {
+            /** Sub */
+            sub: string;
+            /** School Id */
+            school_id: string;
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "administrator" | "teacher";
+            /** Teacher Id */
+            teacher_id?: string | null;
+        };
         /** AffectedDate */
         AffectedDate: {
             /** Raw Text */
@@ -531,6 +664,12 @@ export interface components {
             actor: string;
             /** Timestamp */
             timestamp: string;
+        };
+        /** ApprovedPlanDetail */
+        ApprovedPlanDetail: {
+            approval: components["schemas"]["ApprovedPlan"];
+            plan: components["schemas"]["DraftPlan"];
+            evidence_binding?: components["schemas"]["EvidenceBinding"] | null;
         };
         /** Assignment */
         Assignment: {
@@ -755,6 +894,19 @@ export interface components {
             /** Resolutions */
             resolutions: components["schemas"]["Resolution"][];
         };
+        /** ExecutionCounts */
+        ExecutionCounts: {
+            /** Reported */
+            reported: number;
+            /** Completed */
+            completed: number;
+            /** Could Not Implement */
+            could_not_implement: number;
+            /** Needs Clarification */
+            needs_clarification: number;
+            /** Unresolved */
+            unresolved: number;
+        };
         /** ExecutionInput */
         ExecutionInput: {
             /**
@@ -790,6 +942,16 @@ export interface components {
             activity_id: string;
             /** Plan Version */
             plan_version: string;
+        };
+        /** ExecutionReview */
+        ExecutionReview: {
+            /** Reports */
+            reports: components["schemas"]["ExecutionReport"][];
+            /** Resolutions */
+            resolutions: components["schemas"]["Resolution"][];
+            /** Unresolved Activity Ids */
+            unresolved_activity_ids: string[];
+            counts: components["schemas"]["ExecutionCounts"];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -892,6 +1054,18 @@ export interface components {
              */
             model_status: "SUCCESS" | "MODEL_FAILURE" | "INVALID_OUTPUT";
         };
+        /** PlanVersionSummary */
+        PlanVersionSummary: {
+            /** Plan Version */
+            plan_version: string;
+            /** Timestamp */
+            timestamp: string;
+            /** Current */
+            current: boolean;
+            /** Needs Review */
+            needs_review: boolean;
+            counts?: components["schemas"]["Counts"] | null;
+        };
         /** PolicyExcerpt */
         PolicyExcerpt: {
             /** Id */
@@ -978,6 +1152,18 @@ export interface components {
             activity_ids: string[];
             /** Citation Ids */
             citation_ids: string[];
+        };
+        /** PublicAuthConfig */
+        PublicAuthConfig: {
+            /**
+             * Region
+             * @constant
+             */
+            region: "ap-southeast-2";
+            /** Pool Id */
+            pool_id: string;
+            /** Client Id */
+            client_id: string;
         };
         /** RepairInput */
         RepairInput: {
@@ -1137,6 +1323,12 @@ export interface components {
             acknowledged: boolean;
             /** Assignments */
             assignments: components["schemas"]["Assignment"][];
+            /**
+             * Evidence Mode
+             * @default MANUAL
+             * @enum {string}
+             */
+            evidence_mode: "LIVE" | "REPLAY" | "MANUAL";
         };
         /** Validation */
         Validation: {
@@ -1170,6 +1362,161 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    auth_config_auth_config_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicAuthConfig"];
+                };
+            };
+        };
+    };
+    me_me_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Actor"];
+                };
+            };
+        };
+    };
+    history_approved_plans_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanVersionSummary"][];
+                };
+            };
+        };
+    };
+    approved_detail_approved_plans__version__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApprovedPlanDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    execution_review_approved_plans__version__review_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecutionReview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    teacher_reports_teachers__teacher_id__reports_get: {
+        parameters: {
+            query: {
+                version: string;
+            };
+            header?: never;
+            path: {
+                teacher_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecutionReport"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     fixture_repair_fixture_get: {
         parameters: {
             query?: never;
@@ -1222,6 +1569,37 @@ export interface operations {
                 "application/json": components["schemas"]["InputUpdate"];
             };
         };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfirmedInput"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    input_version_inputs__revision__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                revision: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {
@@ -1360,7 +1738,9 @@ export interface operations {
     };
     assignments_teachers__teacher_id__assignments_get: {
         parameters: {
-            query?: never;
+            query?: {
+                version?: string | null;
+            };
             header?: never;
             path: {
                 teacher_id: string;
