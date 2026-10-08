@@ -4,6 +4,228 @@
  */
 
 export interface paths {
+    "/repair-fixture": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Fixture */
+        get: operations["fixture_repair_fixture_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/inputs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Inputs */
+        get: operations["inputs_inputs_get"];
+        put?: never;
+        /** Confirm Input */
+        post: operations["confirm_input_inputs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/draft-plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Draft */
+        post: operations["draft_draft_plans_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/draft-plans/{plan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Inspect */
+        get: operations["inspect_draft_plans__plan_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/draft-plans/{plan_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve */
+        post: operations["approve_draft_plans__plan_id__approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/current-plan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current */
+        get: operations["current_current_plan_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/teachers/{teacher_id}/assignments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Assignments */
+        get: operations["assignments_teachers__teacher_id__assignments_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/approved-plans/{version}/acknowledgements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Acknowledge */
+        post: operations["acknowledge_approved_plans__version__acknowledgements_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/approved-plans/{version}/activities/{activity_id}/report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Report */
+        put: operations["report_approved_plans__version__activities__activity_id__report_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/approved-plans/{version}/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Reports */
+        get: operations["reports_approved_plans__version__reports_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/approved-plans/{version}/exceptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Exceptions */
+        get: operations["exceptions_approved_plans__version__exceptions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/approved-plans/{version}/activities/{activity_id}/resolution": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resolve */
+        post: operations["resolve_approved_plans__version__activities__activity_id__resolution_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/audit-events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Audits */
+        get: operations["audits_audit_events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -38,61 +260,21 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/repair-fixture": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Repair Fixture */
-        get: operations["repair_fixture_repair_fixture_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/draft-plans": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Generate Draft */
-        post: operations["generate_draft_draft_plans_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/draft-plans/{plan_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Inspect Draft */
-        get: operations["inspect_draft_draft_plans__plan_id__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Acknowledgement */
+        Acknowledgement: {
+            /** Actor */
+            actor: string;
+            /** Teacher Id */
+            teacher_id: string;
+            /** Timestamp */
+            timestamp: string;
+            /** Plan Version */
+            plan_version: string;
+        };
         /** Activity */
         Activity: {
             /** Id */
@@ -141,11 +323,60 @@ export interface components {
             /** Room Ids */
             room_ids: string[];
         };
+        /** ApprovedPlan */
+        ApprovedPlan: {
+            /** Plan Version */
+            plan_version: string;
+            /** Draft Id */
+            draft_id: string;
+            input_versions: components["schemas"]["InputVersions"];
+            /** Actor */
+            actor: string;
+            /** Timestamp */
+            timestamp: string;
+        };
+        /** Assignment */
+        Assignment: {
+            /** Activity Id */
+            activity_id: string;
+            /** Label */
+            label: string;
+            /** Proposed Label */
+            proposed_label: string;
+            /** Section Id */
+            section_id: string;
+            placement: components["schemas"]["Placement"];
+        };
+        /** AuditEvent */
+        AuditEvent: {
+            /** Event Id */
+            event_id: string;
+            /** Action */
+            action: string;
+            /** Actor */
+            actor: string;
+            /** Timestamp */
+            timestamp: string;
+            /** Activity Id */
+            activity_id: string | null;
+            /** Plan Version */
+            plan_version: string | null;
+        };
         /** Baseline */
         Baseline: {
             /** Placements */
             placements: components["schemas"]["Placement"][];
             validation: components["schemas"]["Validation"];
+        };
+        /** ConfirmedInput */
+        ConfirmedInput: {
+            /** Revision */
+            revision: string;
+            input: components["schemas"]["RepairInput"];
+            /** Actor */
+            actor: string;
+            /** Timestamp */
+            timestamp: string;
         };
         /** Counts */
         Counts: {
@@ -169,6 +400,15 @@ export interface components {
              * @default 0
              */
             room_moves: number;
+        };
+        /** CurrentPlan */
+        CurrentPlan: {
+            /** Plan Version */
+            plan_version: string | null;
+            /** Needs Review */
+            needs_review: boolean;
+            /** Input Revision */
+            input_revision: string;
         };
         /** Difference */
         Difference: {
@@ -205,6 +445,49 @@ export interface components {
             diagnostic?: string | null;
             input_snapshot: components["schemas"]["RepairInput"];
         };
+        /** ExceptionSummary */
+        ExceptionSummary: {
+            /** Reports */
+            reports: components["schemas"]["ExecutionReport"][];
+            /** Resolutions */
+            resolutions: components["schemas"]["Resolution"][];
+        };
+        /** ExecutionInput */
+        ExecutionInput: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETED" | "COULD_NOT_IMPLEMENT" | "NEEDS_CLARIFICATION";
+            /**
+             * Note
+             * @default
+             */
+            note: string;
+        };
+        /** ExecutionReport */
+        ExecutionReport: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "COMPLETED" | "COULD_NOT_IMPLEMENT" | "NEEDS_CLARIFICATION";
+            /**
+             * Note
+             * @default
+             */
+            note: string;
+            /** Actor */
+            actor: string;
+            /** Teacher Id */
+            teacher_id: string;
+            /** Timestamp */
+            timestamp: string;
+            /** Activity Id */
+            activity_id: string;
+            /** Plan Version */
+            plan_version: string;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -230,6 +513,12 @@ export interface components {
              * @constant
              */
             data_mode: "SYNTHETIC";
+        };
+        /** InputUpdate */
+        InputUpdate: {
+            /** Expected Revision */
+            expected_revision: string | null;
+            input: components["schemas"]["RepairInput"];
         };
         /** InputVersions */
         InputVersions: {
@@ -289,6 +578,31 @@ export interface components {
             activities: components["schemas"]["Activity"][];
             /** Restrictions */
             restrictions?: components["schemas"]["Restriction"][];
+        };
+        /** Resolution */
+        Resolution: {
+            /** Request Id */
+            request_id: string;
+            /** Actor */
+            actor: string;
+            /** Timestamp */
+            timestamp: string;
+            /** Activity Id */
+            activity_id: string;
+            /** Plan Version */
+            plan_version: string;
+            /** Note */
+            note: string;
+        };
+        /** ResolutionInput */
+        ResolutionInput: {
+            /**
+             * Request Id
+             * Format: uuid
+             */
+            request_id: string;
+            /** Note */
+            note: string;
         };
         /** Restriction */
         Restriction: {
@@ -362,6 +676,19 @@ export interface components {
             /** Supervised Kinds */
             supervised_kinds: string[];
         };
+        /** TeacherAssignments */
+        TeacherAssignments: {
+            /** Teacher Id */
+            teacher_id: string;
+            /** Plan Version */
+            plan_version: string;
+            /** Needs Review */
+            needs_review: boolean;
+            /** Acknowledged */
+            acknowledged: boolean;
+            /** Assignments */
+            assignments: components["schemas"]["Assignment"][];
+        };
         /** Validation */
         Validation: {
             /** Valid */
@@ -394,6 +721,410 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    fixture_repair_fixture_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RepairInput"];
+                };
+            };
+        };
+    };
+    inputs_inputs_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfirmedInput"];
+                };
+            };
+        };
+    };
+    confirm_input_inputs_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InputUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConfirmedInput"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    draft_draft_plans_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RepairInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DraftPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    inspect_draft_plans__plan_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DraftPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    approve_draft_plans__plan_id__approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApprovedPlan"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    current_current_plan_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurrentPlan"];
+                };
+            };
+        };
+    };
+    assignments_teachers__teacher_id__assignments_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                teacher_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeacherAssignments"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    acknowledge_approved_plans__version__acknowledgements_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Acknowledgement"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    report_approved_plans__version__activities__activity_id__report_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version: string;
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExecutionInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecutionReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reports_approved_plans__version__reports_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExecutionReport"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    exceptions_approved_plans__version__exceptions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExceptionSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resolve_approved_plans__version__activities__activity_id__resolution_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version: string;
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResolutionInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Resolution"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    audits_audit_events_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditEvent"][];
+                };
+            };
+        };
+    };
     health_health_get: {
         parameters: {
             query?: never;
@@ -430,90 +1161,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["School"];
-                };
-            };
-        };
-    };
-    repair_fixture_repair_fixture_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RepairInput"];
-                };
-            };
-        };
-    };
-    generate_draft_draft_plans_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RepairInput"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DraftPlan"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    inspect_draft_draft_plans__plan_id__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                plan_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DraftPlan"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

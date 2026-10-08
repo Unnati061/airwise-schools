@@ -208,8 +208,16 @@ def test_lexicographic_priority_prefers_periods_before_substitutions():
 
 
 def test_api_contracts_inspection_and_temporary_repository_isolation():
+    from backend.app import auth
+    from backend.app.durable_store import DynamoStore
+    from backend.app.workflow import Workflow
+    from backend.tests.test_workflow import ADMIN, FakeDynamo
+    service = Workflow(DynamoStore(FakeDynamo(), "test"))
+    app.dependency_overrides[auth.workflow] = lambda: service
+    app.dependency_overrides[auth.identity] = lambda: ADMIN
     client = TestClient(app)
     fixture = client.get("/repair-fixture").json()
+    fixture = client.post("/inputs", json={"expected_revision": None, "input": fixture}).json()["input"]
     response = client.post("/draft-plans", json=fixture)
     assert response.status_code == 200
     result = response.json()
@@ -218,6 +226,7 @@ def test_api_contracts_inspection_and_temporary_repository_isolation():
     assert client.get("/draft-plans/nonexistent").status_code == 404
     fixture["restrictions"][0]["administrator_confirmed"] = False
     assert client.post("/draft-plans", json=fixture).status_code == 422
+    app.dependency_overrides.clear()
     repository = MemoryPlanRepository()
     plan = repair(synthetic_week())
     repository.save(plan)

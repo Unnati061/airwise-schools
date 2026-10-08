@@ -19,5 +19,10 @@ Packet B1 adds a five-day/eight-period fixture, confirmed structured restriction
 baseline, CP-SAT repair and independent validator. Only one day is mutable; every
 weekly activity remains accounted for. The sole lexicographic preference is
 changed periods, then substitutions/deferrals, then room moves. No AI interpretation.
-Approval, permissions, persistence, teacher reports and evidence adapters are later work.
-Bedrock, SQS, Cognito and DynamoDB are explicitly deferred here.
+Packet B2 adds real Cognito sign-in, durable DynamoDB versions, administrator
+confirmation and approval, teacher acknowledgements and execution reports, and
+administrator exception resolutions. Approval revalidates and checks current input
+versions; input updates mark the old approved plan for review without replacing it.
+Acknowledgement is not execution. Teachers see only their own approved assignments.
+Synthetic-only, single-period MVP remains; no automatic schedule activation.
+Evidence adapters, polished UI, Bedrock, SQS and messaging remain deferred.

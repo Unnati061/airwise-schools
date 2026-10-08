@@ -1,5 +1,10 @@
 # Packet B1 local repair
 
+Historical B1 request/storage instructions below. B2 preserves this solver and
+validator but replaces unauthenticated draft endpoints and temporary storage.
+Use WORKFLOW.md for the current authenticated server at port 8002; do not run an
+old unauthenticated B1 backend alongside it. Single-period repair scope remains.
+
 Synthetic only: one fictional school, six sections, five days/eight periods and
 240 stable activity IDs. Monday has one outdoor PE activity and an explicitly
 approved indoor-movement alternative. Ordinary classroom lessons fill other

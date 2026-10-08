@@ -9,6 +9,10 @@ Future plans require independent validation, authorized approval and version che
 No paid services or broader AWS infrastructure in this foundation packet.
 The user authorized a separate private S3/IAM/Lambda/log-group runtime smoke
 spike; see docs/AWS_SMOKE.md. Do not change organization policies to bypass denial.
+Packet B2 authorizes only its DynamoDB table, Cognito pool/client/synthetic users
+and least-privilege local runtime role in Sydney. Protected APIs require real
+Cognito access tokens; never add a runtime memory/authentication bypass.
+Do not alter the Packet A smoke Lambda for B2. See docs/WORKFLOW.md.
 Docker is conditional on demonstrated ZIP native compatibility failure.
 
 From repository root (PowerShell):

@@ -1,6 +1,43 @@
 # AirWise Schools status - 2026-10-08 (IST)
 
-## Packet B1 local checkpoint
+## Packet B2 current checkpoint
+
+Durable authenticated local workflow implemented in ap-southeast-2, profile airwise.
+Created on-demand encrypted table airwise-b2-data-a1f7411817; Cognito LITE pool
+airwise-b2-users-a1f7411817 (ap-southeast-2_LhIz6g1r9), public app client,
+one synthetic administrator and two synthetic teachers; dedicated runtime role
+airwise-b2-runtime-a1f7411817 with table/partition-scoped read and transactional
+write permissions. No B2 Lambda, API Gateway, dashboards or messaging. The
+successful Packet A Lambda, ZIP and resources were not modified or redeployed.
+
+Real Cognito/DynamoDB API demonstration passed: authenticated confirmation,
+teacher approval/cross-assignment denial, fresh-process persistence, duplicate
+concurrent approval, acknowledgement without execution, report deduplication,
+exception resolution, stale/corrupted draft rejection and revision approval with
+no acknowledgement transfer. Local suite: 51 passed, two existing warnings;
+pip check, generated OpenAPI types and frontend build passed.
+Final real loopback HTTP check passed administrator approval, teacher acknowledgement
+and COMPLETED reporting exactly once, with a 240-activity frozen approved snapshot.
+Current demonstrated version: 4a905e76-acfb-4768-abc9-eba452e7272e.
+Initial IAM transport preflight failed with no resources created; user restored
+mobile data, then bounded preflight/provisioning and real integration succeeded.
+
+Protected backend is at http://127.0.0.1:8002 . Previous unauthenticated B1 server
+was stopped. Use docs/WORKFLOW.md private password prompts and demonstration
+commands. No passwords or tokens printed, logged or committed; demo credentials
+were random, memory-only and must be set privately for subsequent interactive use.
+work/aws-b2.json is the ignored, non-secret local resource manifest.
+
+MVP limitations: one synthetic school, single-period activities, one affected day;
+only two of six fixture teachers have sign-in accounts. No polished sign-in UI,
+MFA, production hosting or refresh-token UI. JWT revocation/disable does not revoke
+offline verification immediately; access tokens expire after 15 minutes. Role and
+school bindings come from trusted DynamoDB records, never request roles. Durable
+input versions, approved snapshots, reports and audit events are retained. Next
+packet needs production authentication/session operations and retention/backup
+policy before real data. See WORKFLOW.md for schema, cleanup and actual limitations.
+
+## Packet B1 historical checkpoint
 
 Typed local repair API, approved-alternative baseline, CP-SAT repair and independent
 plain-Python validator implemented. Synthetic fixture: six sections, five days,
