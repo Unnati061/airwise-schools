@@ -1,0 +1,6 @@
+{
+  "AllowOrigins": ["http://127.0.0.1:5173"],
+  "AllowHeaders": ["authorization", "content-type"],
+  "AllowMethods": ["GET", "POST", "PUT", "OPTIONS"],
+  "MaxAge": 300
+}

@@ -1,6 +1,33 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
-## Latest resume from 91e8824: approval/execution verification passed
+## Hosted verification from 4f8bddf
+
+Actual public app: https://main.d29v8cmldu93l3.amplifyapp.com . Existing API/Lambda,
+code ZIP and data/auth resources were reused unchanged. Only an Amplify app/branch
+was created and the exact hosted origin added to existing API CORS; direct
+Cognito sign-in has no required callbacks. See HOSTING.md for full commands,
+resources, cleanup, failures and limitations.
+
+Hosted UI admin -> teacher -> admin workflow passed with private password entry:
+actual Nova Lite interpretation (one successful invocation), reviewed REPLAY
+restrictions, stale approval409, OPTIMAL/independently valid 240-activity plan,
+approval, separate teacher acknowledgement/execution exception, administrator
+Review and nine-version history. Current plan `acd49a0b-0da2-421c-9d85-c7b7cbd35fcf`.
+Actual analysis latency: 2,392ms browser, 978ms handler, 992ms Gateway integration;
+not isolated Bedrock-service latency. Drafts18,948/5,429ms; measured requests fit
+30s, but cold/warm reliability is not proven. No background jobs introduced.
+
+Real ID/malformed/tampered token denials, teacher/cross-assignment403, session
+refresh, local logout/reload and exact CORS checks passed. Actual throttle config
+read back; small invalid-token burst401 did not demonstrate429. 714 recent events
+scanned with no tested secrets/notice patterns; finite-sample limitation applies.
+Initial read-only hosting timeout and hosted current-plan503 are documented;
+corrected browser run exited0, no failed paid/approval mutation was retried.
+76 backend tests, production build and syntax passed. Local logout revocation/
+XSS hardening, natural token-expiry/wrong-client tests and wider latency samples
+remain limitations; earlier health-only deployment records below are historical.
+
+## Previous resume from 91e8824: approval/execution verification passed
 
 October 9, 2026 IST. Reused the existing D2-mode Vite process (port 5173), verified
 local HTTP 200 and performed a single readiness GET inside the browser harness

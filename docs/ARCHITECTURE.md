@@ -150,3 +150,14 @@ status-only; local foundation metadata stays out of the deployed surface. Lambda
 uses its role credentials, not the ignored local profile/manifest. Existing local
 defaults and smoke function remain intact. Planned finite budgets do not prove
 latency reliability; measure real cold/warm operations before choosing durable jobs.
+
+## Amplify static hosting
+
+The same Vite SPA is manually hosted on the tagged Sydney Amplify WEB app/main
+branch. Build includes public API/Cognito IDs only. Direct Cognito password and
+refresh flows remain; no OAuth callback or new auth architecture. API CORS lists
+exact local and hosted origins, while JWT/school/teacher checks remain server-side.
+Actual hosted interpretation/approval/execution/Review and token/session checks
+passed. One bounded Nova analysis fit30s; wider latency/reliability is not proven.
+Local logout clears the tab session, not immediate global JWT revocation. See
+HOSTING.md for actual timings, transient failures, log scan and cleanup scope.

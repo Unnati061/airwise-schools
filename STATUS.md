@@ -1,6 +1,53 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
-## Packet D2 deployed approval/execution workflow passed
+## Amplify hosted workflow verified
+
+Resumed from `4f8bddf`. Public app:
+https://main.d29v8cmldu93l3.amplifyapp.com . Sydney Amplify WEB app
+`airwise-schools-web-a1f7411817` / `d29v8cmldu93l3`, main branch, job 1 SUCCEED.
+Static ZIP 87,867 bytes; existing API/Cognito public IDs compiled into production
+Vite build. No backend/resource recreation/redeployment. API CORS adds only the
+exact hosted origin beside the existing local origin. Direct Cognito sign-in
+needs no callbacks: none configured, no password resets or OAuth/client changes.
+
+Fresh signed-out browser, private real admin -> teacher A -> admin sign-in.
+Actual UI interpretation/review/confirmation/generation/approval, teacher
+acknowledgement/report and admin Review passed. One real Nova Lite Sydney call:
+773 input/197 output tokens, SUCCESS, one durable usage record. Analysis request
+2,392ms browser, 978ms Lambda handler, 992ms Gateway integration; isolated Bedrock
+service time unknown. Explicit REPLAY notice/workflow, LIVE forecast separately
+retrieved 2026-10-09 17:12:51 IST; model issue time unknown, no station observations.
+
+Approved version `acd49a0b-0da2-421c-9d85-c7b7cbd35fcf`: OPTIMAL, independently
+valid, baseline, 240 activities retained, 0 changed periods/1 substitution/0
+deferrals/1 room move. Stale approval 409; teacher approval/other assignments/
+admin inputs 403. Acknowledgement separate from COULD_NOT_IMPLEMENT report.
+Admin sees 1 unresolved exception, 0 completed; 9 approved versions retained.
+
+ID token 403; malformed/tampered access token 401; actual issuer/client/access
+claim checks and Gateway configuration match. Real refresh exchange/reload and
+three local logout/signed-out reload checks passed. Actual throttles read back:
+5/s burst10, paid routes0.2/s burst1. Four rejected-token requests401; no observed
+429, enforcement not proven by that small test. Atomic daily model limits retained.
+714 recent log events scanned, zero tested secret/notice patterns; not a blanket
+future-log guarantee. Exact hosted CORS allowed; unlisted origin lacks allow header.
+
+Failures recorded: initial read-only hosting preflight timeout, resolved after
+user-authorized mobile-data check; initial hosted GET current-plan503, cause
+unproven, no paid/mutation request then. Harness promise handling fixed; corrected
+run passed without read-retry branch. No speculative backend changes. Draft wall
+times18,948/5,429ms fit30s but single samples don't prove cold/warm reliability.
+Local logout does not globally revoke offline-verified JWTs; sessionStorage/XSS
+hardening, valid wrong-client/naturally expired token tests and demonstrated
+burst429 remain limitations. No background jobs or untracked work added.
+
+76 backend tests passed (two existing warnings), production build and Node syntax
+passed. Docs/HOSTING.md includes resources, commands, actual timings, failures,
+cleanup and limits; AWS_APP.md updated. No credentials/private notice content
+exported into logs/results/repository. Hosting task workflow complete within
+these documented limits; no feature redesign or parallel agents.
+
+## Previous Packet D2 deployed approval/execution workflow passed
 
 Resumed from `91e8824`. Reused existing D2-mode Vite process on port 5173;
 local HTTP 200 and a single in-script readiness request passed BEFORE Chrome

@@ -27,6 +27,11 @@ teacher execution and role denials passed. Full analysis/latency gates remain.
 Inspect/reuse these resources, never rerun create-only
 deployment. Do not rebuild/upload again or change the smoke Lambda. Measure
 actual integration latency before deciding synchronous slow paths are adequate.
+Hosting follow-up authorizes the existing frontend's tagged Amplify static app
+and exact API CORS origin only. See docs/HOSTING.md for the deployed app/branch;
+reuse them, never rerun create-only helpers. Cognito direct sign-in has no OAuth
+callback. Keep model calls bounded, private sign-in manual and credentials out
+of logs/artifacts. Do not redesign or recreate API/data/auth/smoke resources.
 
 From repository root (PowerShell):
 - `.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8002`
