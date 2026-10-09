@@ -1,6 +1,37 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
-## Packet D2 resume: authentication expired
+## Packet D2 API deployed; browser verification stopped
+
+Resumed from ce0ed8c after private `aws login --profile airwise`. CLI STS passed:
+temporary assumed-role identity, account redacted; explicit Sydney throughout.
+Exact existing S3 object verified: 87,392,618 bytes, FULL_OBJECT CRC64NVME
+`9F+qhS+qZOg=` matches local ZIP, empty custom metadata. No rebuild/upload.
+
+Preflight found no D2 collisions. Created application role/inline policy, Lambda,
+HTTP API and its authorizer/integration/29 routes/default stage, two seven-day
+log groups. API: https://lbckjkbfb4.execute-api.ap-southeast-2.amazonaws.com .
+Python 3.12/x86_64, 1024 MB, 28s, reserved concurrency 5. Actual Lambda code hash
+matches Base64 local SHA256. Actual routes: health public, all others JWT/access
+scope. Existing local app/default mode and smoke/B2/C resources unchanged.
+
+Actual HTTP: health 200/status-only in 7,483 ms; unauthenticated inputs 401 in
+1,844 ms. Browser verification failed opening the local frontend, before app
+sign-in: generic Error, no HTTP status or retained original navigation code.
+Vite ready after 14,650 ms; startup race plausible, not proven. Stopped; no retry.
+No D2 paid call or workflow mutation. Private real-auth workflow/permissions,
+forecast, analysis/solver/approval/execution/persistence and actual slow-path
+latency remain unverified. Durable-job requirement unresolved. D2 NOT complete.
+
+Added safe deployed verification harness and ignored normal d2-mode frontend
+configuration. Navigation error-code recording improved for the next attempt;
+no password reset, token export or public bypass. 74 backend tests and Node
+syntax, pip consistency and default frontend build checks passed; two existing
+backend warnings. See docs/AWS_APP.md for
+actual resources, stop point, commands and exact scoped cleanup commands.
+Next: inspect existing deployment and ensure Vite ready, then privately sign in
+for verification. Do not rerun create-only deployment, rebuild or upload.
+
+## Previous Packet D2 resume: authentication expired
 
 Resumed from `975d31f` after user-reported console upload of the existing
 87,392,618-byte application ZIP to the documented exact S3 key. No rebuild/upload.

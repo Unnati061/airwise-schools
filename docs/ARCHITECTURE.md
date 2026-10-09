@@ -137,9 +137,11 @@ and https://developers.google.com/optimization/cp/cp_solver .
 
 ## Packet D2 prepared deployment
 
-Deployment is not complete: fresh ZIP exists, upload failed once, object absent;
-no application cloud resources or API URL. See AWS_APP.md for the actual gate.
-Prepared path: local SPA environment-configured API origin -> HTTP API JWT scope
+Dedicated application resources are deployed in Sydney; exact existing artifact
+size/CRC64 and Lambda code SHA256 match verified. Health and unauthenticated denial
+passed. Browser navigation failed before private app sign-in; authenticated workflow
+and slow-path timing remain unverified. D2 is not complete. See AWS_APP.md.
+Path: local SPA environment-configured API origin -> HTTP API JWT scope
 authorizer -> dedicated Mangum Lambda surface -> existing DynamoDB/Nova. Backend
 also verifies access token/client and trusted identity bindings. Public health is
 status-only; local foundation metadata stays out of the deployed surface. Lambda

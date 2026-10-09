@@ -1,6 +1,109 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
-## Latest resume: blocked by expired authentication
+## Latest resume: deployed, authenticated verification incomplete
+
+Resumed from `ce0ed8c`. `aws login --profile airwise` completed through private
+browser sign-in. `aws sts get-caller-identity --profile airwise --region
+ap-southeast-2 --cli-connect-timeout 4 --cli-read-timeout 12` passed: temporary
+assumed-role `AccountFullAccessRole`, account ID redacted. No long-term keys,
+password reset or credential/token export. Region/account and existing account
+policies unchanged; only the authorized dedicated D2 role policy was created.
+
+### Verified existing object
+
+HeadObject with ChecksumMode=ENABLED at the exact key documented below returned
+87,392,618 bytes, AES256, **ChecksumType=FULL_OBJECT**, actual S3
+ChecksumCRC64NVME **`9F+qhS+qZOg=`**. CRC64NVME computed from the unchanged local
+ZIP matched using big-endian eight-byte Base64 encoding. Custom Metadata was
+empty; no custom metadata or ETag was treated as a verified checksum. Local
+SHA256 remained `43f0c6d1bcfaa051db9f8f45f0502202faeec9f4d4ab95d1941bf3e60e435469`.
+No rebuild or upload occurred. Extracted size remains 240,716,360 bytes.
+
+### Actual deployment and checks
+
+API URL: **https://lbckjkbfb4.execute-api.ap-southeast-2.amazonaws.com**
+
+Before any creation, bounded Sydney SDK checks passed for existing data/auth,
+exact existing runtime policies, artifact bucket location/public blocking and
+Lambda capacity. D2 role/Lambda/API/log-group collision checks found none.
+Ran `.venv\Scripts\python -m scripts.aws_app --existing-object` once, with one
+total SDK attempt. The helper now waits 15 seconds after the initial role/policy
+creation and makes only one CreateFunction attempt, stopping on any error.
+
+Created, tagged Project=AirWiseSchools / Packet=D2:
+- Role `airwise-app-role-a1f7411817`, inline policy `airwise-app-runtime`.
+- Lambda `airwise-app-api-a1f7411817`, Python 3.12/x86_64, 1024 MB, timeout 28s,
+  reserved concurrency 5; no layers/VPC/Function URL/provisioned concurrency.
+- HTTP API `airwise-app-api-a1f7411817`, ID `lbckjkbfb4`, `$default` auto-deploy
+  stage, Cognito JWT authorizer `airwise-cognito-access`, Lambda integration and
+  29 routes. Exact local origin CORS and throttles are as described below.
+- `/aws/lambda/airwise-app-api-a1f7411817` and
+  `/aws/apigateway/airwise-app-api-a1f7411817`, both verified seven-day retention.
+
+Independent configuration reads verified runtime/architecture/memory/timeout,
+reserved concurrency, and Lambda CodeSha256 equal to **Base64 of the local SHA256
+digest bytes**. All 29 actual routes were checked: only GET /health is NONE;
+all others JWT with access-token scope `aws.cognito.signin.user.admin`.
+Backend role/school/teacher checks remain independent of that Cognito scope.
+Existing B2/C resources and smoke Lambda were not altered; role credentials are
+used by the deployed app, never a copied local AWS profile.
+
+Actual unauthenticated HTTP checks (single requests, client wall-clock timings):
+- GET /health: **200**, body exactly `{"status":"ok"}`, **7,483 ms**.
+- GET /inputs without token: **401**, **1,844 ms**.
+Health proves the packaged application imports/handler run on Lambda, not that
+the repair solver or authenticated workflow has run successfully in this ZIP.
+
+### Stop point and remaining verification
+
+Started the normal local frontend in `d2` mode, public resource identifiers/API
+URL in ignored `frontend/.env.d2.local`; default local mode remains unchanged.
+Vite reported ready in **14,650 ms**, at http://127.0.0.1:5173/.
+One headed Chrome verification attempt (`node scripts/check_d2_real.cjs`) failed
+at **page.goto of the local frontend, before private application sign-in**.
+The recorded error was generic `Error`, no HTTP status; the initial harness
+withheld the message, so the exact navigation error code cannot be established.
+Timing is consistent with a frontend startup race, **not a proven diagnosis**.
+No workflow retry followed. Safe results are in ignored
+`work/d2-verification.json`; no timings or successful workflow checks are present.
+The script now records the precise navigation stage and a whitelisted net::ERR
+code on a future failure, without logging credentials or request contents.
+
+No D2 application Cognito sign-in, live forecast, Bedrock analysis, draft/approval,
+teacher action, permission denial, stale approval or persistence test ran through
+the deployed API. No paid model call or workflow mutation occurred in this resume.
+Cold/warm analysis/planning integration latency and durable-job need remain
+**unresolved**; the health timing is not evidence that slow paths fit 30 seconds.
+The verification script is prepared, not end-to-end verified; any proposed
+restriction still requires explicit administrator review. No background jobs added.
+
+Next resume: inspect these existing D2 resources; **do not rerun the create-only
+deployment helper**, rebuild or upload. Ensure the local frontend is ready before
+the headed browser check. Private admin -> teacher A -> admin sign-in remains
+required. The script records statuses, timings, deterministic counts and plan IDs;
+tokens stay in browser memory/sessionStorage and are never exported.
+
+Local checks after deployment: 74 backend tests passed (two existing deprecation
+warnings); Node syntax, pip check and default-mode frontend build passed. Local checks do not
+replace the missing deployed authenticated tests. No application code changed.
+
+Commands run in this resume, in addition to the bounded read-only SDK/HTTP checks:
+```powershell
+aws login --profile airwise
+aws sts get-caller-identity --profile airwise --region ap-southeast-2 --cli-connect-timeout 4 --cli-read-timeout 12
+.venv\Scripts\python -m scripts.aws_app --existing-object
+# Vite launched hidden from frontend/ with the following arguments:
+node node_modules/vite/bin/vite.js --mode d2 --host 127.0.0.1 --port 5173 --strictPort
+$env:PLAYWRIGHT_MODULE='C:\Users\Ashwani\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright'
+node scripts/check_d2_real.cjs
+.venv\Scripts\python -m pytest backend/tests -q
+node --check scripts/check_d2_real.cjs
+npm --prefix frontend run build
+.venv\Scripts\python -m pip check
+git diff --check
+```
+
+## Previous resume: blocked by expired authentication
 
 October 9, 2026 IST, resumed from commit `975d31f`. The user reports a successful
 console upload to the exact application object below, with expected size
@@ -68,7 +171,8 @@ C:\Users\Ashwani\Documents\Codex\2026-10-08\read-the-attached-airwise-schools-bu
 - Includes current auth/evidence/workflow code, boto3 1.43.109, botocore 1.43.109,
   awscrt 0.36.0, cryptography 50.0.2 and PyJWT 2.15.1, plus existing native solver
   pins. Does not contain the local work manifest, profile, passwords or tokens.
-- Native execution of this fresh application ZIP is **not tested**. Packet A's
+- Native solver execution of this application ZIP is **not tested**; its handler
+  imports and public health ran successfully. Packet A's
   successful ZIP is separate and unchanged. Docker was not needed or proposed.
 
 In the S3 console select Sydney and the existing private bucket
@@ -90,7 +194,7 @@ Custom metadata and multipart ETag are not full-file checksum evidence. Lambda
 CodeSha256 must independently equal Base64-encoded local SHA256 after creation.
 Existing/partial application resources cause a stop for inspection, not overwrite.
 
-## Prepared configuration, not yet deployed
+## Configuration (now deployed; workflow not yet verified)
 
 - Lambda `airwise-app-api-a1f7411817`, handler `backend.app.lambda_app.handler`.
 - Dedicated role `airwise-app-role-a1f7411817`, trusting Lambda only. Exact existing
@@ -143,15 +247,15 @@ live forecast provenance, one bounded Nova request, confirmation, generation,
 validation, approval, acknowledgement/report, review, teacher/cross-assignment
 403, stale 409 and persistence across Lambda invocations. Passwords never reset.
 
-Frontend support is implemented, not connected to a nonexistent endpoint. For a
-verified endpoint use ignored `frontend/.env.d2.local` with VITE_API_BASE_URL,
+Frontend support is connected to the deployed endpoint through ignored
+`frontend/.env.d2.local` with VITE_API_BASE_URL,
 VITE_COGNITO_REGION, VITE_COGNITO_POOL_ID and VITE_COGNITO_CLIENT_ID (public IDs
 only), then start Vite with `--mode d2` on port 5173. Default mode still uses the
 local backend. Auth config on the deployed API itself is JWT-protected, so the
 public Cognito bootstrap identifiers come from this normal build configuration.
 Exact hosted origin can be added later; frontend deployment is out of scope.
 
-## Commands and checks actually run
+## Previous checkpoint commands and checks
 
 Bounded read-only SDK STS/Lambda/IAM/API/DynamoDB/Cognito/S3/account-concurrency
 preflights, one PutObject and one post-failure HeadObject. No resource creation.
@@ -173,7 +277,25 @@ wrong parameter label and failed; corrected to canonical plan_id, then passed.
 OpenAPI expansion is used because this FastAPI version keeps included routers
 lazy in app.routes. Local success is not deployed authentication/native proof.
 
-## Cleanup
+## Cleanup of actual D2 resources
+
+No cleanup executed. First verify Project=AirWiseSchools / Packet=D2 tags and
+resource names in the console/manifest. Delete only the dedicated D2 resources:
+```powershell
+aws apigatewayv2 delete-api --api-id lbckjkbfb4 --profile airwise --region ap-southeast-2
+aws lambda delete-function --function-name airwise-app-api-a1f7411817 --profile airwise --region ap-southeast-2
+aws logs delete-log-group --log-group-name /aws/lambda/airwise-app-api-a1f7411817 --profile airwise --region ap-southeast-2
+aws logs delete-log-group --log-group-name /aws/apigateway/airwise-app-api-a1f7411817 --profile airwise --region ap-southeast-2
+aws iam delete-role-policy --role-name airwise-app-role-a1f7411817 --policy-name airwise-app-runtime --profile airwise --region ap-southeast-2
+aws iam delete-role --role-name airwise-app-role-a1f7411817 --profile airwise --region ap-southeast-2
+aws s3 rm s3://airwise-smoke-artifacts-a1f7411817/application/d2/43f0c6d1bcfaa051db9f8f45f0502202faeec9f4d4ab95d1941bf3e60e435469/airwise-app-d2.zip --profile airwise --region ap-southeast-2
+```
+Deleting the HTTP API removes its authorizer/integration/routes/stage. Deleting
+the Lambda removes its resource-based invocation permission. Preserve the reused
+bucket/table/pool/client/users/local runtime role/smoke function and smoke object.
+These commands do not remove synthetic workflow history in the reused table.
+
+## Previous cleanup guidance (before creation)
 
 Nothing new needs cloud cleanup now. Retain the local ZIP for the console handoff.
 After a successful D2 deployment, inspect Project=AirWiseSchools/Packet=D2 tags

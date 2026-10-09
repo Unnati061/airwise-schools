@@ -130,6 +130,7 @@ def deploy(existing_object=False):
         raise RuntimeError('Artifact bucket region differs')
     if not all(s3.get_public_access_block(Bucket=BUCKET, ExpectedBucketOwner=account)['PublicAccessBlockConfiguration'].values()):
         raise RuntimeError('Artifact bucket public access is not fully blocked')
+    print('Preflights passed; no existing D2 role, Lambda, HTTP API or log groups', flush=True)
     save()
     if not existing_object:
         absent(s3, 'head_object', {'Bucket': BUCKET, 'Key': record['key'], 'ExpectedBucketOwner': account}, '404')
@@ -161,16 +162,11 @@ def deploy(existing_object=False):
     iam.put_role_policy(RoleName=ROLE, PolicyName='airwise-app-runtime', PolicyDocument=json.dumps({'Version': '2012-10-17', 'Statement': statements}))
     env = {'AIRWISE_RUNTIME': 'lambda', 'AIRWISE_TABLE': local['table'], 'AIRWISE_POOL_ID': local['pool_id'],
            'AIRWISE_CLIENT_ID': local['client_id'], 'AWS_EC2_METADATA_DISABLED': 'true'}
-    for attempt in range(4):
-        try:
-            function = clients['lambda'].create_function(FunctionName=NAME, Runtime='python3.12', Architectures=['x86_64'],
-                Role=role['Arn'], Handler='backend.app.lambda_app.handler', Code={'S3Bucket': BUCKET, 'S3Key': record['key']},
-                Timeout=28, MemorySize=1024, Environment={'Variables': env}, Tags=TAGS)
-            break
-        except ClientError as error:
-            if attempt == 3 or error.response['Error']['Code'] != 'InvalidParameterValueException' or 'cannot be assumed' not in error.response['Error']['Message']:
-                raise
-            time.sleep(5)
+    # Allow initial IAM propagation, but never retry a failed creation.
+    time.sleep(15)
+    function = clients['lambda'].create_function(FunctionName=NAME, Runtime='python3.12', Architectures=['x86_64'],
+        Role=role['Arn'], Handler='backend.app.lambda_app.handler', Code={'S3Bucket': BUCKET, 'S3Key': record['key']},
+        Timeout=28, MemorySize=1024, Environment={'Variables': env}, Tags=TAGS)
     save('application_lambda')
     clients['lambda'].put_function_concurrency(FunctionName=NAME, ReservedConcurrentExecutions=5)
     clients['lambda'].get_waiter('function_active_v2').wait(FunctionName=NAME, WaiterConfig={'Delay': 2, 'MaxAttempts': 30})
