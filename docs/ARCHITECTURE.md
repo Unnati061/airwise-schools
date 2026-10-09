@@ -18,8 +18,8 @@ counts and student-hours do not use Bedrock. Historical durations remain nullabl
 missing relevant duration means unavailable totals. Previews never send messages.
 See FEATURE_COMPLETION.md for actual tests, deployed results and recovery limits.
 No SQS/DLQ, ECR, SAM or model agent loop. Raw forecast refresh does not mark a plan
-for review; confirmed input revision does. No bilingual previews/outdoor-hour
-metrics. BLUEPRINT_AUDIT.md maps all requirement groups and current limitations.
+for review; confirmed input revision does. Reviewed bilingual previews and
+synthetic outdoor-hour metrics are deployed. BLUEPRINT_AUDIT.md maps requirements.
 The503 remains inconclusive at request level; no speculative concurrency change.
 
 Browser -> Vite React SPA -> development proxy /api -> local FastAPI.

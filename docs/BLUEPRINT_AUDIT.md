@@ -5,6 +5,11 @@ recovery, deterministic reviewed English/Hindi previews and declared-duration
 outdoor student-hour accounting. See FEATURE_COMPLETION.md/STATUS for actual
 checks/deployment. The original baseline mapping below is historical where it
 labels these three requested features missing; it is not a current missing claim.
+Release review from7a803eb adds owner-selected MIT, preserved supplied notices,
+bilingual meaning corrections/tests and read-only billing attempts. Revised
+wording/browser notice asset are local only, not newly deployed. See
+RELEASE_REVIEW.md: billing/credits/expiry unavailable after bounded timeouts,
+native/binary notice obligations unresolved. No publication or submission.
 Other deferred jobs, observation feeds, automatic evidence revision, displacement
 tie-breaker and security/reliability limits remain. Existing snapshots with unknown
 duration remain explicitly unavailable, not assigned retroactive values.
@@ -28,13 +33,17 @@ original blueprint has NOT shipped.
 - **P0 / unverified:** owner confirms eligibility, registration/check-in, official
   opening/history compliance and actual submission-form deadline. No backdating
   or history rewriting; the schedule still lacks exact hours.
-- **P0 / partial:** finalize writeup/repository/video links and licence review.
-  Principal attribution added, no project licence selected on the owner's behalf.
+- **P0 / partial:** finalize writeup/repository/video links and third-party terms.
+  MIT selected for original code;115 supplied notices preserved. Resolve native
+  provenance/source obligations before binary distribution. Do not upload dependencies.
+- **P0 / prepared, not deployed:** next bounded hosted update should include
+  browser licence asset and corrected preview wording; current app retains7a803eb.
 - **P0 / unverified:** verify repository/video signed-out access and judge access
   expectations. The app sign-in page is public, school data is authenticated.
   Use the verified workflow video; never publish passwords or an auth bypass.
 - **P0 / unverified cost safeguard:** inspect current gross usage, remaining
   credits, expiry and covered services privately before leaving paid routes live.
+  STS passed; single GetCredits/Cost Explorer attempts timed out at19:16IST.
   Previously reported $100 credits are not a current balance/bill guarantee.
 - **P0 / ready for owner:** submit once through the actual form; retain confirmation.
   Nothing was submitted/published in this pass.
@@ -94,7 +103,7 @@ neither is silently presented as original-blueprint compliance.
 | Evidence: excerpts/authority/date/jurisdiction/type and confirmed restrictions | Verified Evidence.tsx/catalog/confirm; no active order verified. |
 | Plan: original/proposed, changes/conflicts, baseline, approval | Verified Plan.tsx/hosted approval; only basic diagnostics, not exact unsat cores. |
 | Inbox: version/acknowledgement/three execution statuses | Verified TeacherInbox/workflow; old versions visible but actions require current version. |
-| Review: planned/reported/exception/evidence/approval history | Verified counts/history/bindings; no outdoor-hour or forecast-comparison metric. |
+| Review: planned/reported/exception/evidence/approval history | Verified counts/history/bindings and deployed synthetic outdoor-hour metrics; no forecast-comparison metric. |
 | Must-ship provenance, restriction planning, solver/validator, authenticated approval, durable reports, AWS, replay, demo | Core verified HOSTING/AWS_APP/WORKFLOW/EVIDENCE; video missing. |
 | Revised keep: stale approval, room-unavailable revision, permissions, timestamps | Code/local tests verified; stale/permissions deployed; room update API exists, no dedicated room-editor UI. |
 | Revised keep: bilingual previews | Follow-up deployed/privately verified: reviewed English/Hindi preview/copy/download, never sending. |
@@ -104,7 +113,7 @@ neither is silently presented as original-blueprint compliance.
 | Usage reset/percentage budgeting/model/reasoning/speed; one active task, no parallel/duplicate work | Planning/process guidance; no fresh meter/model entitlement claim, one agent/no redesign. |
 | Build after official opening, honest commits/no fabricated history, attribution | History retained and Codex disclosed; precise opening compliance needs owner evidence. |
 | AGENTS/product/architecture/status/decisions/build-log/task files | Partial: first four exist; decisions/build log embedded in STATUS/deployment records, no dedicated task series. |
-| Commands/results/blockers, focused acceptance checks, no false success | Verified records and current76tests; browser/model results remain earlier actual runs. |
+| Commands/results/blockers, focused acceptance checks, no false success | Follow-up85tests and actual hosted admin/teacher pass recorded; release review runs only changed-preview/notice checks, not new model calls. |
 | Public repo, AWS-shown YouTube video, writeup, signed-out links and form | Partial writeup/script/app; repo/video/form/check-in/eligibility missing/unverified. |
 
 ### Stack and Safeguards (Sections 3, 9)
@@ -180,9 +189,9 @@ neither is silently presented as original-blueprint compliance.
 
 | Requirement | State and evidence/disposition |
 | --- | --- |
-| Proposed school/timetable/evidence/plan/confirm/teacher/report/review/preview routes | Equivalent protected workflow/evidence routes; deployed foundation metadata hidden, no /jobs or message-preview. |
-| Pending job/enqueue202/idempotency/failure/poll2sbackoff/finite UI | No queue/job system; finite HTTP/error/manual read retry, no blind paid/approval retry. Model-cache claim is not a job. |
-| Worker authoritative inputs/leases/attempts/repeated SQS deliveries/DLQ/visibility/batch1/partial failures | Not implemented; no delivery/recovery claim. Crash may leave durable PENDING with allowance consumed. |
+| Proposed school/timetable/evidence/plan/confirm/teacher/report/review/preview routes | Equivalent protected workflow/evidence routes; approved-detail embeds administrator-only previews; no /jobs. |
+| Pending job/enqueue202/idempotency/failure/poll2sbackoff/finite UI | No queue/job system; finite loading/error states, safe explicit original approval/ack/report retry with durable report UUID receipts; no automatic paid retry. Model-cache claim is not a job. |
+| Worker authoritative inputs/leases/attempts/repeated SQS deliveries/DLQ/visibility/batch1/partial failures | Not implemented; no SQS delivery/recovery claim. Five-minute expired PENDING is fenced into failure without reissuing a paid call; allowance stays consumed. |
 | Durable School/Timetable/Evidence/Policy/Restriction/Job/Plan/Report/Audit with school identity | All domain equivalents except jobs; school partition authoritative, compressed documents capped350KB, no raw spillover. |
 | Generate types from OpenAPI | Verified frontend/api.d.ts and generation command; no duplicate schema edits. |
 | DRAFT/VALIDATED/APPROVED/SUPERSEDED/REJECTED states | Partial draft validation/immutable approval/current pointer/history; no explicit terminal rejection/superseded enum or rejection action. |

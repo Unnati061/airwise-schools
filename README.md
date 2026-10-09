@@ -133,6 +133,13 @@ interpretation uses Bedrock Nova Lite, distinct from Codex development assistanc
 Dependencies include FastAPI, Pydantic, Mangum, OR-Tools, React, Vite, TypeScript
 and Lucide.
 
+Original project code is [MIT licensed](LICENSE), by owner choice. Dependencies,
+forecast data and official excerpts keep their original terms; preserved supplied
+notices and unresolved binary-distribution obligations are documented in
+[the release review](docs/RELEASE_REVIEW.md). Source wording/notice-asset fixes in
+that review have not yet been redeployed. Current spending/credits/expiry remain
+unverified after read-only billing timeouts; the owner must check the console.
+
 No GitHub repository exists yet (owner-confirmed October 9, 2026); this checkout
 has no Git remote. Publication and submission remain manual owner actions.
 Current [event rules](https://www.wemakedevs.org/aws/env/rules) require public

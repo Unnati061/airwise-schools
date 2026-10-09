@@ -1,9 +1,22 @@
 # Sources, Tools and Licence Review
 
 Recorded October9,2026 from installed metadata/source records. Principal-component
-attribution, **not** an exhaustive transitive licence audit or project licence
-grant. Preserve distribution notices; review locked dependencies before publishing.
-The owner must intentionally select any licence for original project code.
+attribution, **not** exhaustive transitive legal clearance. Preserve distribution
+notices; review locked dependencies before publishing. The owner subsequently
+selected MIT for original project code; root LICENSE records that grant only.
+Third-party software/data/excerpts keep their own terms.
+
+## Release Review from 7a803eb
+
+115 supplied licence/NOTICE/AUTHORS files preserved byte-for-byte under third_party,
+with SHA256 provenance in its manifest. The actual Linux ZIP was inspected,
+including NumPy's libgfortran GPL3 with GCC exception and libquadmath LGPL2.1+
+terms, AWS CRT's XXHash BSD2 notice, dateutil's mixed BSD/Apache text, and native
+libraries bundled by OR-Tools. Three frontend build packages had no standalone
+notice despite declaring MIT. Missing exact-version native/tool provenance and
+binary source/relinking obligations are NOT cleared. Browser notice asset is
+prepared for the next build; not newly deployed. See [RELEASE_REVIEW.md](RELEASE_REVIEW.md)
+for findings, original-source versus binary-release scope and owner actions.
 
 ## Follow-up Release Review
 
@@ -26,7 +39,7 @@ commit as well; its blob count increases with this checkpoint.
 Ignored work/env/cache files, credential caches, remote secrets and unreachable
 objects/reflogs are excluded. No entropy scan or credential validation: absence
 of these patterns is not proof of absence of every secret/private document.
-Owner still reviews content/history and chooses an original-code licence; no
+Owner still reviews content/history and remaining third-party obligations; no
 public repository, visibility change, push or submission was performed.
 
 ## AI Assistance
@@ -84,5 +97,5 @@ or custom AI mascot are application assets; interface icons come from Lucide.
   candidate public repository. Preserve its true date and implementation history.
 
 References/hashes show what was reviewed, not accuracy, legal effect, campus
-exposure or health benefit. A licence for this project's original code has not
-been chosen by automation.
+exposure or health benefit. MIT for original code was selected explicitly by
+the owner, not imposed on third-party materials.

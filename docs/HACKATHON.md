@@ -157,8 +157,9 @@ not create a source repository. npm's `private` flag is not GitHub visibility.
    Review working files **and Git history** for secrets/private content before
    publication; ignore rules alone are not a historical audit.
 2. Create an empty public GitHub repository yourself for the required source link;
-   do not initialize another README/license/gitignore. Choose a
-   license intentionally rather than assuming one has been granted.
+   leave README, .gitignore and licence initialization unchecked:
+   original project code already has the
+   owner-selected MIT LICENSE; third-party terms remain separate.
 3. Connect and push the current branch using normal private authentication, never
    tokens in a remote URL. Replace the URL placeholders below.
 4. Open the repository URL signed out to verify source visibility, then add the

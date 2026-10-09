@@ -1,0 +1,713 @@
+{
+  "source_linux_zip_sha256": "4c8a9eb26fb8409f1608b72096d39de1509c5db3d31fa0937469e1294cf1d2c1",
+  "entries": [
+    {
+      "file": "backend/absl_py-2.5.0.dist-info/licenses/AUTHORS",
+      "origin": "Linux ZIP: absl_py-2.5.0.dist-info/licenses/AUTHORS",
+      "bytes": 296,
+      "sha256": "6282ee76cca569083b5b998b9f816ba1032e127b8dc7c46942b86477fc6fbfa5"
+    },
+    {
+      "file": "backend/absl_py-2.5.0.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: absl_py-2.5.0.dist-info/licenses/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "file": "backend/annotated_doc-0.0.5.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: annotated_doc-0.0.5.dist-info/licenses/LICENSE",
+      "bytes": 1086,
+      "sha256": "fff170779a6acbf65abdb405c087f1cee1786691e4a96a4034517e4a504a0cdf"
+    },
+    {
+      "file": "backend/annotated_types-0.8.0.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: annotated_types-0.8.0.dist-info/licenses/LICENSE",
+      "bytes": 1083,
+      "sha256": "fe1049884b1a0d9342901e88e07f32925d24b3121d9972b6a6805fb9824b095d"
+    },
+    {
+      "file": "backend/anyio-4.15.1.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: anyio-4.15.1.dist-info/licenses/LICENSE",
+      "bytes": 1081,
+      "sha256": "5361ac9dc58f2ef5fd2e9b09c68297c17f04950909bbc8023bdb82eacf22c2b0"
+    },
+    {
+      "file": "backend/awscrt-0.36.0.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: awscrt-0.36.0.dist-info/licenses/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "file": "backend/awscrt-0.36.0.dist-info/licenses/NOTICE",
+      "origin": "Linux ZIP: awscrt-0.36.0.dist-info/licenses/NOTICE",
+      "bytes": 1532,
+      "sha256": "067810db3be5d23e3e2be0e01edf86414174092a01bdcb387930fe0f11bf4152"
+    },
+    {
+      "file": "backend/boto3-1.43.109.dist-info/LICENSE",
+      "origin": "Linux ZIP: boto3-1.43.109.dist-info/LICENSE",
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "file": "backend/boto3-1.43.109.dist-info/NOTICE",
+      "origin": "Linux ZIP: boto3-1.43.109.dist-info/NOTICE",
+      "bytes": 83,
+      "sha256": "04fb1e61484a7810f1ba09bb42bc01ca58c9af33927d7c5a21556e4c4d1c7fa4"
+    },
+    {
+      "file": "backend/botocore-1.43.109.dist-info/LICENSE.txt",
+      "origin": "Linux ZIP: botocore-1.43.109.dist-info/LICENSE.txt",
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "file": "backend/botocore-1.43.109.dist-info/NOTICE",
+      "origin": "Linux ZIP: botocore-1.43.109.dist-info/NOTICE",
+      "bytes": 2467,
+      "sha256": "1d1c5a6f3d68cb11f4fad1afa86a7450d0286f15c176ef0ea048f255b46d95b0"
+    },
+    {
+      "file": "backend/cffi-2.1.1.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: cffi-2.1.1.dist-info/licenses/LICENSE",
+      "bytes": 1123,
+      "sha256": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63"
+    },
+    {
+      "file": "backend/cryptography-50.0.2.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: cryptography-50.0.2.dist-info/licenses/LICENSE",
+      "bytes": 197,
+      "sha256": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb"
+    },
+    {
+      "file": "backend/cryptography-50.0.2.dist-info/licenses/LICENSE.APACHE",
+      "origin": "Linux ZIP: cryptography-50.0.2.dist-info/licenses/LICENSE.APACHE",
+      "bytes": 11360,
+      "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe"
+    },
+    {
+      "file": "backend/cryptography-50.0.2.dist-info/licenses/LICENSE.BSD",
+      "origin": "Linux ZIP: cryptography-50.0.2.dist-info/licenses/LICENSE.BSD",
+      "bytes": 1532,
+      "sha256": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb"
+    },
+    {
+      "file": "backend/fastapi-0.143.0.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: fastapi-0.143.0.dist-info/licenses/LICENSE",
+      "bytes": 1086,
+      "sha256": "4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e"
+    },
+    {
+      "file": "backend/idna-3.20.dist-info/licenses/LICENSE.md",
+      "origin": "Linux ZIP: idna-3.20.dist-info/licenses/LICENSE.md",
+      "bytes": 1541,
+      "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+    },
+    {
+      "file": "backend/immutabledict-4.3.1.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: immutabledict-4.3.1.dist-info/licenses/LICENSE",
+      "bytes": 1072,
+      "sha256": "347f918d37d4e0556a0695d34b9fb87fa9bbe808d54949851789c6c1fc91c61f"
+    },
+    {
+      "file": "backend/jmespath-1.1.0.dist-info/LICENSE",
+      "origin": "Linux ZIP: jmespath-1.1.0.dist-info/LICENSE",
+      "bytes": 1113,
+      "sha256": "6eefacfa4d71b82d08408c751470ac8d9854538da2142cb27be0287fb13d0ab9"
+    },
+    {
+      "file": "backend/mangum-0.22.0.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: mangum-0.22.0.dist-info/licenses/LICENSE",
+      "bytes": 1072,
+      "sha256": "0d9eb50b670f2917f02c86e4e196d028bed70f5cdaa984cd0f569d4453e5ebcb"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/LICENSE.txt",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/LICENSE.txt",
+      "bytes": 46794,
+      "sha256": "4860083caa0de2ac3292ca98bd074bd8f45d8b32624e37b1e70a240bff61e488"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt",
+      "bytes": 1018,
+      "sha256": "fbc539f47d0cf83bc61378080fb873d5c14630126cacbfe754035c3926daa5ec"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING",
+      "bytes": 690,
+      "sha256": "3f2c1ffa76383a55ae0aac01c9737cd70050dff63e1f026694fbe9d662573c98"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/_core/src/highway/LICENSE",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/_core/src/highway/LICENSE",
+      "bytes": 20785,
+      "sha256": "e340270d4f64384569a91d546acb5b094d69ce47f0c015db77abb74dc6f815af"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+      "bytes": 1514,
+      "sha256": "211e7d737d6179a08f791ebb0a99897ce7cd2457410c542876d125576edfe910"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE",
+      "bytes": 1543,
+      "sha256": "c17011467b4fe6e20fbfbeda4df09e58c2bca5480a063e55735a4000a379aad9"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md",
+      "bytes": 1498,
+      "sha256": "a85ca13fdf90160b64a0698215868c13b74d835ad0a4e2ba44713b8c5058a056"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt",
+      "bytes": 2266,
+      "sha256": "a14cc25e10d40a3aa705b7de2fb764a6535d8ee9b2db4e1724900585457dfd55"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/ma/LICENSE",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/ma/LICENSE",
+      "bytes": 1593,
+      "sha256": "05f3b88351988ecfad10abe92c0c50e5875c6452d5009a0084cc291551ffcca6"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/random/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/random/LICENSE.md",
+      "bytes": 3511,
+      "sha256": "103166b62b80443afb9eb3488e052ea06be0cff566b908f199e561fde49af19f"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/random/src/distributions/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/random/src/distributions/LICENSE.md",
+      "bytes": 2745,
+      "sha256": "469778be8f33d54e1bcaab28c281cc472916d2d273f835e55bc487d30503face"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md",
+      "bytes": 2926,
+      "sha256": "0e111337b25494a773106695f0e799f642b8567aaacca4f116a74a8177179156"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md",
+      "bytes": 1154,
+      "sha256": "e7d4f4fb20358f314210a892ae17351e04993813646f697ec387385ca2a36918"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/random/src/philox/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/random/src/philox/LICENSE.md",
+      "bytes": 1509,
+      "sha256": "6f5828a57223d4cc7f8ea505a2623e7b978b242752c1515e355f46ba2cec1800"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md",
+      "bytes": 1226,
+      "sha256": "9d4098846018319cd68e228ee6220361787f73bccbf00237a85e4fc9621b998f"
+    },
+    {
+      "file": "backend/numpy-2.5.3.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md",
+      "origin": "Linux ZIP: numpy-2.5.3.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md",
+      "bytes": 332,
+      "sha256": "268b0ca06759d31ea3ca68dd35f20e877916e927b1c2a835e4592a3c4354b1f9"
+    },
+    {
+      "file": "backend/numpy/_core/include/numpy/random/LICENSE.txt",
+      "origin": "Linux ZIP: numpy/_core/include/numpy/random/LICENSE.txt",
+      "bytes": 1018,
+      "sha256": "fbc539f47d0cf83bc61378080fb873d5c14630126cacbfe754035c3926daa5ec"
+    },
+    {
+      "file": "backend/numpy/ma/LICENSE",
+      "origin": "Linux ZIP: numpy/ma/LICENSE",
+      "bytes": 1593,
+      "sha256": "05f3b88351988ecfad10abe92c0c50e5875c6452d5009a0084cc291551ffcca6"
+    },
+    {
+      "file": "backend/numpy/random/LICENSE.md",
+      "origin": "Linux ZIP: numpy/random/LICENSE.md",
+      "bytes": 3511,
+      "sha256": "103166b62b80443afb9eb3488e052ea06be0cff566b908f199e561fde49af19f"
+    },
+    {
+      "file": "backend/opentelemetry_api-1.45.1.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: opentelemetry_api-1.45.1.dist-info/licenses/LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "file": "backend/ortools-9.15.6755.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: ortools-9.15.6755.dist-info/licenses/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "file": "backend/pandas-3.0.6.dist-info/LICENSE",
+      "origin": "Linux ZIP: pandas-3.0.6.dist-info/LICENSE",
+      "bytes": 52127,
+      "sha256": "5c1052e921e62d36ccda50a61585e9c0444b80c62f39b57c4f3f0d5fb62f5071"
+    },
+    {
+      "file": "backend/protobuf-6.33.6.dist-info/LICENSE",
+      "origin": "Linux ZIP: protobuf-6.33.6.dist-info/LICENSE",
+      "bytes": 1732,
+      "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
+    },
+    {
+      "file": "backend/pycparser-3.1.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: pycparser-3.1.dist-info/licenses/LICENSE",
+      "bytes": 1543,
+      "sha256": "0a9e78156ae8b96caf1b4f11ac2df424b83de29736f9e757630548a6272fdf90"
+    },
+    {
+      "file": "backend/pydantic-2.13.5.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: pydantic-2.13.5.dist-info/licenses/LICENSE",
+      "bytes": 1129,
+      "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+    },
+    {
+      "file": "backend/pydantic_core-2.46.5.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: pydantic_core-2.46.5.dist-info/licenses/LICENSE",
+      "bytes": 1080,
+      "sha256": "2afdd30d54b4d62b6f488a6bcc1546e84ec5061f13f4209c03d012348783795a"
+    },
+    {
+      "file": "backend/pyjwt-2.15.1.dist-info/licenses/AUTHORS.rst",
+      "origin": "Linux ZIP: pyjwt-2.15.1.dist-info/licenses/AUTHORS.rst",
+      "bytes": 322,
+      "sha256": "925ce43461029eedbf558ec0b7cf7fc4b045def5120ebb97937c70814071cf07"
+    },
+    {
+      "file": "backend/pyjwt-2.15.1.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: pyjwt-2.15.1.dist-info/licenses/LICENSE",
+      "bytes": 1085,
+      "sha256": "797a7a20231d4c433e9f1911db1731d06b5828b98f499819a034f7c0f56f5ce5"
+    },
+    {
+      "file": "backend/python_dateutil-2.9.0.post0.dist-info/LICENSE",
+      "origin": "Linux ZIP: python_dateutil-2.9.0.post0.dist-info/LICENSE",
+      "bytes": 2889,
+      "sha256": "ba00f51a0d92823b5a1cde27d8b5b9d2321e67ed8da9bc163eff96d5e17e577e"
+    },
+    {
+      "file": "backend/s3transfer-0.19.2.dist-info/LICENSE.txt",
+      "origin": "Linux ZIP: s3transfer-0.19.2.dist-info/LICENSE.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "file": "backend/s3transfer-0.19.2.dist-info/NOTICE.txt",
+      "origin": "Linux ZIP: s3transfer-0.19.2.dist-info/NOTICE.txt",
+      "bytes": 83,
+      "sha256": "d8354e0fa7fb762da7bc054a8a6774a0b310dfbbc78006393ee573a0e57612b5"
+    },
+    {
+      "file": "backend/six-1.17.0.dist-info/LICENSE",
+      "origin": "Linux ZIP: six-1.17.0.dist-info/LICENSE",
+      "bytes": 1066,
+      "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0"
+    },
+    {
+      "file": "backend/starlette-1.7.0.dist-info/licenses/LICENSE.md",
+      "origin": "Linux ZIP: starlette-1.7.0.dist-info/licenses/LICENSE.md",
+      "bytes": 1518,
+      "sha256": "dcb95677a02240243187e964f941847d19b17821cf99e5afae684fab328c19bf"
+    },
+    {
+      "file": "backend/typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+      "bytes": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "file": "backend/typing_inspection-0.4.4.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: typing_inspection-0.4.4.dist-info/licenses/LICENSE",
+      "bytes": 1090,
+      "sha256": "804b59b25f2c31bd278f9202a19ae49a3945aa2664387e2d0a128c7cacc61ec3"
+    },
+    {
+      "file": "backend/tzdata-2026.5.dist-info/licenses/LICENSE",
+      "origin": "Linux ZIP: tzdata-2026.5.dist-info/licenses/LICENSE",
+      "bytes": 625,
+      "sha256": "df58f69ea88683035d720b5375bcef0cf5aeaa98a1d098d572e0992c378deb46"
+    },
+    {
+      "file": "backend/tzdata-2026.5.dist-info/licenses/licenses/LICENSE_APACHE",
+      "origin": "Linux ZIP: tzdata-2026.5.dist-info/licenses/licenses/LICENSE_APACHE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "file": "backend/urllib3-2.8.0.dist-info/licenses/LICENSE.txt",
+      "origin": "Linux ZIP: urllib3-2.8.0.dist-info/licenses/LICENSE.txt",
+      "bytes": 1093,
+      "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+    },
+    {
+      "file": "frontend/@babel/code-frame/LICENSE",
+      "origin": "npm node_modules/@babel/code-frame@7.29.7: LICENSE",
+      "bytes": 1106,
+      "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+    },
+    {
+      "file": "frontend/@babel/helper-validator-identifier/LICENSE",
+      "origin": "npm node_modules/@babel/helper-validator-identifier@7.29.7: LICENSE",
+      "bytes": 1106,
+      "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76"
+    },
+    {
+      "file": "frontend/@oxc-project/types/LICENSE",
+      "origin": "npm node_modules/@oxc-project/types@0.153.0: LICENSE",
+      "bytes": 1119,
+      "sha256": "95ced5ecf1133fbf41d409b5555c86c344f83f3b019926057ddbc07cfdcc27b3"
+    },
+    {
+      "file": "frontend/@redocly/ajv/LICENSE",
+      "origin": "npm node_modules/@redocly/ajv@8.11.2: LICENSE",
+      "bytes": 1090,
+      "sha256": "a05350a88e318e4f5f2c2a1ff1e2e88daa4dd38e6e78b71cccae422bdc762cc3"
+    },
+    {
+      "file": "frontend/@redocly/config/LICENSE",
+      "origin": "npm node_modules/@redocly/config@0.22.0: LICENSE",
+      "bytes": 1052,
+      "sha256": "92bb818822d131f7c4987ee5c4191eb3d73ea831b1f40904ea4f028b3cde1d64"
+    },
+    {
+      "file": "frontend/@redocly/openapi-core/src/rules/common/__tests__/license-url.test.ts",
+      "origin": "npm node_modules/@redocly/openapi-core@1.34.20: src/rules/common/__tests__/license-url.test.ts",
+      "bytes": 1717,
+      "sha256": "4b0af236f71ef3e7a38be5093970c974000c48946dde599a2218ec0e72dfaf7d"
+    },
+    {
+      "file": "frontend/@rolldown/pluginutils/LICENSE",
+      "origin": "npm node_modules/@rolldown/pluginutils@1.0.1: LICENSE",
+      "bytes": 1106,
+      "sha256": "e1919b3b98b8bf6c1b99fcc60a0ed46027c97ac947432e1278446c9606f50161"
+    },
+    {
+      "file": "frontend/@types/react/LICENSE",
+      "origin": "npm node_modules/@types/react@19.3.0: LICENSE",
+      "bytes": 1141,
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "file": "frontend/@types/react-dom/LICENSE",
+      "origin": "npm node_modules/@types/react-dom@19.3.0: LICENSE",
+      "bytes": 1141,
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "file": "frontend/@vitejs/plugin-react/LICENSE",
+      "origin": "npm node_modules/@vitejs/plugin-react@6.1.2: LICENSE",
+      "bytes": 1103,
+      "sha256": "29b68325fe026047d13e187b44c33b2acacf7dc647dec4583702e59f235e13b5"
+    },
+    {
+      "file": "frontend/agent-base/LICENSE",
+      "origin": "npm node_modules/agent-base@7.1.4: LICENSE",
+      "bytes": 1101,
+      "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a"
+    },
+    {
+      "file": "frontend/ansi-colors/LICENSE",
+      "origin": "npm node_modules/ansi-colors@4.1.3: LICENSE",
+      "bytes": 1091,
+      "sha256": "94e1923e52409cfd50e97988d9772c0de15f65700097e3227fec367a39e82b94"
+    },
+    {
+      "file": "frontend/argparse/LICENSE",
+      "origin": "npm node_modules/argparse@2.0.1: LICENSE",
+      "bytes": 12775,
+      "sha256": "de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23"
+    },
+    {
+      "file": "frontend/balanced-match/LICENSE.md",
+      "origin": "npm node_modules/balanced-match@1.0.2: LICENSE.md",
+      "bytes": 1096,
+      "sha256": "a1bd5deadb6a06dd74efa852c1b8b23f63b67f2214fbe9c8bd591da51da69268"
+    },
+    {
+      "file": "frontend/brace-expansion/LICENSE",
+      "origin": "npm node_modules/brace-expansion@2.1.7: LICENSE",
+      "bytes": 1096,
+      "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14"
+    },
+    {
+      "file": "frontend/colorette/LICENSE.md",
+      "origin": "npm node_modules/colorette@1.4.0: LICENSE.md",
+      "bytes": 1080,
+      "sha256": "f101c761d255d0dddc77dd8a9327733b03d381798ec54a1bb718367207b48a8e"
+    },
+    {
+      "file": "frontend/csstype/LICENSE",
+      "origin": "npm node_modules/csstype@3.2.3: LICENSE",
+      "bytes": 1062,
+      "sha256": "11d55bd4541c75ee7879547ac49089c489163dae49551389713c3d026cab383e"
+    },
+    {
+      "file": "frontend/debug/LICENSE",
+      "origin": "npm node_modules/debug@4.4.3: LICENSE",
+      "bytes": 1139,
+      "sha256": "3a61c6c96caf5c1d9b623fb9b04c822b783dfcb78aa7e49c76a3f643e6ed7f95"
+    },
+    {
+      "file": "frontend/detect-libc/LICENSE",
+      "origin": "npm node_modules/detect-libc@2.1.2: LICENSE",
+      "bytes": 11357,
+      "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+    },
+    {
+      "file": "frontend/fast-deep-equal/LICENSE",
+      "origin": "npm node_modules/fast-deep-equal@3.1.3: LICENSE",
+      "bytes": 1074,
+      "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a"
+    },
+    {
+      "file": "frontend/fdir/LICENSE",
+      "origin": "npm node_modules/fdir@6.5.0: LICENSE",
+      "bytes": 1053,
+      "sha256": "9a39f2aadab11a3697edd668ff2d8ad885b649737b7ab4d3bf12b34e5ada0c86"
+    },
+    {
+      "file": "frontend/https-proxy-agent/LICENSE",
+      "origin": "npm node_modules/https-proxy-agent@7.0.6: LICENSE",
+      "bytes": 1101,
+      "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a"
+    },
+    {
+      "file": "frontend/index-to-position/license",
+      "origin": "npm node_modules/index-to-position@1.2.0: license",
+      "bytes": 1117,
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+    },
+    {
+      "file": "frontend/js-levenshtein/LICENSE",
+      "origin": "npm node_modules/js-levenshtein@1.1.6: LICENSE",
+      "bytes": 1073,
+      "sha256": "0f57363c43caf754cf943327878c910ce1386c82c029462cf7274c4a50b5961f"
+    },
+    {
+      "file": "frontend/js-tokens/LICENSE",
+      "origin": "npm node_modules/js-tokens@4.0.0: LICENSE",
+      "bytes": 1103,
+      "sha256": "2213d91c606205c71eb051a199478cdc2adde945893404d7f1421436dd6d5cc1"
+    },
+    {
+      "file": "frontend/js-yaml/LICENSE",
+      "origin": "npm node_modules/js-yaml@4.3.2: LICENSE",
+      "bytes": 1084,
+      "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550"
+    },
+    {
+      "file": "frontend/json-schema-traverse/LICENSE",
+      "origin": "npm node_modules/json-schema-traverse@1.0.0: LICENSE",
+      "bytes": 1074,
+      "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a"
+    },
+    {
+      "file": "frontend/lightningcss/LICENSE",
+      "origin": "npm node_modules/lightningcss@1.33.0: LICENSE",
+      "bytes": 15648,
+      "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e"
+    },
+    {
+      "file": "frontend/lightningcss-win32-x64-msvc/LICENSE",
+      "origin": "npm node_modules/lightningcss-win32-x64-msvc@1.33.0: LICENSE",
+      "bytes": 15648,
+      "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e"
+    },
+    {
+      "file": "frontend/lucide-react/dist/esm/icons/copyright.mjs",
+      "origin": "npm node_modules/lucide-react@1.53.0: dist/esm/icons/copyright.mjs",
+      "bytes": 583,
+      "sha256": "c635a6f3c969c66a95833b5724e6182821473b2c43cf81e2b4b2527c18e9d525"
+    },
+    {
+      "file": "frontend/lucide-react/dist/esm/icons/copyright.mjs.map",
+      "origin": "npm node_modules/lucide-react@1.53.0: dist/esm/icons/copyright.mjs.map",
+      "bytes": 2664,
+      "sha256": "e76a3007f3232ceab27c936e80a40031141d8969b53e3db1da647f8fb2ecd436"
+    },
+    {
+      "file": "frontend/lucide-react/LICENSE",
+      "origin": "npm node_modules/lucide-react@1.53.0: LICENSE",
+      "bytes": 3208,
+      "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    },
+    {
+      "file": "frontend/minimatch/LICENSE",
+      "origin": "npm node_modules/minimatch@5.1.9: LICENSE",
+      "bytes": 775,
+      "sha256": "d11323827fa4edeaafc437cc5b91b6971b335f0127efeeb42bf5122fe8657e8f"
+    },
+    {
+      "file": "frontend/ms/license.md",
+      "origin": "npm node_modules/ms@2.1.3: license.md",
+      "bytes": 1079,
+      "sha256": "1662fae9b5314d11cf51284e2dcd1f006a354f7343f08712a730fcff9a359801"
+    },
+    {
+      "file": "frontend/nanoid/LICENSE",
+      "origin": "npm node_modules/nanoid@3.3.20: LICENSE",
+      "bytes": 1095,
+      "sha256": "da4db1480d9beea3483a2eda5c53b22238d0827d57da162b48f122e04d2d9987"
+    },
+    {
+      "file": "frontend/openapi-typescript/LICENSE",
+      "origin": "npm node_modules/openapi-typescript@7.13.0: LICENSE",
+      "bytes": 1068,
+      "sha256": "ed4b2c8f3a9aad2bd9fb8088d3e2a142116a13627c7223c28315c65e3ab9bd41"
+    },
+    {
+      "file": "frontend/parse-json/license",
+      "origin": "npm node_modules/parse-json@8.3.0: license",
+      "bytes": 1117,
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+    },
+    {
+      "file": "frontend/picocolors/LICENSE",
+      "origin": "npm node_modules/picocolors@1.1.1: LICENSE",
+      "bytes": 787,
+      "sha256": "6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750"
+    },
+    {
+      "file": "frontend/picomatch/LICENSE",
+      "origin": "npm node_modules/picomatch@4.0.7: LICENSE",
+      "bytes": 1091,
+      "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9"
+    },
+    {
+      "file": "frontend/pluralize/LICENSE",
+      "origin": "npm node_modules/pluralize@8.0.0: LICENSE",
+      "bytes": 1103,
+      "sha256": "5822e0d816e53e3537b306a4132cb7a70881897cf51bf483282148a602979076"
+    },
+    {
+      "file": "frontend/postcss/LICENSE",
+      "origin": "npm node_modules/postcss@8.5.29: LICENSE",
+      "bytes": 1095,
+      "sha256": "5be1f3465bba68a626777f984878814aaf35e7ef8e9fd314d469bcf887050fb8"
+    },
+    {
+      "file": "frontend/react/LICENSE",
+      "origin": "npm node_modules/react@19.3.0: LICENSE",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "file": "frontend/react-dom/LICENSE",
+      "origin": "npm node_modules/react-dom@19.3.0: LICENSE",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "file": "frontend/require-from-string/license",
+      "origin": "npm node_modules/require-from-string@2.0.2: license",
+      "bytes": 1128,
+      "sha256": "6ee0feb1f6ef996ff5a68600f8cf98909cf412d39ef3cdceaefd87d636fa1b7f"
+    },
+    {
+      "file": "frontend/rolldown/LICENSE",
+      "origin": "npm node_modules/rolldown@1.2.13: LICENSE",
+      "bytes": 1302,
+      "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734"
+    },
+    {
+      "file": "frontend/rolldown/THIRD-PARTY-LICENSE",
+      "origin": "npm node_modules/rolldown@1.2.13: THIRD-PARTY-LICENSE",
+      "bytes": 2209,
+      "sha256": "a877291d800ed43692f3f9ae09d8e01cc6f7293ad39d43896059c188ffbb8b7c"
+    },
+    {
+      "file": "frontend/scheduler/LICENSE",
+      "origin": "npm node_modules/scheduler@0.28.0: LICENSE",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "file": "frontend/source-map-js/LICENSE",
+      "origin": "npm node_modules/source-map-js@1.2.2: LICENSE",
+      "bytes": 1526,
+      "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd"
+    },
+    {
+      "file": "frontend/supports-color/license",
+      "origin": "npm node_modules/supports-color@10.2.2: license",
+      "bytes": 1117,
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+    },
+    {
+      "file": "frontend/tinyglobby/LICENSE",
+      "origin": "npm node_modules/tinyglobby@0.2.17: LICENSE",
+      "bytes": 1076,
+      "sha256": "22c68811e174cbbfb3813d4135918df4f540959c14d872e601d9abe83d3cde8f"
+    },
+    {
+      "file": "frontend/type-fest/license-cc0",
+      "origin": "npm node_modules/type-fest@4.41.0: license-cc0",
+      "bytes": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "file": "frontend/type-fest/license-mit",
+      "origin": "npm node_modules/type-fest@4.41.0: license-mit",
+      "bytes": 1117,
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3"
+    },
+    {
+      "file": "frontend/typescript/LICENSE.txt",
+      "origin": "npm node_modules/typescript@5.9.3: LICENSE.txt",
+      "bytes": 9197,
+      "sha256": "a7d00bfd54525bc694b6e32f64c7ebcf5e6b7ae3657be5cc12767bce74654a47"
+    },
+    {
+      "file": "frontend/typescript/ThirdPartyNoticeText.txt",
+      "origin": "npm node_modules/typescript@5.9.3: ThirdPartyNoticeText.txt",
+      "bytes": 37824,
+      "sha256": "1af3c68039c57e539422da82a4faada506ce6d0ea6f90e0b699d02dbcdb7a90c"
+    },
+    {
+      "file": "frontend/vite/LICENSE.md",
+      "origin": "npm node_modules/vite@8.3.4: LICENSE.md",
+      "bytes": 108786,
+      "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6"
+    },
+    {
+      "file": "frontend/yaml-ast-parser/license.txt",
+      "origin": "npm node_modules/yaml-ast-parser@0.0.43: license.txt",
+      "bytes": 557,
+      "sha256": "bf602897f63ff2706e3059fd60321ab5273a691833c98820433ef1d18abed6a2"
+    },
+    {
+      "file": "frontend/yargs-parser/LICENSE.txt",
+      "origin": "npm node_modules/yargs-parser@21.1.1: LICENSE.txt",
+      "bytes": 731,
+      "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+    }
+  ],
+  "missing_installed_notices": [
+    {
+      "package": "node_modules/@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.13",
+      "reason": "No supplied notice file found"
+    },
+    {
+      "package": "node_modules/change-case",
+      "version": "5.4.4",
+      "reason": "No supplied notice file found"
+    },
+    {
+      "package": "node_modules/uri-js-replace",
+      "version": "1.0.1",
+      "reason": "No supplied notice file found"
+    }
+  ],
+  "scope": "Supplied notices only; not a complete native/transitive provenance or legal clearance."
+}

@@ -16,6 +16,8 @@ mutations were made while writing it.
 - Use clearly labelled SYNTHETIC REPLAY for the reproducible restriction scenario.
   Never blend it with LIVE. Show the stored real Nova result, not a new paid
   analysis; do not describe stored interpretation as a fresh model call.
+- The latest duration-metadata revision is MANUAL/date unspecified. If using it,
+  say so; do not call that version dated REPLAY. Review preview dates privately.
 - Inspect confirmed restrictions and generate a valid unapproved draft before
   the timer starts. Check input versions, solver status, independent validation
   and actual differences. Approve on camera, then refresh the teacher inbox to
@@ -39,7 +41,7 @@ mutations were made while writing it.
 | 00:35 - 01:00 | Evidence: official excerpt, stored interpretation, citations/ambiguities, confirmation state | "This stored interpretation came from a real Sydney Bedrock Nova Lite call. Supplied citations are checked; ambiguities need review. The administrator confirms restrictions. AI cannot approve a plan or infer a closure." |
 | 01:00 - 01:30 | Plan: prepared draft, differences, baseline, status/validator; approve through UI | "CP-SAT enforces teacher, section and room constraints. A separate validator checks the plan; approval checks current versions. Here an approved indoor alternative keeps the period and changes activity and room. Every activity remains accounted for." |
 | 01:30 - 02:00 | Teacher: refresh new version, acknowledge, report COULD_NOT_IMPLEMENT with synthetic note | "The teacher sees only their approved assignments. Acknowledgement is not execution. I acknowledge this version, then separately report that the synthetic classroom was unavailable." |
-| 02:00 - 02:25 | Administrator Review: refresh, exception and version history | "The administrator sees the exception and retained history. A revision needs another approval: it does not erase the old version or reuse acknowledgements. Counts describe reports, not health benefits." |
+| 02:00 - 02:25 | Administrator Review: refresh, exception/history, preview labels and hours | "The administrator sees the exception and history. English and Hindi are reviewed previews, never sent. Student-hours use declared synthetic durations: planned indoors is not completed. A revision needs approval; no measured exposure or health benefit is claimed." |
 | 02:25 - 02:50 | Show prepared cropped actual AWS Lambda/Amplify console view, then hosted URL | "This is the existing Sydney AWS deployment. Amplify hosts React; Cognito protects API Gateway and Python Lambda. DynamoDB stores versions; Bedrock provides bounded interpretation. The tested analysis request took 2.392 seconds end to end. Codex assisted development. Station observations remain unavailable." |
 
 Total planned duration: **170 seconds**, ten seconds below three minutes. The

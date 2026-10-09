@@ -1,5 +1,44 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
+## Release Review from 7a803eb
+
+Owner selected MIT for original code; root LICENSE added, third-party terms
+excluded from that grant.115 supplied notices/AUTHORS/licences copied unchanged
+from verified Linux deployment ZIP and installed frontend packages, with source
+paths/byte counts/SHA256 manifest. Browser notice file prepared and build-copy
+hash matched. No dependency upgrade, native binary/ZIP publication or cloud update.
+Unresolved: exact native build/provenance/source/relinking obligations (NumPy
+LGPL libquadmath/GCC exception, OR-Tools bundled solvers, Rust/OpenSSL) and three
+MIT-declared frontend build packages lacking standalone supplied notices.
+Original-source publication is distinct from binary redistribution; no blanket
+legal clearance. See docs/RELEASE_REVIEW.md and retained attribution/notices.
+
+Bilingual branches reviewed for matching IDs/dates/meaning and unsupported claims.
+Fixed stiff Hindi acknowledgement, clearer pending-new-approval warning, explicit
+deferral permission in English, and matching replay/closure/health caveats.
+Previews remain deterministic/administrator-reviewed/never sent. Professional
+translation certification not claimed. These wording and browser-notice fixes
+are local/build-verified, NOT redeployed; hosted7a803eb remains unchanged.
+
+Read-only AWS at19:16:21IST: airwise STS passed (account redacted). One attempt
+each GetCredits and Cost Explorer GetCostAndUsage timed out ReadTimeoutError;
+connect4s/read12s/retries1total. No denial/SCP diagnosis, repeat request, billing
+enablement or setting change. Current spending/credits/expiry/coverage UNVERIFIED;
+prior owner-reported100USD cannot stand in for a balance. Global billing endpoints
+do not alter Sydney application region/account. Private console steps documented.
+
+Relevant checks:8 tests passed/two existing warnings in8.96s (preview branches
+and all preserved notice hashes/browser runtime terms); d2 production build
+passed,1907modules/3.74s. Notice asset SHA256583bb0e6ec80b2c8ed9e6560aeb112bd0f26eea91f806d467cb11d82ce1c04e1
+matched public/dist. No full-suite, hosted/browser sign-in, model or load-test
+rerun for wording/licence changes. Audit's stale preview/hour/pending rows updated;
+Secret-pattern scan:222 tracked files/216 reachable history blobs,zero matches or
+private-path findings; not a guarantee. Supplied notice whitespace retained
+byte-for-byte and exempted only for those copied assets, not original code/docs.
+submission gaps explicitly retain public repo/video/links/deadline/judge access,
+billing check and next hosted notice/wording update. Manual source-repo commands
+and170second updated demo script provided. Nothing published or submitted.
+
 ## Recovery, Previews and Metrics Deployed
 
 Continued from `1b8c067`; three requested follow-ups complete on the existing

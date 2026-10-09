@@ -25,6 +25,31 @@ def test_bilingual_preview_contains_only_approved_facts_and_requires_admin(servi
     rejects(403, lambda: service.approved_detail(TEACHER, version))
 
 
+def test_reviewed_preview_meaning_no_change_deferral_and_replay(service):
+    version = approved(service).plan_version
+    plan = service.approved_draft(ADMIN, version).model_copy(deep=True)
+    preview = message_preview(plan, {'mode': 'REPLAY', 'calendar_date': '2026-10-12'}, True)
+    assert 'new plan based on revised inputs has not yet been approved' in preview.english
+    assert 'नई योजना अभी अनुमोदित नहीं हुई है' in preview.hindi
+    assert 'not a description of current pollution or evidence of a government order' in preview.english
+    assert 'वर्तमान प्रदूषण का विवरण या किसी सरकारी आदेश का प्रमाण नहीं है' in preview.hindi
+    assert 'receiving the plan is separate from carrying it out' in preview.english
+    assert 'योजना मिलने की पुष्टि और उसका कार्यान्वयन अलग हैं' in preview.hindi
+    assert 'does not establish a school closure or a health benefit' in preview.english
+    assert 'निष्कर्ष नहीं निकाला जा सकता' in preview.hindi
+    plan.differences[0].proposed.deferred = True
+    plan.differences[0].proposed.period_id = plan.differences[0].proposed.room_id = None
+    preview = message_preview(plan, None, False)
+    assert 'deferred with explicit permission' in preview.english
+    assert 'स्पष्ट अनुमति से स्थगित' in preview.hindi
+    assert '6-a:Mon-2' in preview.english and '6-a:Mon-2' in preview.hindi
+    plan.differences = []
+    preview = message_preview(plan, {'mode': 'LIVE', 'calendar_date': '2026-10-12'}, False)
+    assert 'No timetable changes' in preview.english
+    assert 'कोई परिवर्तन नहीं' in preview.hindi
+    assert 'SYNTHETIC REPLAY' not in preview.english
+
+
 def test_synthetic_metrics_acknowledgement_is_not_execution_and_reports_unique(service):
     version = approved(service).plan_version
     plan = service.approved_draft(ADMIN, version)
