@@ -48,6 +48,15 @@ def test_public_repo_artifact_rules():
     assert not unsafe_path('docs/third_party/backend/SCIP/LICENSE')
 
 
+def test_native_artifacts_are_ignored_outside_dependency_folders():
+    import subprocess
+    candidates = ['release.zip', 'dependency.whl', 'binary.so.3', 'addon.node',
+                  'binary.pyd', 'binary.dll', 'binary.dylib', 'tool.exe',
+                  'sources.tar.gz', 'cache.pyc', '.aws/example', 'object.o', 'library.a']
+    ignored = subprocess.check_output(['git', 'check-ignore', *candidates], cwd=ROOT, text=True)
+    assert set(ignored.splitlines()) == set(candidates)
+
+
 def test_existing_artifact_checksums_reject_metadata_corruption_and_composite(tmp_path):
     import base64
     import pytest

@@ -1,5 +1,28 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
+## Public Source Preparation from 223beea
+
+Confirmed Git root is outputs/airwise-schools (absolute path in PUBLIC_RELEASE.md),
+branch codex/packet-a, initial clean tree and no remote. GitHub CLI is unavailable;
+no GitHub connector or authenticated GitHub browser surface is available. No
+credential store/token inspection, repository creation/push or public-access claim.
+Owner authorized publication, but exact manual steps remain necessary. They push
+final HEAD/history to remote default main without rewriting/renaming local history.
+README now reflects verified hosted wording/notices, includes public-identifier
+frontend-to-existing-API setup, private backend prerequisites and licence limits.
+PUBLIC_RELEASE.md records publication/default-branch/signed-out/SHA verification,
+precise affected native artifacts and compliance tasks, demo/submission actions.
+Ignore rules strengthened for native archives/binaries/caches even outside work.
+Original MIT/upstream terms retained. Native binary source/relink/SBOM issues are
+not resolved by source publication; do not attach deployment ZIPs to Releases.
+No AWS changes/calls, paid analysis, history rewrite or hackathon submission.
+Checks:5 release-review tests passed in1.91s; pure local solver smoke OPTIMAL,
+periods[3,2,1]/objective6.18 documentation links resolve; staged whitespace check
+passed. Precommit scans:253tracked files,19prior commits/368reachable blobs;
+no recognized secret/private-path or prohibited artifact/magic findings. Limited
+pattern/path/magic scans, not a comprehensive guarantee. GitHub URL/default
+branch/public access remain unverified until manual creation/push.
+
 ## Verified Artifact and Existing-app Resume from 06f8660
 
 Owner console-uploaded the byte-identical copy in work/console-upload/<SHA256>/.

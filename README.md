@@ -109,6 +109,26 @@ Open [the local frontend](http://127.0.0.1:5173). Default development mode proxi
 the local backend; deployed API configuration is in [HOSTING.md](docs/HOSTING.md).
 Never place AWS credentials in Vite variables.
 
+To run just the frontend against the existing deployed API, without local AWS
+credentials or a local backend, use these **public client identifiers**:
+
+```powershell
+npm --prefix frontend ci
+$env:VITE_API_BASE_URL='https://lbckjkbfb4.execute-api.ap-southeast-2.amazonaws.com'
+$env:VITE_COGNITO_REGION='ap-southeast-2'
+$env:VITE_COGNITO_POOL_ID='ap-southeast-2_LhIz6g1r9'
+$env:VITE_COGNITO_CLIENT_ID='5gq58g4sp2o7ic7grg8k7cld2'
+npm --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort
+```
+
+Use exactly `http://127.0.0.1:5173`, an allowed CORS origin. Operations still
+require an existing privately provisioned identity; cloning does not create users
+or provide passwords. The existing API writes to the synthetic demo database,
+and analysis can incur bounded charges. Do not use it for load tests. Full local
+backend operation also requires the owner's ignored `work/aws-b2.json` resource
+configuration and scoped temporary-role access; neither credentials nor a public
+authentication bypass are included. Pure solver/tests work without AWS setup.
+
 ```powershell
 .venv\Scripts\python -m pytest backend/tests -q
 .venv\Scripts\python -m backend.app.solver_smoke
@@ -136,14 +156,20 @@ and Lucide.
 Original project code is [MIT licensed](LICENSE), by owner choice. Dependencies,
 forecast data and official excerpts keep their original terms; preserved supplied
 notices and unresolved binary-distribution obligations are documented in
-[the release review](docs/RELEASE_REVIEW.md). Source wording/notice-asset fixes in
-that review have not yet been redeployed. Current spending/credits/expiry remain
+[the release review](docs/RELEASE_REVIEW.md). Revised wording and the browser
+notice asset were deployed and verified in the `223beea` checkpoint. Native ZIP
+source/relink/SBOM issues remain in [the binary review](docs/NATIVE_REDISTRIBUTION.md);
+no dependency binaries or deployment ZIPs are offered by this repository.
+Current spending/credits/expiry remain
 unverified after read-only billing timeouts; the owner must check the console.
 
-No GitHub repository exists yet (owner-confirmed October 9, 2026); this checkout
-has no Git remote. Publication and submission remain manual owner actions.
-Current [event rules](https://www.wemakedevs.org/aws/env/rules) require public
-source and a YouTube demo under three minutes showing AWS; these are incomplete.
+Public source publication is prepared; GitHub creation/push/public access have
+not been verified because no GitHub CLI/connector authentication is available
+in this environment. Follow [PUBLIC_RELEASE.md](docs/PUBLIC_RELEASE.md) to create
+`airwise-schools`, push the preserved history to default branch `main`, and verify
+signed-out access. Do not attach deployment archives to GitHub Releases.
+The demo video, repository/video submission links and owner eligibility/deadline
+checks remain pending; no hackathon entry has been submitted.
 Bilingual previews and synthetic student-hour accounting are deployed;
 [feature completion](docs/FEATURE_COMPLETION.md) records scope and limits.
 These hours distinguish planned indoor substitution from teacher self-reported

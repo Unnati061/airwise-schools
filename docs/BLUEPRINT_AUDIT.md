@@ -32,6 +32,9 @@ original blueprint has NOT shipped.
 
 - **P0 / missing:** owner creates/pushes a public GitHub repository after reviewing
   working files and Git history for private content. No repository exists yet.
+  From223beea: source-only release preparation and exact history-preserving push
+  to default `main` are in PUBLIC_RELEASE.md. GitHub CLI/connector authentication
+  is unavailable here, so creation/push/signed-out verification remain owner actions.
 - **P0 / missing:** owner records a YouTube demo under three minutes showing actual
   AWS usage, uploads public/unlisted, and tests its link signed out. Script only.
 - **P0 / unverified:** owner confirms eligibility, registration/check-in, official
