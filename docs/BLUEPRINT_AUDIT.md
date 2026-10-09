@@ -34,10 +34,16 @@ original blueprint has NOT shipped.
   opening/history compliance and actual submission-form deadline. No backdating
   or history rewriting; the schedule still lacks exact hours.
 - **P0 / partial:** finalize writeup/repository/video links and third-party terms.
-  MIT selected for original code;115 supplied notices preserved. Resolve native
+  MIT selected for original code;137 supplied/supplemental notices preserved.
+  Three missing build-tool notices resolved with primary-source reconciliation.
+  See NATIVE_REDISTRIBUTION.md for specific remaining binary source/SBOM issues.
+  Resolve native
   provenance/source obligations before binary distribution. Do not upload dependencies.
 - **P0 / prepared, not deployed:** next bounded hosted update should include
   browser licence asset and corrected preview wording; current app retains7a803eb.
+  Read-only preflight passed after mobile-data restoration; single artifact PUT
+  failed ConnectionClosedError. No Lambda/Amplify update reached; no upload retry.
+  Exact console handoff and unknown object state are recorded in AWS_APP.md.
 - **P0 / unverified:** verify repository/video signed-out access and judge access
   expectations. The app sign-in page is public, school data is authenticated.
   Use the verified workflow video; never publish passwords or an auth bypass.

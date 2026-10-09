@@ -1,5 +1,41 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
+## Release Notice/Wording Update from 9acf1fe
+
+Prepared work/airwise-app-release.zip preserving proven Linux dependency bytes,
+patching only message_preview.py and supplementing full notices.87,593,659bytes
+compressed,241,241,650extracted;198ELF entries, Python3.12/x86_64, existing
+1024MB/28s/concurrency5 planned unchanged. SHA256
+10d1de90053d6ac22e4b0c8ec90033cb2fe43e5d36b625455eb8a39b6c9363f9.
+scripts.update_release uses the existing guarded updater with expected prior
+features-code SHA/RevisionId and new artifact/manifest paths; no old archive
+overwrite. First preflight STS ReadTimeoutError before resource inspection or
+upload/update; stopped. After mobile-data confirmation, one bounded read-only
+STS/Lambda/Amplify check passed. The resumed updater failed at
+`artifact_upload_once` with `ConnectionClosedError`. No Lambda or Amplify update
+was reached. S3 object existence/checksum is unknown after the interrupted PUT;
+do not assume success or automatically retry. No new app/role/API resources.
+Public notice/wording verification remains pending; existing app intact.
+
+Commands: `.venv\Scripts\python -m scripts.update_release package`,
+`.venv\Scripts\python -m scripts.update_release update` (STS timeout),
+`.venv\Scripts\python -m scripts.update_release preflight` (passed after restored
+connection), then `update` once (S3 ConnectionClosedError).
+
+### Console Upload Handoff
+
+- File: `C:\Users\Ashwani\Documents\Codex\2026-10-08\read-the-attached-airwise-schools-build\outputs\airwise-schools\work\airwise-app-release.zip`
+- Size: 87,593,659 bytes; SHA-256: `10d1de90053d6ac22e4b0c8ec90033cb2fe43e5d36b625455eb8a39b6c9363f9`.
+- Existing private bucket: `airwise-smoke-artifacts-a1f7411817`, Sydney.
+- Exact key: `application/features/10d1de90053d6ac22e4b0c8ec90033cb2fe43e5d36b625455eb8a39b6c9363f9/airwise-app-features.zip`.
+- First inspect this exact key in the console; the failed response does not prove
+  absence. Do not overwrite an unexpected object. If absent, upload the prepared
+  file privately; do not rebuild. Resume requires actual size/checksum verification
+  and the existing Lambda revision guard, followed by hosting/browser verification.
+- Cleanup, only if this exact new artifact exists and is no longer needed:
+  `aws s3api delete-object --profile airwise --region ap-southeast-2 --bucket airwise-smoke-artifacts-a1f7411817 --key application/features/10d1de90053d6ac22e4b0c8ec90033cb2fe43e5d36b625455eb8a39b6c9363f9/airwise-app-features.zip`.
+  No cleanup was executed; preserve prior working artifacts/resources.
+
 ## Verified Feature Update from 1b8c067
 
 Updated the existing application Lambda only; preserved smoke Lambda and all

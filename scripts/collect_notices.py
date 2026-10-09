@@ -45,6 +45,15 @@ def collect():
             relative = path.relative_to(folder).as_posix()
             destination = "frontend/" + key.removeprefix("node_modules/") + "/" + relative
             copy(destination, path.read_bytes(), f"npm {key}@{metadata.get('version')}: {relative}")
+    supplement = OUTPUT / "upstream/manifest.json"
+    if supplement.exists():
+        upstream = json.loads(supplement.read_text())
+        resolved = {e.get("package") for e in upstream["entries"] if e["scope"] == "frontend"}
+        missing = [m for m in missing if m["package"].removeprefix("node_modules/") not in resolved]
+        for entry in upstream["entries"]:
+            content = (OUTPUT / entry["file"]).read_bytes()
+            assert hashlib.sha256(content).hexdigest() == entry["sha256"]
+            entries.append({**entry, "origin": "Upstream notice: " + entry["source_url"]})
     manifest = {"source_linux_zip_sha256": ZIP_SHA, "entries": entries, "missing_installed_notices": missing,
                 "scope": "Supplied notices only; not a complete native/transitive provenance or legal clearance."}
     (OUTPUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -54,7 +63,7 @@ def collect():
         output.write(b"AirWise Schools original code: MIT. Third-party materials retain their own terms.\n")
         output.write((ROOT / "LICENSE").read_bytes())
         for entry in entries:
-            if entry["file"].startswith("frontend/"):
+            if entry["file"].startswith(("frontend/", "upstream/frontend/")):
                 output.write(("\n\n--- " + entry["origin"] + " ---\n\n").encode())
                 output.write((OUTPUT / entry["file"]).read_bytes())
     print(json.dumps({"copied_notices": len(entries), "missing_installed_notices": missing}))

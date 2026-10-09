@@ -8,6 +8,14 @@ Third-party software/data/excerpts keep their own terms.
 
 ## Release Review from 7a803eb
 
+Follow-up from9acf1fe resolves all three missing build-tool notices (uri release
+code matched a subsequently supplied MIT-0 notice in all8dist files).137 notices
+preserved now, with upstream provenance; initial supplied115 retained unchanged.
+Exact binary obligations/scope and unresolved wheel-build provenance are in
+[NATIVE_REDISTRIBUTION.md](NATIVE_REDISTRIBUTION.md). Dependency references in Git
+are distinct from native ELF in ignored/private ZIPs and browser-delivered JS.
+The chronological review below describes the earlier115-file checkpoint.
+
 115 supplied licence/NOTICE/AUTHORS files preserved byte-for-byte under third_party,
 with SHA256 provenance in its manifest. The actual Linux ZIP was inspected,
 including NumPy's libgfortran GPL3 with GCC exception and libquadmath LGPL2.1+

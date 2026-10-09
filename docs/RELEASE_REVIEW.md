@@ -3,6 +3,16 @@
 Continued from7a803eb. Working tree initially clean. No repository creation,
 publication, submission, model calls, AWS mutation or billing-setting changes.
 
+Follow-up from9acf1fe: all three build-tool notices now reconciled and137 full
+texts preserved. See NATIVE_REDISTRIBUTION.md for actual Git/frontend/ZIP contents,
+applicable redistribution conditions and precise remaining binary-provenance
+issues. The sections below are the previous checkpoint's chronological record,
+not a current claim that those three notices remain missing. A prepared wording/
+notice deployment first stopped at STS. After restored connectivity, read-only
+preflight passed but the single S3 PUT failed with ConnectionClosedError. Object
+state is unverified; no Lambda/Amplify update reached. Hosted verification remains
+pending; exact handoff is in AWS_APP.md. No retry or binary publication.
+
 ## Original Code and Third-party Materials
 
 The owner selected MIT for original AirWise Schools code. Root LICENSE uses

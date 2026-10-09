@@ -19,6 +19,7 @@ APP = 'd29v8cmldu93l3'
 BASE_SHA = '43f0c6d1bcfaa051db9f8f45f0502202faeec9f4d4ab95d1941bf3e60e435469'
 CONFIG = Config(connect_timeout=4, read_timeout=15, retries={'total_max_attempts': 1})
 RECORD = ROOT / 'work/features-deployment.json'
+STATIC = ROOT / 'work/airwise-web-features.zip'
 
 
 def package():
@@ -91,7 +92,7 @@ def update():
             raise RuntimeError('Lambda update observation timed out')
         save(status='LAMBDA_UPDATED')
         step = 'static_archive'
-        static = ROOT / 'work/airwise-web-features.zip'
+        static = STATIC
         if static.exists():
             raise RuntimeError('Static archive exists; inspect')
         assert 'https://lbckjkbfb4.execute-api.ap-southeast-2.amazonaws.com' in ''.join(p.read_text() for p in (ROOT / 'frontend/dist/assets').glob('*.js'))

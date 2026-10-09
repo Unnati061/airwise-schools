@@ -1,5 +1,52 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
+## Native Notices and Hosted Release Follow-up from 9acf1fe
+
+Three missing build-tool notices resolved using primary release/source records.
+change-case/binding notices use registry gitHeads; uri-js-replace's subsequently
+supplied MIT-0 notice was reconciled by all8installed dist files' exact Git blob
+hashes. No dependency upgrade/vendor code added.137 unchanged notice files now
+recorded; zero missing-installed-notice entries. Native notices supplemented for
+Coin-family EPL2, LGPL2.1, OpenSSL4.0.3, SCIP/SoPlex, Eigen/Boost and other build
+pins. Source pins/version strings are not reproducible-wheel attestations.
+docs/NATIVE_REDISTRIBUTION.md identifies exact applicable conditions and precise
+remaining source/relink/build/SBOM obligations for a downloadable binary release.
+
+Initial read-only Git artifact audit:17reachable commits,222unique historical
+paths,328blobs; no prohibited artifacts/private paths or ELF/PE/ZIP/GZIP magic.
+Ignore probes passed for ZIPs, env, venv/dependencies/caches/dist. Requirements/
+lock references and retained notice text are not executable dependencies.
+Actual frontend build has HTML/JS/CSS/notice only; runtime JS IS browser-delivered,
+native tools are not. Actual private app ZIP contains198ELF entries. No binaries
+deleted or Git history rewritten; proposed publication stays original-source-only.
+
+10focused preview/notice/artifact-rule tests passed, two existing warnings,5.34s.
+Initial new test failed CP1252 decoding upstream UTF8; corrected test uses bytes,
+not altered notice text. Production d2 build1907modules/4.10s; public notice
+284,227bytes/SHA256c873cedf671c89df0aa8f895f1b9da6dd17b6741ae6796cfcd0e45afa6ee568c.
+Prepared ZIP87,593,659compressed /241,241,650extracted bytes, including retained
+and supplemental notices; only message_preview.py changed in application code.
+Dependencies byte-preserved, SHA25610d1de90053d6ac22e4b0c8ec90033cb2fe43e5d36b625455eb8a39b6c9363f9.
+
+First single deployment preflight stopped at STS authentication ReadTimeoutError,
+before resource inspection/upload/update. No mutation reached, no API/role/CORS
+configuration changes, model calls or password resets. Prepared archive preserved;
+After the user's mobile-data confirmation, one bounded read-only STS/Lambda/
+Amplify preflight passed. The subsequent single S3 upload failed with
+ConnectionClosedError at artifact_upload_once. No Lambda/Amplify update reached;
+object creation/checksum is unverified because the upload response was lost.
+No retry performed. Exact console-upload handoff is in docs/AWS_APP.md.
+Public hosted notice/revised wording are NOT yet verified in this pass.
+Existing deployed7a803eb app remains intact. No GitHub publication/submission.
+
+Final focused rerun: 10 passed, two existing warnings, 11.38s. Staged-source
+scan: 252 tracked files, 328 prior reachable blobs; no recognized secret-pattern
+or private-path findings. Reachable-history artifact scan: 17 commits, 222 unique
+historical paths; no prohibited paths or ELF/PE/ZIP/GZIP magic. Both scans are
+limited detectors, not guarantees; reflogs/unreachable objects are excluded.
+Source-only publication is technically prepared with preserved notices; binary
+release clearance and the hosted notice/wording deployment are not complete.
+
 ## Release Review from 7a803eb
 
 Owner selected MIT for original code; root LICENSE added, third-party terms
