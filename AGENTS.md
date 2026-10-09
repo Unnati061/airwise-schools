@@ -21,8 +21,9 @@ Packet D1 adds a local authenticated interface only. No new AWS resources or
 deployment. See docs/INTERFACE.md; Vite proxies the local backend on port 8002.
 Docker is conditional on demonstrated ZIP native compatibility failure.
 Packet D2 authorizes the dedicated Sydney application Lambda/role/HTTP API and
-logs, reusing existing data/auth/model resources. See docs/AWS_APP.md. Upload is
-currently blocked: no repeated upload attempts or smoke Lambda changes. Measure
+logs, reusing existing data/auth/model resources. See docs/AWS_APP.md. Console
+upload is user-reported; authentication expired before verification. Do not rebuild
+or upload again, or change the smoke Lambda. Measure
 actual integration latency before deciding synchronous slow paths are adequate.
 
 From repository root (PowerShell):

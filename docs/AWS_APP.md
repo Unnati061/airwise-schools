@@ -1,6 +1,36 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
-## Actual state: blocked before application resource creation
+## Latest resume: blocked by expired authentication
+
+October 9, 2026 IST, resumed from commit `975d31f`. The user reports a successful
+console upload to the exact application object below, with expected size
+87,392,618 bytes. This attempt did not rebuild or upload anything.
+
+The first bounded read-only check, SDK STS GetCallerIdentity using profile
+`airwise` and explicit `ap-southeast-2`, failed before an authenticated response:
+`LoginRefreshRequired: Your session has expired or credentials have changed.
+Please reauthenticate using 'aws login'.`
+SDK limits were connect 4 seconds, read 12 seconds, one total attempt. No retry.
+Stopped at this failure as requested. HeadObject and resource-existence checks
+were not reached. Console upload success is user-reported, not independently
+verified: object size, S3 checksum and custom metadata remain unchecked. The
+earlier 404 below is historical, not evidence that the uploaded object is absent.
+
+Resources created in this resume: **none**. No D2 API URL is known. Existing D2
+resource presence was not rechecked; the previous checkpoint recorded none.
+No model calls, deployed workflow tests or latency measurements occurred. No
+application code/configuration, local ZIP, local app or smoke Lambda was changed.
+
+Next, privately refresh temporary browser authentication:
+```powershell
+aws login --profile airwise
+```
+Use Sydney (`ap-southeast-2`) if prompted. After sign-in, resume the exact-object
+size/checksum and collision checks before resource creation. Do not rebuild or
+upload again. No cloud cleanup is required for this attempt because no create
+operation ran; the scoped cleanup guidance below still applies to a future deploy.
+
+## Previous checkpoint: blocked before application resource creation
 
 Profile airwise / ap-southeast-2. Temporary assumed-role authentication passed.
 The planned application Lambda was absent; HTTP API listing was empty. Standard

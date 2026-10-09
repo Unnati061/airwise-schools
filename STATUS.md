@@ -1,6 +1,23 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
-## Packet D2 prepared checkpoint: upload blocked
+## Packet D2 resume: authentication expired
+
+Resumed from `975d31f` after user-reported console upload of the existing
+87,392,618-byte application ZIP to the documented exact S3 key. No rebuild/upload.
+First bounded SDK STS authentication check (airwise, ap-southeast-2; connect 4s,
+read 12s, one total attempt) failed with `LoginRefreshRequired`:
+"Your session has expired or credentials have changed. Please reauthenticate
+using 'aws login'." Stopped immediately; no retries or cloud mutations.
+
+S3 existence/size/checksum and existing D2 resource checks were not reached.
+No resources created in this attempt; prior checkpoint recorded none, current
+presence not rechecked. No API URL, deployed tests or latency results available.
+Local application, prepared ZIP and smoke Lambda unchanged. Documentation-only
+checkpoint; no application tests rerun because no code changed. Next: private
+`aws login --profile airwise`, then resume exact-object verification without upload.
+See docs/AWS_APP.md for the failure, remaining checks and cleanup scope.
+
+## Previous Packet D2 prepared checkpoint: upload blocked
 
 Fresh current-application Linux Python 3.12/x86_64 ZIP built without Docker:
 87,392,618 compressed / 240,716,360 extracted bytes including dependencies.
