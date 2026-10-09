@@ -1,6 +1,46 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
-## Packet D2 API deployed; browser verification stopped
+## Packet D2 deployed approval/execution workflow passed
+
+Resumed from `91e8824`. Reused existing D2-mode Vite process on port 5173;
+local HTTP 200 and a single in-script readiness request passed BEFORE Chrome
+opened. No resources recreated, ZIP rebuild/upload, deployment/policy changes,
+password resets or model calls. Default local-backend mode remains unchanged.
+
+Private real Cognito sign-in: synthetic-admin -> synthetic-teacher-a -> admin.
+Browser-based requests used the frontend's normal authenticated client against
+the existing Sydney API. Approved version `bfa79eb2-861e-4a14-8236-d5b11d669308`,
+bound to existing confirmed revision `62df717d-a334-41fc-964d-179267716257`,
+explicitly SYNTHETIC REPLAY. OR-Tools OPTIMAL, independent validation passed,
+baseline recommended, all 240 activities retained. Section 6A Monday period 2
+kept its period, substituted approved indoor movement and moved field -> room-6-a.
+Counts: 0 changed periods, 1 substitution, 0 deferrals, 1 room move.
+
+Approval and repeat approval 200; pointer and immutable approved read consistent.
+Teacher A saw 40 own assignments; approval, Teacher B assignments, confirmed
+inputs and audit-event reads all denied 403. New version initially unacknowledged.
+Acknowledgement 200 with no execution report; COULD_NOT_IMPLEMENT 200 for
+6-a:Mon-2. Identical repeated report preserved its timestamp and one total.
+Administrator Review API and visible React Review showed the exception: reported
+1, completed 0, could-not-implement 1, unresolved 1. History: 8 approved versions,
+46 audit events including this version's execution event. Persistence verified
+through separate deployed API requests and private sign-out/sign-in transitions.
+
+Browser wall-clock: draft 3,727ms; first approval 1,077ms; acknowledgement 1,282ms;
+first report 1,251ms; Review 1,889ms. No workflow failures in corrected run.
+A preparatory harness was cancelled before authentication/actions to fix a
+serialized browser-function variable scope issue; no AWS failure or mutation
+retry. Workflow-only mode skips paid analysis/restriction changes. Passwords and
+tokens were not read by the agent, logged or exported to result files/repository.
+
+74 backend tests passed (two existing warnings); Node syntax and default-mode
+frontend build passed. Remaining full-D2 gates: deployed live
+forecast, bounded Nova analysis, stale approval and ID-token negative checks,
+plus analysis/cold/warm integration measurements. This workflow test is NOT a
+complete D2 latency/reliability proof. See docs/AWS_APP.md for actual results,
+reproduction command, limitations and unchanged cleanup instructions.
+
+## Previous Packet D2 API deployed; browser verification stopped
 
 Resumed from ce0ed8c after private `aws login --profile airwise`. CLI STS passed:
 temporary assumed-role identity, account redacted; explicit Sydney throughout.

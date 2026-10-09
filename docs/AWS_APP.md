@@ -1,6 +1,101 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
-## Latest resume: deployed, authenticated verification incomplete
+## Latest resume from 91e8824: approval/execution verification passed
+
+October 9, 2026 IST. Reused the existing D2-mode Vite process (port 5173), verified
+local HTTP 200 and performed a single readiness GET inside the browser harness
+**before opening Chrome**. No resource creation/redeployment, ZIP rebuild/upload,
+policy/account/region changes, password resets or paid model calls. Existing
+API URL, configuration, code hash and cleanup scope below remain unchanged.
+
+Private Cognito password entry was performed by the user, in three pauses:
+synthetic-admin -> synthetic-teacher-a -> synthetic-admin. No password fill/read,
+browser traces, credential dumps or token export. The existing app keeps its
+normal tab-scoped session handling; test artifacts contain only safe results.
+
+### Actual deployed workflow results
+
+The test used browser-based calls through `/src/client.ts`'s normal authenticated
+client, not mocks, local backend requests or a caller-supplied role. It also
+clicked React's Review navigation and verified the report rendered. Mutation
+checks exercised real API calls in the browser; they did not separately exercise
+each approval/report form button. Private sign-in and Sign out used the real UI.
+
+- Existing confirmed revision: `62df717d-a334-41fc-964d-179267716257`, binding
+  **REPLAY**, preserved without changing restrictions or model interpretation.
+- New draft/approved plan: `bfa79eb2-861e-4a14-8236-d5b11d669308`.
+- OR-Tools on the actual application Lambda: **OPTIMAL**; independently valid;
+  recommendation **baseline**; all **240** original activities retained.
+- Only difference: `6-a:Mon-2` remains Monday period 2, moves `field` ->
+  `room-6-a`, uses explicitly approved `indoor-movement` alternative.
+  Deterministic counts: 0 changed periods, 1 substitution, 0 deferrals, 1 room move.
+- Administrator approval **200**. Repeat approval **200**, same version;
+  current pointer and immutable approved snapshot read back consistently.
+- Teacher A read **40** own assignments. New version initially unacknowledged.
+  Teacher approval **403**, Teacher B assignments **403**, administrator-only
+  `/inputs` **403**, `/audit-events` **403**. No permission bypass introduced.
+- Acknowledgement **200**; teacher reports still empty immediately afterward.
+  Execution report for `6-a:Mon-2`: **COULD_NOT_IMPLEMENT**, **200**, synthetic
+  classroom-unavailable note. Identical repeat report **200**, same timestamp,
+  exactly one execution record; no duplicate totals.
+- Administrator Review read **200** and visible React Review displayed the note.
+  Backend counts: reported 1, completed 0, could_not_implement 1,
+  needs_clarification 0, unresolved 1. Eight approved versions and 46 audit events
+  read, including this version's execution event; older versions retained.
+- Persistence checked through separate HTTP Lambda requests, read-back and
+  private sign-out/sign-in transitions. No forced Lambda restart was attempted.
+
+Browser wall-clock timings (network/client time included, not isolated Lambda
+integration measurements):
+
+| Operation | Status | Duration |
+| --- | --- | --- |
+| Administrator identity explicit read | 200 | 6,361 ms |
+| Draft generation and independent validation | 200 | 3,727 ms |
+| First approval | 200 | 1,077 ms |
+| Duplicate approval | 200 | 1,245 ms |
+| Teacher acknowledgement | 200 | 1,282 ms |
+| First execution report | 200 | 1,251 ms |
+| Duplicate execution report | 200 | 918 ms |
+| Administrator execution Review | 200 | 1,889 ms |
+
+The corrected workflow-only run exited **0**, with no unexpected HTTP failures.
+A preparatory harness process was intentionally cancelled before its authenticated
+checks/actions after spotting a serialized-function scope error. The mode value
+is now passed explicitly into the browser function. No failed cloud mutation was
+retried. The earlier frontend navigation failure was not reproduced once readiness
+was checked, but its original error code remains unknown.
+
+### Commands, limits and next checks
+
+```powershell
+# Existing server was reused; this is its normal mode/port command if stopped:
+node node_modules/vite/bin/vite.js --mode d2 --host 127.0.0.1 --port 5173 --strictPort
+# From repository root, with the server ready:
+$env:PLAYWRIGHT_MODULE='C:\Users\Ashwani\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright'
+$env:AIRWISE_WORKFLOW_ONLY='1'
+node scripts/check_d2_real.cjs
+.venv\Scripts\python -m pytest backend/tests -q
+node --check scripts/check_d2_real.cjs
+npm --prefix frontend run build
+git diff --check
+```
+Safe results/timings: ignored `work/d2-verification.json`. The full mode remains
+separate and unverified; workflow-only deliberately skips forecast/paid analysis,
+restriction revision, stale approval and ID-token rejection. Do not present the
+skipped ID-token check as a pass. The server-side role denial checks above ran.
+
+Local backend tests: **74 passed**, two existing Starlette/Mangum deprecation
+warnings; Node syntax and default-mode frontend build passed. No backend/auth/
+solver/validator code or generated contracts changed.
+Planning fit the 30-second HTTP integration limit in this measured request;
+this single run does not establish cold/warm reliability or analysis performance.
+Full D2 still needs actual deployed live forecast, one bounded Bedrock analysis,
+stale approval/ID-token checks and slow-path integration measurements before
+deciding whether durable jobs are required. No untracked background work added.
+Cleanup commands below remain applicable; none executed in this resume.
+
+## Previous resume: deployed, authenticated verification incomplete
 
 Resumed from `ce0ed8c`. `aws login --profile airwise` completed through private
 browser sign-in. `aws sts get-caller-identity --profile airwise --region

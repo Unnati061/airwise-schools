@@ -5,12 +5,16 @@ const path = require('node:path');
 const API = 'https://lbckjkbfb4.execute-api.ap-southeast-2.amazonaws.com';
 let stage = 'startup';
 const results = [];
+const workflowOnly = process.env.AIRWISE_WORKFLOW_ONLY === '1';
 (async () => {
+  // A single readiness request must succeed before opening the private browser.
+  const ready = await fetch('http://127.0.0.1:5173/', { signal: AbortSignal.timeout(10000) });
+  if (!ready.ok) throw new Error('Frontend is not ready');
   const browser = await chromium.launch({ headless: false, channel: 'chrome', args: ['--start-maximized'] });
   const page = await browser.newPage({ viewport: null });
   page.setDefaultTimeout(90000);
   // Retain an ID token only in browser memory for the negative token-use check.
-  await page.addInitScript(() => {
+  if (!workflowOnly) await page.addInitScript(() => {
     const original = window.fetch;
     window.fetch = async (...args) => {
       const response = await original(...args);
@@ -37,7 +41,8 @@ const results = [];
     stage = 'local frontend navigation';
     await page.goto('http://127.0.0.1:5173');
     await login('administrator');
-    await check('administrator and ID-token rejection', async api => {
+    await check(workflowOnly ? 'administrator access' : 'administrator and ID-token rejection', async config => {
+      const { api, workflowOnly } = config;
       const client = await import('/src/client.ts');
       window.__d2Timings = [];
       window.__d2Call = async (p, method = 'GET', body, expected = 200) => {
@@ -48,6 +53,7 @@ const results = [];
           if (expected !== 200) throw new Error('Expected denial did not occur');
           return value;
         } catch (e) {
+          if (expected === 200 || e.status !== expected) window.__d2Failure = { path: p, status: e.status ?? null, error_type: e.name, duration_ms: Math.round(performance.now() - start) };
           if (!e.status || e.status !== expected) throw e;
           window.__d2Timings.push({ path: p, status: e.status, duration_ms: Math.round(performance.now() - start) });
           return null;
@@ -55,12 +61,19 @@ const results = [];
       };
       const actor = await window.__d2Call('/me');
       if (actor.role !== 'administrator') throw new Error('Administrator required');
+      if (workflowOnly) return { role: actor.role, id_token_status: 'not rerun in workflow-only mode' };
       if (!window.__d2IDToken) throw new Error('No ID token available for negative check');
       const response = await fetch(api + '/me', { headers: { Authorization: 'Bearer ' + window.__d2IDToken } });
       window.__d2IDToken = null;
       if (response.status !== 403) throw new Error('ID-token rejection failed');
       return { role: actor.role, id_token_status: response.status };
-    }, API);
+    }, { api: API, workflowOnly });
+    if (workflowOnly) {
+      await check('existing confirmed input', async () => {
+        window.__d2 = { confirmed: await window.__d2Call('/inputs') };
+        return { input_revision: window.__d2.confirmed.revision, evidence_mode: window.__d2.confirmed.evidence_binding?.mode || 'MANUAL' };
+      });
+    } else {
     await check('live regional forecast', async () => {
       const live = await window.__d2Call('/evidence/forecast?mode=LIVE');
       if (live.snapshot.mode !== 'LIVE' || live.freshness !== 'FRESH' || live.observations_available !== false) throw new Error('Live provenance/freshness mismatch');
@@ -99,6 +112,7 @@ const results = [];
       await window.__d2Call('/draft-plans/' + d.stale.id + '/approve', 'POST', undefined, 409);
       return { input_revision: d.confirmed.revision, evidence_mode: d.confirmed.evidence_binding.mode, stale_approval_status: 409, old_approved_pointer_preserved: true };
     });
+    }
     await check('repair, independent validation, approval and persistence', async () => {
       const d = window.__d2;
       d.plan = await window.__d2Call('/draft-plans', 'POST', d.confirmed.input);
@@ -121,7 +135,10 @@ const results = [];
       await window.__d2Call('/draft-plans/' + version + '/approve', 'POST', undefined, 403);
       await window.__d2Call('/teachers/teacher-6-b/assignments', 'GET', undefined, 403);
       const assignments = await window.__d2Call('/teachers/teacher-6-a/assignments');
-      if (assignments.plan_version !== version || assignments.acknowledged || assignments.evidence_mode !== 'REPLAY') throw new Error('Teacher version/acknowledgement mismatch');
+      const expectedMode = window.__d2.confirmed.evidence_binding?.mode || 'MANUAL';
+      if (assignments.plan_version !== version || assignments.acknowledged || assignments.evidence_mode !== expectedMode) throw new Error('Teacher version/acknowledgement mismatch');
+      await window.__d2Call('/inputs', 'GET', undefined, 403);
+      await window.__d2Call('/audit-events', 'GET', undefined, 403);
       return { teacher_id: actor.teacher_id, assignments: assignments.assignments.length, approval_status: 403, other_teacher_status: 403, acknowledged_before_action: false };
     }, version);
     await check('separate acknowledgement and idempotent execution report', async version => {
@@ -155,7 +172,8 @@ const results = [];
     process.exitCode = 1;
   } finally {
     const timings = await page.evaluate(() => window.__d2Timings || []).catch(() => []);
-    fs.writeFileSync(path.join(__dirname, '../work/d2-verification.json'), JSON.stringify({ results, timings }, null, 2));
+    const failedRequest = await page.evaluate(() => window.__d2Failure || null).catch(() => null);
+    fs.writeFileSync(path.join(__dirname, '../work/d2-verification.json'), JSON.stringify({ workflow_only: workflowOnly, results, timings, failed_request: failedRequest }, null, 2));
     console.log('Safe results recorded in work/d2-verification.json');
     await browser.close();
   }
