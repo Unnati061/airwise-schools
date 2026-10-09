@@ -525,6 +525,8 @@ export interface components {
             label: string;
             /** Kind */
             kind: string;
+            /** Duration Minutes */
+            duration_minutes?: number | null;
             /** Room Types */
             room_types: ("classroom" | "outdoor" | "lab")[];
             /** Original Period Id */
@@ -670,6 +672,7 @@ export interface components {
             approval: components["schemas"]["ApprovedPlan"];
             plan: components["schemas"]["DraftPlan"];
             evidence_binding?: components["schemas"]["EvidenceBinding"] | null;
+            message_preview?: components["schemas"]["MessagePreview"] | null;
         };
         /** Assignment */
         Assignment: {
@@ -909,6 +912,8 @@ export interface components {
         };
         /** ExecutionInput */
         ExecutionInput: {
+            /** Request Id */
+            request_id?: string | null;
             /**
              * Status
              * @enum {string}
@@ -922,6 +927,8 @@ export interface components {
         };
         /** ExecutionReport */
         ExecutionReport: {
+            /** Request Id */
+            request_id?: string | null;
             /**
              * Status
              * @enum {string}
@@ -952,6 +959,7 @@ export interface components {
             /** Unresolved Activity Ids */
             unresolved_activity_ids: string[];
             counts: components["schemas"]["ExecutionCounts"];
+            outdoor_metrics?: components["schemas"]["OutdoorMetrics"] | null;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -994,6 +1002,30 @@ export interface components {
             /** Restrictions */
             restrictions: string;
         };
+        /** MessagePreview */
+        MessagePreview: {
+            /**
+             * Preview Only
+             * @default true
+             * @constant
+             */
+            preview_only: true;
+            /** Plan Version */
+            plan_version: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "LIVE" | "REPLAY" | "MANUAL";
+            /** Calendar Date */
+            calendar_date: string | null;
+            /** Needs Review */
+            needs_review: boolean;
+            /** English */
+            english: string;
+            /** Hindi */
+            hindi: string;
+        };
         /** NoticeInterpretation */
         NoticeInterpretation: {
             /** Affected Dates */
@@ -1006,6 +1038,34 @@ export interface components {
             citation_ids: string[];
             /** Ambiguities */
             ambiguities: string[];
+        };
+        /** OutdoorMetrics */
+        OutdoorMetrics: {
+            /** Available */
+            available: boolean;
+            /** Missing Duration Activity Ids */
+            missing_duration_activity_ids: string[];
+            /** Original Restricted Outdoor Student Hours */
+            original_restricted_outdoor_student_hours: number | null;
+            /** Approved Restricted Outdoor Student Hours */
+            approved_restricted_outdoor_student_hours: number | null;
+            /** Planned Indoor Substitution Student Hours */
+            planned_indoor_substitution_student_hours: number | null;
+            /** Teacher Reported Completed Indoor Student Hours */
+            teacher_reported_completed_indoor_student_hours: number | null;
+            /** Unknown Indoor Execution Student Hours */
+            unknown_indoor_execution_student_hours: number | null;
+            /**
+             * Duration Basis
+             * @default SYNTHETIC_DECLARED_ACTIVITY_MINUTES
+             * @constant
+             */
+            duration_basis: "SYNTHETIC_DECLARED_ACTIVITY_MINUTES";
+            /**
+             * Limitation
+             * @default Synthetic timetable accounting and teacher self-reports, not measured exposure reduction or health benefit. Deferrals and acknowledgements are not completed indoor substitutions.
+             */
+            limitation: string;
         };
         /** Period */
         Period: {

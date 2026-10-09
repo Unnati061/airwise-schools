@@ -5,6 +5,30 @@ attribution, **not** an exhaustive transitive licence audit or project licence
 grant. Preserve distribution notices; review locked dependencies before publishing.
 The owner must intentionally select any licence for original project code.
 
+## Follow-up Release Review
+
+Reviewed metadata for all31 pinned Python runtime distributions and55 installed
+npm packages; all had licence declarations. No dependencies were added. NumPy
+declares BSD-3-Clause/0BSD/MIT/Zlib/CC0-1.0 components; python-dateutil declares
+dual BSD/Apache licensing. Cryptography is Apache-2.0 OR BSD-3-Clause; cffi MIT-0,
+typing_extensions PSF-2.0. These declarations are not a full bundled-native
+notice/legal compatibility audit: review OR-Tools/NumPy/awscrt/cryptography
+distribution notices and preserve required attribution before public release.
+English/Hindi templates are authored project code, not third-party translation.
+
+Read-only scripts/release_scan.py scans currently tracked file contents and every
+reachable unique Git blob using bounded patterns for AWS access IDs, JWT literals,
+private keys, GitHub tokens, credential URLs and quoted secret assignments.
+It reports only locations/kinds, never matched values. After staging all intended
+files:101 tracked working files and184 reachable unique history blobs, zero
+pattern matches and zero private-path findings. A post-commit scan covers the new
+commit as well; its blob count increases with this checkpoint.
+Ignored work/env/cache files, credential caches, remote secrets and unreachable
+objects/reflogs are excluded. No entropy scan or credential validation: absence
+of these patterns is not proof of absence of every secret/private document.
+Owner still reviews content/history and chooses an original-code licence; no
+public repository, visibility change, push or submission was performed.
+
 ## AI Assistance
 
 Codex assisted code, tests, packaging, AWS tooling, browser-check harnesses,

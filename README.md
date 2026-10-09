@@ -21,7 +21,8 @@ Enter passwords privately. Do not reset demo passwords just to run the app.
    status and independent validation. Approval checks permissions and versions.
 4. **Teacher inbox:** read only your approved assignments, acknowledge their
    version, then separately report execution or an exception.
-5. **Review:** inspect deterministic counts, exceptions, approvals and history.
+5. **Review:** inspect counts, exceptions, history, declared-duration student-hours
+   and administrator-reviewed English/Hindi previews (copy/download, never send).
 
 CP-SAT retains every activity and enforces section/teacher/room constraints,
 fixed lessons and explicitly permitted alternatives. Its five-second total budget
@@ -59,6 +60,8 @@ One actual Sydney `amazon.nova-lite-v1:0` analysis succeeded: 773 input / 197 ou
 tokens; **2,392 ms browser request**, 978 ms handler, 992 ms Gateway integration.
 These are request-path timings, not isolated Bedrock-service latency. The prior
 verification ran **76 backend tests**, production build and browser checks.
+The subsequent deployed recovery/previews/metrics pass ran **85 backend tests**
+and actual private admin/teacher checks, including safe report receipt reuse.
 [STATUS.md](STATUS.md) distinguishes those results from this documentation pass.
 
 ## Evidence and Limits
@@ -134,6 +137,9 @@ No GitHub repository exists yet (owner-confirmed October 9, 2026); this checkout
 has no Git remote. Publication and submission remain manual owner actions.
 Current [event rules](https://www.wemakedevs.org/aws/env/rules) require public
 source and a YouTube demo under three minutes showing AWS; these are incomplete.
-Bilingual previews/outdoor student-hour metrics, SQS/background jobs and automatic
-evidence revisions are not implemented. See the audit rather than treating the
-whole planning blueprint as shipped.
+Bilingual previews and synthetic student-hour accounting are deployed;
+[feature completion](docs/FEATURE_COMPLETION.md) records scope and limits.
+These hours distinguish planned indoor substitution from teacher self-reported
+completion, not measured exposure or health effects. SQS/background jobs and
+automatic evidence revisions remain absent. See the audit rather than treating
+the whole planning blueprint as shipped.

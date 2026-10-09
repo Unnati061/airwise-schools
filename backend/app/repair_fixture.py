@@ -20,7 +20,7 @@ def synthetic_week() -> RepairInput:
         for p in periods:
             activities.append({"id": f"{s['id']}:{p['id']}", "section_id": s["id"],
                                "teacher_id": f"teacher-{s['id']}", "label": "Synthetic classroom lesson",
-                               "kind": "lesson", "room_types": ["classroom"],
+                               "kind": "lesson", "duration_minutes": 40, "room_types": ["classroom"],
                                "original_period_id": p["id"], "original_room_id": f"room-{s['id']}",
                                "permitted_period_ids": [q["id"] for q in periods if q["day"] == p["day"]],
                                "permitted_room_ids": [f"room-{s['id']}"],

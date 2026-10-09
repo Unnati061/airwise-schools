@@ -1,5 +1,53 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
+## Recovery, Previews and Metrics Deployed
+
+Continued from `1b8c067`; three requested follow-ups complete on the existing
+Sydney app. Safe explicit approval/ack/report retries preserve the original
+request; new report UUID receipts are atomic, replay-safe across restart and
+do not overwrite later reports. Expired model PENDING claims fail closed without
+a second paid call. English/Hindi administrator-reviewed previews support copy
+and UTF-8 download, never sending. Declared synthetic duration/section-size
+student-hours distinguish planned substitution, reported completion and unknown
+execution; missing historical durations are unavailable, not defaulted to zero.
+
+Actual hosted private Cognito admin -> teacher A -> admin flow passed. New
+approved version `110a2908-9343-4747-9fd5-47398492b0ac`: generation/validation/
+approval and repeat approval passed; preview review gate passed. Teacher ack
+remained separate from COMPLETED; replaying its exact UUID returned the same
+timestamp. Teacher approval, administrator preview and another teacher's
+assignments denied403. Admin Review: one reported/one completed/no unresolved;
+20 original restricted outdoor student-hours, zero approved outdoor,20 planned
+indoor,20 teacher-reported completed,zero unknown. Synthetic timetable accounting,
+not measured exposure reduction or health benefit. Private logout completed.
+
+The authenticated demonstration added explicit40minute durations only to missing
+mutable input fields, preserving restrictions/IDs; new revision was MANUAL with
+no bound calendar date. Previews explicitly disclose date unspecified; older
+evidence-bound approved versions remain immutable. No fresh interpretation,
+legal inference, Bedrock call or messaging. Desktop1440x960/mobile390x844 layouts
+passed both controlled and actual hosted checks, without page overflow.
+
+85 backend tests passed (two existing warnings), generated API types and d2
+production build passed. Controlled Chrome checks simulated a lost approval/
+report503 then replayed the same request successfully; no real fault injection.
+Initial build raced unfinished type generation; completed sequential build passed.
+Existing Lambda update verified SHA256 against local ZIP:87,395,863compressed /
+240,725,058extracted bytes. Python3.12/x86_64,1024MB,28s,concurrency5 unchanged.
+One checksum-verified private S3 upload; existing Amplify/main job2 SUCCEED.
+No new resources, policies, auth/CORS changes, dependencies, Docker or model calls.
+See docs/FEATURE_COMPLETION.md for hash/key, commands, tests and cleanup scope.
+
+Release review: tracked working files and all reachable Git-history blobs scanned
+for bounded secret patterns; results in docs/ATTRIBUTION.md. Not an entropy scan,
+remote validation or comprehensive guarantee; ignored private files/caches were
+not inspected. All31 pinned runtime Python and55 installed npm packages had
+licence declarations; bundled native/transitive notice review and intentional
+original-code licence selection remain owner actions. No public repo created,
+push, video publication or submission. Browser-refresh unfinished-form recovery,
+professional Hindi review, wider latency/security coverage, jobs and automatic
+evidence revision remain limitations. Historical sections below are unchanged.
+
 ## Blueprint Audit from d4120e2
 
 Read the full owner-supplied blueprint and its revision, AGENTS/status/product/

@@ -1,5 +1,17 @@
 # Amplify Hosting - October 9, 2026 IST
 
+## Verified Follow-up
+
+Follow-up from1b8c067 reused this app/main; manual job2 SUCCEED, staticZIP89,012
+bytes. No frontend secrets, dependency/auth/CORS changes or new resources.
+Existing Lambda also updated; exact artifact/checksum in FEATURE_COMPLETION.md.
+Actual private admin -> teacher A -> admin sign-in passed approval, reviewed
+English/Hindi previews, acknowledgement/completion, UUID receipt replay,
+administrator Review and three teacher permission denials. Actual1440x960 and
+390x844 pages had no horizontal overflow. Signed out after verification; no
+password resets/token export. Zero paid model calls. Previous analysis timing
+below is historical, not repeated or a new benchmark. Existing cleanup unchanged.
+
 ## Actual deployment
 
 Public application: **https://main.d29v8cmldu93l3.amplifyapp.com**

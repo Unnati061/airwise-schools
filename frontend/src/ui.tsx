@@ -31,14 +31,20 @@ export function useAction() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [notice, setNotice] = useState('');
-  async function run<T>(operation: () => Promise<T>, success: (result: T) => void, message: string) {
+  const [retry, setRetry] = useState<(() => void) | null>(null);
+  async function run<T>(operation: () => Promise<T>, success: (result: T) => void, message: string, safeRetry = false) {
     if (lock.current) return;
-    lock.current = true; setBusy(true); setError(null); setNotice('');
+    lock.current = true; setBusy(true); setError(null); setNotice(''); setRetry(null);
     try { const result = await operation(); success(result); setNotice(message); }
-    catch (error) { setError(error instanceof Error ? error : new Error('Request failed.')); }
+    catch (error) {
+      setError(error instanceof Error ? error : new Error('Request failed.'));
+      if (safeRetry && error instanceof ApiError && [0, 500, 502, 503, 504].includes(error.status)) {
+        setRetry(() => () => { void run(operation, success, message, true); });
+      }
+    }
     finally { lock.current = false; setBusy(false); }
   }
-  return { busy, error, notice, run };
+  return { busy, error, notice, run, retry };
 }
 
 export function ErrorNotice({ error }: { error: Error | null }) {
@@ -46,9 +52,9 @@ export function ErrorNotice({ error }: { error: Error | null }) {
   const status = error instanceof ApiError ? error.status : 0;
   return <div role="alert" className="notice danger"><AlertCircle size={18} /><div><strong>{status === 403 ? 'Access denied' : status === 409 ? 'Version or evidence conflict' : status === 429 ? 'Daily analysis allowance reached' : 'Request could not be completed'}</strong><p>{error.message}</p>{status === 409 && <p>Refresh the current inputs and status. A newer revision requires a new draft and approval.</p>}</div></div>;
 }
-export function ActionNotice({ action }: { action: ReturnType<typeof useAction> }) { return <><ErrorNotice error={action.error} />{action.notice && <div role="status" className="notice success"><CheckCircle2 size={18} />{action.notice}</div>}{action.busy && <p role="status">Request in progress...</p>}</>; }
+export function ActionNotice({ action }: { action: ReturnType<typeof useAction> }) { return <><ErrorNotice error={action.error} />{action.retry && <button className="secondary" disabled={action.busy} onClick={action.retry}><RefreshCw size={16} />Retry the same request</button>}{action.notice && <div role="status" className="notice success"><CheckCircle2 size={18} />{action.notice}</div>}{action.busy && <p role="status">Request in progress...</p>}</>; }
 export function Loading({ label = 'Loading school records...' }: { label?: string }) { return <p role="status" className="loading">{label}</p>; }
-export function ResourceState({ resource }: { resource: { loading: boolean; error: Error | null; reload: () => void } }) { return <>{resource.loading && <Loading />}{resource.error && <><ErrorNotice error={resource.error} /><button className="secondary" onClick={resource.reload}><RefreshCw size={16} />Retry loading</button></>}</>; }
+export function ResourceState({ resource }: { resource: { loading: boolean; error: Error | null; reload: () => void } }) { return <>{resource.loading && <Loading />}{resource.error && <><ErrorNotice error={resource.error} /><button className="secondary" disabled={resource.loading} onClick={resource.reload}><RefreshCw size={16} />Retry loading</button></>}</>; }
 export function Heading({ title, children }: { title: string; children?: ReactNode }) { return <div className="page-heading"><h1>{title}</h1><div className="toolbar">{children}</div></div>; }
 export function Refresh({ onClick, disabled = false, label = 'Refresh records' }: { onClick: () => void; disabled?: boolean; label?: string }) { return <button className="icon-button" title={label} aria-label={label} disabled={disabled} onClick={onClick}><RefreshCw size={18} /></button>; }
 export function Empty({ children }: { children: ReactNode }) { return <div className="empty">{children}</div>; }

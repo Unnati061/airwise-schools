@@ -4,9 +4,10 @@
 
 The complete authenticated core workflow is deployed on AWS with five React views;
 later HOSTING.md/STATUS.md verification supersedes local-only descriptions below.
-The broader blueprint is not fully delivered: English/Hindi previews, outdoor
-student-hour metrics, automatic evidence revisions and asynchronous jobs are
-absent. BLUEPRINT_AUDIT.md records all missing/partial/unverified requirements;
+The broader blueprint is not fully delivered: automatic evidence revisions and
+asynchronous jobs are absent. English/Hindi reviewed previews and synthetic
+student-hour accounting are deployed; no message delivery or exposure claims.
+BLUEPRINT_AUDIT.md records all missing/partial/unverified requirements;
 do not implement them merely to make the planning document appear complete.
 School data remains synthetic, single-period and one affected day. Regional
 forecasts are not station observations; approval remains a human decision.

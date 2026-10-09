@@ -1,5 +1,14 @@
 # Blueprint Audit - October 9, 2026 IST
 
+Follow-up from `1b8c067` implements durable report retry receipts/expired pending
+recovery, deterministic reviewed English/Hindi previews and declared-duration
+outdoor student-hour accounting. See FEATURE_COMPLETION.md/STATUS for actual
+checks/deployment. The original baseline mapping below is historical where it
+labels these three requested features missing; it is not a current missing claim.
+Other deferred jobs, observation feeds, automatic evidence revision, displacement
+tie-breaker and security/reliability limits remain. Existing snapshots with unknown
+duration remain explicitly unavailable, not assigned retroactive values.
+
 Baseline `d4120e2`, clean checkout. Planning source inspected:
 `AirWise-Schools-Build-Blueprint.md`, SHA-256
 `52ab95deb9c65e03e2cb925d29d6805dfbb10f2f94c3b48350013de0f78613c2`.
@@ -32,11 +41,11 @@ original blueprint has NOT shipped.
 
 ### Optional for Submission (Blueprint Gaps, Not Claimed as Delivered)
 
-- **P1 / missing kept feature:** reviewed English/Hindi previews/copy/download.
-  The revised blueprint kept these; the current packets did not implement them.
-- **P1 / missing metrics:** original/approved/implemented outdoor student-hours,
-  preserved-activity and acknowledgement summary totals. Periods have no clock
-  durations; never invent minutes, exposure reduction or health effects.
+- **Completed follow-up:** reviewed English/Hindi preview/copy/download; no sending.
+- **Completed follow-up:** original/approved outdoor student-hours, planned indoor
+  substitutions versus teacher-reported completion using declared synthetic40min
+  durations. Old duration unknown, preserved/aggregate acknowledgement totals and
+  partial-period clock windows remain outside this implementation.
 - **P1 / partial:** forecast retrieval alone does not mark approval for review;
   confirmed input/restriction/room revisions do. No automatic evidence revision.
 - **P1 / unverified hosted edge cases:** room-availability revision, ambiguous/
@@ -44,8 +53,9 @@ original blueprint has NOT shipped.
   UNKNOWN have local coverage, not all hosted UI demonstrations.
 - **P1 / partial:** grounded explanation API exists and had a real local model
   demonstration; hosted Plan shows deterministic differences, not that model path.
-- **P1 / partial robustness:** no stale PENDING recovery, durable jobs, bounded
-  history pagination, global logout revocation or MFA.
+- **P1 / partial robustness:** expired PENDING now fails safely without a paid
+  retry; report UUID receipts protect late retries. Durable jobs, bounded history,
+  global logout revocation/MFA and cross-refresh unsaved form recovery remain.
 - **P2 / unverified:** real valid wrong-client/expired JWT at Gateway, burst429,
   wider cold/warm latency. No load tests authorized here.
 - **P2 / missing safeguard:** proposed budget alerts not verified; creating them
@@ -87,7 +97,7 @@ neither is silently presented as original-blueprint compliance.
 | Review: planned/reported/exception/evidence/approval history | Verified counts/history/bindings; no outdoor-hour or forecast-comparison metric. |
 | Must-ship provenance, restriction planning, solver/validator, authenticated approval, durable reports, AWS, replay, demo | Core verified HOSTING/AWS_APP/WORKFLOW/EVIDENCE; video missing. |
 | Revised keep: stale approval, room-unavailable revision, permissions, timestamps | Code/local tests verified; stale/permissions deployed; room update API exists, no dedicated room-editor UI. |
-| Revised keep: bilingual previews | Missing, disclosed; not necessary for current submission rules. |
+| Revised keep: bilingual previews | Follow-up deployed/privately verified: reviewed English/Hindi preview/copy/download, never sending. |
 | Conditional second preference, forecast chart, automatic refresh | Deferred per user scope, no paired observations. |
 | Exclude fire/routes/parent delivery/closures/crawling/OCR/medical/multi-school/indoor estimates | Preserved, no implementation/claims. |
 | October8-10 milestones/freeze, October11 buffer, short packets | Planning targets, not authoritative hours or guaranteed completion; packet history retained. |
@@ -147,7 +157,7 @@ neither is silently presented as original-blueprint compliance.
 | Bounded readonly evidence/timetable/diff/validation agent tools, no approve/report/send/shell tools | Changed no agent tools/loop, fixed provider supplied facts, no tool capability. |
 | <=4calls/job incl repair, capped inputs/output/check each call | Stricter one provider call/operation, no schema repair; payload14KB/notice3000/output700tokens. No job abstraction. |
 | Grounded explanation, deterministic totals | API/local actual model path verified; independent fact IDs/deterministic wording; hosted Plan displays deterministic change reasons only. |
-| Reviewed English/Hindi dates/messages, preview/copy/download only | Missing bilingual/messages; no delivery (scope exclusion preserved). |
+| Reviewed English/Hindi dates/messages, preview/copy/download only | Follow-up deployed/privately verified; immutable approved facts, explicit missing-date/replay labels, local review gate. Translation certification/durable wording review not claimed. |
 
 ### Solver (Section 6)
 
@@ -179,7 +189,7 @@ neither is silently presented as original-blueprint compliance.
 | Approval expected versions/actor/time/current/audit atomic; teacher cannot approve; duplicate safe | Verified transactions/local concurrency test, deployed duplicate/role denial; real simultaneous cloud race not tested. |
 | New evidence/restriction/room closure review marker, no silent replacement, new version/new ack | Partial confirmed input changes mark review; raw forecast fetch does not. Version boundary tests passed. |
 | Separate ack/execution statuses, admin resolution/revision, actor/time/activity/version/audit | Verified workflow, hosted exception and local resolution/reopening tests; audit append-only through app, not tamper-proof. |
-| Restricted outdoor student-hours via interval intersection, planned vs implemented, unknown execution | Missing durations/hours; current report counts do not infer health or exposure. |
+| Restricted outdoor student-hours via interval intersection, planned vs implemented, unknown execution | Follow-up deployed/privately verified for whole single-period restrictions and declared synthetic minutes/section sizes; planned indoor vs assigned-version COMPLETED/unknown separate. No partial-clock/multi-period support or measured exposure/health claim. Historical missing duration means unavailable. |
 | Changed periods/preserved activities/substitutions/deferrals/ack/unresolved totals, count each once | Partial change/unique report/exception counts and individual ack; no preserved/aggregate ack totals. |
 | Pre-target forecast paired later observations, unit/window/location/time/coverage, MAE/missing | Deferred conditional; no station pairs/chart/MAE or hindsight accuracy fabricated. |
 | No health/cleaner indoorair/dose/emissions claims | Preserved UI/docs; operational metrics only. |

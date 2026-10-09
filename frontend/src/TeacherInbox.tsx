@@ -9,6 +9,7 @@ export default function TeacherInbox({ actor }: { actor: Actor }) {
   const [selected, setSelected] = useState<Schema<'Assignment'> | null>(null);
   const [status, setStatus] = useState<Schema<'ExecutionInput'>['status'] | ''>('');
   const [note, setNote] = useState('');
+  const [requestId, setRequestId] = useState('');
   const acknowledgement = useAction(), reporting = useAction();
   const resource = useResource(async () => {
     const history = await api<Schema<'PlanVersionSummary'>[]>('/approved-plans');
@@ -27,17 +28,18 @@ export default function TeacherInbox({ actor }: { actor: Actor }) {
   const rows = assignments?.assignments.filter(a => a.placement.deferred || a.placement.period_id?.startsWith(`${selectedDay}-`)).sort((a, b) => (a.placement.period_id || '').localeCompare(b.placement.period_id || '') || a.activity_id.localeCompare(b.activity_id)) ?? [];
   function acknowledge() {
     if (!assignments) return;
-    void acknowledgement.run(() => api<Schema<'Acknowledgement'>>(`/approved-plans/${assignments.plan_version}/acknowledgements`, 'POST'), resource.reload, 'Acknowledgement recorded. It does not report execution.');
+    void acknowledgement.run(() => api<Schema<'Acknowledgement'>>(`/approved-plans/${assignments.plan_version}/acknowledgements`, 'POST'), resource.reload, 'Acknowledgement recorded. It does not report execution.', true);
   }
   function openReport(assignment: Schema<'Assignment'>) {
     const previous = data?.reports.find(r => r.activity_id === assignment.activity_id);
     setSelected(assignment); setStatus(previous?.status || ''); setNote(previous?.note || '');
+    setRequestId(crypto.randomUUID());
   }
   function report(event: FormEvent) {
     event.preventDefault();
     if (!selected || !assignments || !status) return;
-    const body: Schema<'ExecutionInput'> = { status, note };
-    void reporting.run(() => api<Schema<'ExecutionReport'>>(`/approved-plans/${assignments.plan_version}/activities/${encodeURIComponent(selected.activity_id)}/report`, 'PUT', body), () => { setSelected(null); resource.reload(); }, 'Execution report saved for this activity and plan version.');
+    const body: Schema<'ExecutionInput'> = { status, note, request_id: requestId };
+    void reporting.run(() => api<Schema<'ExecutionReport'>>(`/approved-plans/${assignments.plan_version}/activities/${encodeURIComponent(selected.activity_id)}/report`, 'PUT', body), () => { setSelected(null); resource.reload(); }, 'Execution report saved for this activity and plan version.', true);
   }
   return <><Heading title="Teacher inbox"><Refresh onClick={resource.reload} disabled={acknowledgement.busy || reporting.busy} /></Heading><p className="lead">Your approved assignments · {actor.teacher_id}</p><ResourceState resource={resource} /><ActionNotice action={acknowledgement} />{!selected && <ActionNotice action={reporting} />}
     {data && !assignments && <Empty>No approved assignments are available yet.</Empty>}

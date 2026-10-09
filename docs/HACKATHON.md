@@ -135,12 +135,18 @@ hours; check the actual form/organizer announcements, registration/eligibility
 and official opening compliance. Do not alter history to conceal dates.
 
 [BLUEPRINT_AUDIT.md](BLUEPRINT_AUDIT.md) distinguishes coverage from gaps:
-English/Hindi previews and outdoor student-hour metrics are not implemented;
-there is no SQS/DLQ, ECR/container or automatic evidence-driven revision.
+English/Hindi administrator-reviewed previews and declared-duration synthetic
+student-hour metrics are now deployed. The follow-up actual hosted workflow
+passed acknowledgement, completion, duplicate receipt reuse and three permission
+denials;85 backend tests passed. It showed20 planned indoor student-hours and20
+teacher-reported completed, not measured exposure reduction. Previews are not
+sent; date-unspecified MANUAL revisions require administrator review. See
+[FEATURE_COMPLETION.md](FEATURE_COMPLETION.md). There is no SQS/DLQ,
+ECR/container or automatic evidence-driven revision.
 The synchronous ZIP path is the implemented architecture. Fresh forecast retrieval
 alone does not mark approval for review; confirmed input changes do.
 [ATTRIBUTION.md](ATTRIBUTION.md) records principal licences/source credits, not
-a comprehensive licence or historical secret audit. These omissions must not be
+a comprehensive licence or secret-audit guarantee. These omissions must not be
 presented as implemented features.
 
 No GitHub repository exists yet (owner-confirmed October 9, 2026); `git remote -v`

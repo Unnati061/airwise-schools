@@ -216,6 +216,19 @@ class Workflow:
 
     def report(self, actor, version, activity_id, body):
         self.teacher(actor, actor.teacher_id)
+        request_key = f"REPORT_REQUEST#{version}#{activity_id}#{body.request_id}" if body.request_id else None
+        def receipt():
+            saved = self.store.read(actor.school_id, request_key) if request_key else None
+            if saved:
+                result = ExecutionReport.model_validate(saved)
+                if result.actor != actor.sub or result.teacher_id != actor.teacher_id:
+                    raise HTTPException(403, "Teacher assignment access denied")
+                if result.status != body.status or result.note != body.note:
+                    raise HTTPException(409, "Report request ID reused with different content")
+                return result
+        existing_receipt = receipt()
+        if existing_receipt:
+            return existing_receipt
         state = self.state(actor)
         if state["current"] != version:
             raise HTTPException(409, "Report requires the current approved version")
@@ -228,18 +241,24 @@ class Workflow:
             raise HTTPException(422, "Deferred activity cannot be reported completed")
         key = f"REPORT#{version}#{activity_id}"
         old = self.store.read(actor.school_id, key)
-        if old and old["status"] == body.status and old["note"] == body.note:
+        if not request_key and old and old["status"] == body.status and old["note"] == body.note:
             return ExecutionReport.model_validate({k: v for k, v in old.items() if k != "etag"})
         report = ExecutionReport(**body.model_dump(), actor=actor.sub, teacher_id=actor.teacher_id,
                                  timestamp=now(), activity_id=activity_id, plan_version=version)
-        document = {**report.model_dump(), "etag": str(uuid4())}
+        document = {**report.model_dump(mode="json"), "etag": str(uuid4())}
+        actions = [self.store.put(actor.school_id, key, document, expected=old["etag"] if old else None, create=old is None),
+                   self.store.put(actor.school_id, "STATE", state, expected=state["etag"]),
+                   self.event(actor, f"EXECUTION_{body.status}", activity_id, version)]
+        if request_key:
+            actions.append(self.store.put(actor.school_id, request_key, report.model_dump(mode="json"), create=True))
         try:
-            self.store.transact([self.store.put(actor.school_id, key, document, expected=old["etag"] if old else None, create=old is None),
-                                 self.store.put(actor.school_id, "STATE", state, expected=state["etag"]),
-                                 self.event(actor, f"EXECUTION_{body.status}", activity_id, version)])
+            self.store.transact(actions)
         except Conflict:
+            existing_receipt = receipt()
+            if existing_receipt:
+                return existing_receipt
             duplicate = self.store.read(actor.school_id, key)
-            if duplicate and duplicate["status"] == body.status and duplicate["note"] == body.note:
+            if not request_key and duplicate and duplicate["status"] == body.status and duplicate["note"] == body.note:
                 return ExecutionReport.model_validate({k: v for k, v in duplicate.items() if k != "etag"})
             raise HTTPException(409, "Report or current version changed") from None
         return report
@@ -300,8 +319,11 @@ class Workflow:
         plan = self.approved_draft(actor, version)
         record = self.store.read(actor.school_id, f"APPROVED#{version}")
         confirmed = self.store.read(actor.school_id, f"INPUT#{plan.input_versions.timetable}")
-        return ApprovedPlanDetail(approval=approval_receipt(record), plan=plan,
-                                  evidence_binding=confirmed.get("evidence_binding") if confirmed else None)
+        from .message_preview import message_preview
+        binding = confirmed.get("evidence_binding") if confirmed else None
+        state = self.state(actor)
+        return ApprovedPlanDetail(approval=approval_receipt(record), plan=plan, evidence_binding=binding,
+            message_preview=message_preview(plan, binding, bool(state["current"] == version and state["needs_review"])))
 
     def teacher_reports(self, actor, teacher_id, version):
         assignments = self.assignments(actor, teacher_id, version)
@@ -312,13 +334,15 @@ class Workflow:
 
     def execution_review(self, actor, version):
         admin(actor)
-        self.approved_draft(actor, version)
+        plan = self.approved_draft(actor, version)
+        from .outdoor_metrics import outdoor_metrics
         reports = self.reports(actor, version)
         resolutions = [Resolution.model_validate(r) for r in self.store.query(actor.school_id, f"RESOLUTION#{version}#")]
         # A new changed report reopens an exception; an older resolution is not current.
         unresolved = sorted(r.activity_id for r in reports if r.status != "COMPLETED" and not any(
             n.activity_id == r.activity_id and datetime.fromisoformat(n.timestamp) >= datetime.fromisoformat(r.timestamp) for n in resolutions))
         return ExecutionReview(reports=reports, resolutions=resolutions, unresolved_activity_ids=unresolved,
+            outdoor_metrics=outdoor_metrics(plan, reports),
             counts=ExecutionCounts(reported=len(reports), completed=sum(r.status == "COMPLETED" for r in reports),
                 could_not_implement=sum(r.status == "COULD_NOT_IMPLEMENT" for r in reports),
                 needs_clarification=sum(r.status == "NEEDS_CLARIFICATION" for r in reports), unresolved=len(unresolved)))

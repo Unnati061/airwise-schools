@@ -6,6 +6,17 @@ React/Vite on Amplify calls the Sydney JWT-protected HTTP API and Python3.12/x86
 ZIP Lambda, reusing Cognito/DynamoDB/Nova Lite. Actual hosted interpretation,
 approval, teacher execution and Review passed; HOSTING.md/AWS_APP.md give results.
 Older packet descriptions below are history, not current deployment claims.
+
+Follow-up preserves these boundaries: the same DynamoStore transaction now also
+stores immutable execution request UUID receipts, while the latest unique
+activity/version report drives totals. Safe explicit in-tab retries replay exact
+requests; approval uses its existing draft receipt. Expired model-cache claims
+are fenced into failure without a new model call. No worker/queue/resource added.
+Administrator approved-detail/review reads return deterministic bilingual previews
+and synthetic declared-duration metrics through generated contracts. Translation,
+counts and student-hours do not use Bedrock. Historical durations remain nullable;
+missing relevant duration means unavailable totals. Previews never send messages.
+See FEATURE_COMPLETION.md for actual tests, deployed results and recovery limits.
 No SQS/DLQ, ECR, SAM or model agent loop. Raw forecast refresh does not mark a plan
 for review; confirmed input revision does. No bilingual previews/outdoor-hour
 metrics. BLUEPRINT_AUDIT.md maps all requirement groups and current limitations.

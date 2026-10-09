@@ -78,6 +78,32 @@ def rejects(code, action):
     assert error.value.status_code == code
 
 
+def test_report_request_receipt_survives_restart_and_late_retry(service):
+    version = approved(service).plan_version
+    first = ExecutionInput(request_id=uuid4(), status="COULD_NOT_IMPLEMENT", note="Synthetic exception")
+    receipt = service.report(TEACHER, version, "6-a:Mon-2", first)
+    newer = ExecutionInput(request_id=uuid4(), status="COMPLETED", note="Synthetic correction")
+    service.report(TEACHER, version, "6-a:Mon-2", newer)
+    restarted = Workflow(service.store)
+    assert restarted.report(TEACHER, version, "6-a:Mon-2", first) == receipt
+    reports = service.reports(ADMIN, version)
+    assert len(reports) == 1 and reports[0].status == "COMPLETED"
+    rejects(409, lambda: service.report(TEACHER, version, "6-a:Mon-2", first.model_copy(update={"note": "Changed"})))
+    rejects(403, lambda: service.report(OTHER, version, "6-a:Mon-2", first))
+    events = [e for e in service.audits(ADMIN) if e.action.startswith("EXECUTION_")]
+    assert len(events) == 2
+
+
+def test_concurrent_report_request_is_one_event(service):
+    version = approved(service).plan_version
+    body = ExecutionInput(request_id=uuid4(), status="COMPLETED")
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(lambda _: service.report(TEACHER, version, "6-a:Mon-2", body), range(2)))
+    assert results[0] == results[1]
+    assert len(service.reports(ADMIN, version)) == 1
+    assert len([e for e in service.audits(ADMIN) if e.action == "EXECUTION_COMPLETED"]) == 1
+
+
 def test_authenticated_confirmation_and_scope(service):
     rejects(403, lambda: service.confirm(TEACHER, InputUpdate(expected_revision=None, input=synthetic_week())))
     confirmed = service.confirm(ADMIN, InputUpdate(expected_revision=None, input=synthetic_week()))

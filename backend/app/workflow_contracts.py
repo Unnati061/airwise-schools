@@ -67,6 +67,7 @@ class Acknowledgement(Contract):
 
 
 class ExecutionInput(Contract):
+    request_id: UUID | None = None
     status: Literal["COMPLETED", "COULD_NOT_IMPLEMENT", "NEEDS_CLARIFICATION"]
     note: str = Field(default="", max_length=1000)
 
@@ -121,10 +122,21 @@ class PlanVersionSummary(Contract):
     counts: Counts | None = None
 
 
+class MessagePreview(Contract):
+    preview_only: Literal[True] = True
+    plan_version: str
+    mode: Literal["LIVE", "REPLAY", "MANUAL"]
+    calendar_date: str | None
+    needs_review: bool
+    english: str
+    hindi: str
+
+
 class ApprovedPlanDetail(Contract):
     approval: ApprovedPlan
     plan: DraftPlan
     evidence_binding: EvidenceBinding | None = None
+    message_preview: MessagePreview | None = None
 
 
 class ExecutionCounts(Contract):
@@ -135,8 +147,21 @@ class ExecutionCounts(Contract):
     unresolved: int
 
 
+class OutdoorMetrics(Contract):
+    available: bool
+    missing_duration_activity_ids: list[str]
+    original_restricted_outdoor_student_hours: float | None
+    approved_restricted_outdoor_student_hours: float | None
+    planned_indoor_substitution_student_hours: float | None
+    teacher_reported_completed_indoor_student_hours: float | None
+    unknown_indoor_execution_student_hours: float | None
+    duration_basis: Literal["SYNTHETIC_DECLARED_ACTIVITY_MINUTES"] = "SYNTHETIC_DECLARED_ACTIVITY_MINUTES"
+    limitation: str = "Synthetic timetable accounting and teacher self-reports, not measured exposure reduction or health benefit. Deferrals and acknowledgements are not completed indoor substitutions."
+
+
 class ExecutionReview(Contract):
     reports: list[ExecutionReport]
     resolutions: list[Resolution]
     unresolved_activity_ids: list[str]
     counts: ExecutionCounts
+    outdoor_metrics: OutdoorMetrics | None = None

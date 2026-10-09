@@ -33,6 +33,11 @@ and exact API CORS origin only. See docs/HOSTING.md for the deployed app/branch;
 reuse them, never rerun create-only helpers. Cognito direct sign-in has no OAuth
 callback. Keep model calls bounded, private sign-in manual and credentials out
 of logs/artifacts. Do not redesign or recreate API/data/auth/smoke resources.
+The follow-up from1b8c067 authorizes recovery, reviewed bilingual previews and
+synthetic student-hours plus updates to existing Lambda/Amplify only. Deployed
+and privately verified; see docs/FEATURE_COMPLETION.md. Do not rerun one-shot
+updates, create resources or make model calls merely for verification. Release
+scan is pattern-limited; never publish private artifacts or credentials.
 
 From repository root (PowerShell):
 - `.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8002`

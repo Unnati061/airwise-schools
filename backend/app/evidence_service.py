@@ -1,7 +1,7 @@
 import hashlib
 import json
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
@@ -117,7 +117,13 @@ class EvidenceService:
         previous = self.store.read(school, key)
         if previous:
             if previous["status"] == "PENDING":
-                raise HTTPException(409, "Identical analysis pending; no duplicate model request")
+                if utcnow() - datetime.fromisoformat(previous["created_at"]) < timedelta(minutes=5):
+                    raise HTTPException(409, "Identical analysis pending; no duplicate model request. Retry the same input later to inspect its saved result.")
+                # Never replay a possibly paid call after a crash. Fence late writers.
+                expected = previous["etag"]
+                previous = {**previous, "etag": str(uuid4()), "status": "MODEL_FAILURE", "output": None,
+                            "usage": {}, "recovery": "OUTCOME_UNKNOWN_NO_RETRY"}
+                self.workflow.transact([self.store.put(school, key, previous, expected=expected)])
             return previous["output"], previous["usage"], previous["status"], fingerprint
         pending = self.reserve(actor, key, context)
         output, usage, status = None, {}, "MODEL_FAILURE"

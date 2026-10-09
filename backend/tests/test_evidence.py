@@ -49,6 +49,29 @@ def review(result):
                               notice_reviewed=True, ambiguities_reviewed=True)
 
 
+def test_expired_pending_recovers_without_repeating_paid_call(service):
+    service.provider = Provider()
+    school = ADMIN.school_id
+    supplied = {"synthetic": "test"}
+    import hashlib
+    import json
+    from backend.app.notice_provider import MODEL
+    fingerprint = hashlib.sha256(json.dumps({"operation": "NOTICE", "model": MODEL,
+        "prompt_version": "c-v1", "supplied": supplied}, sort_keys=True).encode()).hexdigest()
+    key = f"MODEL_CACHE#{ADMIN.sub}#{fingerprint}"
+    service.reserve(ADMIN, key, {})
+    pending = service.store.read(school, key)
+    pending["created_at"] = (utcnow() - timedelta(minutes=6)).isoformat()
+    service.store.transact([service.store.put(school, key, pending, expected=pending["etag"])])
+    result = service.cached_call(ADMIN, "NOTICE", supplied, "test", {})
+    assert result[2] == "MODEL_FAILURE" and service.provider.calls == 0
+    recovered = service.store.read(school, key)
+    assert recovered["recovery"] == "OUTCOME_UNKNOWN_NO_RETRY"
+    assert recovered["etag"] != pending["etag"]
+    assert service.cached_call(ADMIN, "NOTICE", supplied, "test", {}) == result
+    assert service.provider.calls == 0
+
+
 def test_review_bound_to_versions_authentication_and_separate_approval(service):
     before = service.workflow.inputs(ADMIN)
     result = service.interpret(ADMIN, request(service))

@@ -1,5 +1,33 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
+## Verified Feature Update from 1b8c067
+
+Updated the existing application Lambda only; preserved smoke Lambda and all
+roles/environment/routes/auth/CORS/concurrency/log settings. New Linux ZIP:
+87,395,863 compressed /240,725,058 extracted bytes, Python3.12/x86_64,
+1024MB/28s/reserved concurrency5. SHA256
+`4c8a9eb26fb8409f1608b72096d39de1509c5db3d31fa0937469e1294cf1d2c1`;
+S3 actual SHA256 checksum and Lambda Base64 CodeSha256 matched. One private
+upload, guarded update using existing RevisionId, no dependencies changed.
+Exact key/commands and scoped cleanup are in [FEATURE_COMPLETION.md](FEATURE_COMPLETION.md).
+
+Private hosted admin -> teacher A -> admin verification passed generation,
+independent validation/approval/repeat approval, bilingual preview review gate,
+acknowledgement, COMPLETED report and exact UUID replay with unchanged timestamp.
+Teacher approval/administrator preview/other teacher's assignments403. Admin
+Review showed one completed report and20 synthetic planned/20 teacher-reported
+completed indoor student-hours, no unresolved/unknown. No measured exposure or
+health claims. Version `110a2908-9343-4747-9fd5-47398492b0ac`; explicit duration
+metadata revision was MANUAL/date unspecified, not a fresh pollution analysis.
+Old versions preserved. Zero Bedrock calls/new resources; API URL unchanged.
+
+Controlled tests cover lost-response503 recovery, not a diagnosis/fix of the
+historical unexplained503. In-tab explicit retry keeps original UUID/payload;
+unfinished forms are not restored across browser refresh. Model PENDING expiry
+fails closed, never automatically reissues a paid call.85 backend tests/build/
+actual desktop-mobile layout checks passed. Existing cleanup below still applies;
+new artifact key is the only additional cleanup item. No cleanup executed.
+
 Blueprint audit from `d4120e2`: no AWS/application changes. Fresh bounded
 historical Gateway/Lambda log reads completed; the503 still cannot be joined to
 a specific upstream request. One throttle at concurrency5 is confirmed, not a

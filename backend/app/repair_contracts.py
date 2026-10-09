@@ -38,6 +38,7 @@ class Activity(Contract):
     teacher_id: str
     label: str
     kind: str
+    duration_minutes: int | None = Field(default=None, ge=1, le=180)
     room_types: list[Literal["classroom", "outdoor", "lab"]] = Field(min_length=1)
     original_period_id: str
     original_room_id: str
