@@ -137,8 +137,11 @@ to load. No authenticated analysis/mutation request reached the backend in that
 run. Original harness's unattached response-wait promise escaped its recorder.
 Fixed Promise.all handling and response completion waiting; allowed one existing
 read-only UI Retry loading action, never a paid/mutation retry. Fresh corrected
-run succeeded without needing that retry branch. The 503's underlying SDK error
-is not logged by the current generic handler, so its concrete cause is unproven.
+run succeeded without needing that retry branch. Final read-only investigation
+found one Lambda throttle in the failure minute, peak concurrency five at the
+reserved limit, and no matching handler-route 503. Concurrency pressure is a
+likely explanation, not a proven request-level cause or SDK error. See
+[INCIDENT_503.md](INCIDENT_503.md) for timing, metrics and correlation limits.
 No speculative backend dependency, timeout or infrastructure change was made.
 
 ## Commands and checks

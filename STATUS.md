@@ -1,5 +1,41 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
+## Bounded Finalization from 25be464
+
+Documentation-only pass; working tree clean before edits. Read AGENTS,
+status/deployment/product/architecture/workflow records and handler/test code.
+No application changes, resource mutations, new API traffic, load tests,
+Bedrock calls, browser sign-in, submission or video upload/publication.
+
+Read-only historical checks found GET /current-plan503 at 2026-10-09
+17:12:54.550 IST, Gateway request `E-Xx2iVcywMEMNg=`, integration11ms.
+That minute: Lambda Throttles1, peak concurrency5, Errors0, Invocations10;
+reserved concurrency remains5. Targeted Lambda route/status503 query returned
+zero matches. Concurrency pressure is a likely explanation, but logs cannot
+correlate this request to the throttle or prove the 503 mapping. No speculative
+fix/retry/concurrency change or claimed regression fix. Exact facts and limits
+are in docs/INCIDENT_503.md. AWS reads: one attempt, connect4s/read12s;
+credentials/raw logs not exported.
+
+Git remote listing empty; owner confirmed no GitHub repository exists. Public
+visibility cannot be verified until the owner creates one. No repository
+created, remote added, push or visibility change. Publication instructions
+require review of Git history as well as working files for private content.
+
+README now describes the hosted app rather than local-only Packet D1.
+docs/HACKATHON.md is a writeup draft with Codex disclosure, actual measurements
+and missing-station limitations. docs/DEMO.md is a 170-second hosted admin/teacher
+script using stored actual analysis, not recorded/rehearsed here. No health or
+model-freshness claims. Deployment records cross-reference the incident.
+Owner actions: review rules, licensing and source/history, create/push/verify
+a public repository if required, record/review/publish the demo and submit manually.
+
+Checks passed: 16 local Markdown links; seven contiguous demo segments totalling
+170 seconds; git diff whitespace; tracked-path inventory found no work/private
+environment/ZIP paths (not a comprehensive secret/history audit). No new
+browser/model run. The 76 tests and production-build results below belong to
+earlier hosted verification, not this pass. Only seven Markdown files changed.
+
 ## Amplify hosted workflow verified
 
 Resumed from `4f8bddf`. Public app:

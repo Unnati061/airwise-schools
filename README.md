@@ -1,19 +1,93 @@
-# AirWise Schools: Packet D1
+# AirWise Schools
 
-Local-first synthetic-school workflow: regional pollution forecasts, reviewed
-notice interpretation, timetable repair, independent validation, authenticated
-approval and teacher execution reporting. Cognito/DynamoDB and bounded Nova Lite
-use the existing Sydney resources. Forecasts are not campus observations or Indian
-AQI; pasted notices are unverified and never directly approve a plan.
-Current results: STATUS.md. Private setup: docs/WORKFLOW.md. Evidence and exact
-end-to-end demo command: [EVIDENCE.md](docs/EVIDENCE.md).
-The five connected local views and browser verification are documented in
-[INTERFACE.md](docs/INTERFACE.md). Sign in privately with existing Cognito users;
-the interface never resets passwords or selects an authorization role.
+A school-operations prototype for reviewing pollution evidence, repairing a
+timetable, approving a version and tracking what teachers actually implemented.
+One fictional Greater Noida school, six sections and synthetic data: not a real
+school deployment or health intervention.
 
-## Local setup (PowerShell)
+**Hosted app:** [AirWise Schools](https://main.d29v8cmldu93l3.amplifyapp.com)
 
-From this repository root, with Python 3.12 and Node 22:
+The page is public; school operations require existing Cognito identities.
+There is no self-registration, role selector or public authentication bypass.
+Enter passwords privately. Do not reset demo passwords just to run the app.
+
+## Workflow
+
+1. **Today:** inspect regional PM2.5/PM10 with source and timestamps. LIVE and
+   SYNTHETIC REPLAY are separate.
+2. **Evidence and restrictions:** compare official excerpts with Nova Lite's
+   proposed interpretation. Only an administrator can confirm restrictions.
+3. **Plan comparison:** inspect original/proposed activities, baseline, solver
+   status and independent validation. Approval checks permissions and versions.
+4. **Teacher inbox:** read only your approved assignments, acknowledge their
+   version, then separately report execution or an exception.
+5. **Review:** inspect deterministic counts, exceptions, approvals and history.
+
+CP-SAT retains every activity and enforces section/teacher/room constraints,
+fixed lessons and explicitly permitted alternatives. Its five-second total budget
+does not turn UNKNOWN into infeasibility. Approval revalidates independently;
+revisions require new approval rather than silently replacing the current plan.
+
+## Architecture
+
+```text
+React / Vite on Amplify Hosting
+  -> Cognito access-token sign-in
+  -> API Gateway HTTP API (JWT authorization)
+  -> Python 3.12 / FastAPI / Mangum on Lambda
+       -> OR-Tools CP-SAT + independent plain-Python validator
+       -> DynamoDB inputs, evidence, versions, reports and audit events
+       -> Open-Meteo regional forecasts
+       -> bounded Amazon Nova Lite interpretation on Bedrock
+```
+
+AWS runs in Sydney (`ap-southeast-2`). Scoped IAM roles provide runtime access;
+private S3 holds deployment artifacts and CloudWatch retains logs for seven days.
+The separate native-runtime smoke Lambda is not the application API. Docker was
+not needed: Linux Python 3.12/x86_64 ZIP execution was verified on Lambda.
+
+## What Was Verified
+
+The hosted administrator -> teacher -> administrator browser flow used real
+Cognito authentication, DynamoDB persistence and deployed endpoints. Approval,
+separate acknowledgement/execution reporting, administrator review, stale-draft
+409 rejection, teacher/cross-assignment 403 denials, token rejection, refresh and
+local logout/reload passed. The approved baseline retained 240 activities: one
+approved indoor substitution and room move, no period changes or deferrals.
+
+One actual Sydney `amazon.nova-lite-v1:0` analysis succeeded: 773 input / 197 output
+tokens; **2,392 ms browser request**, 978 ms handler, 992 ms Gateway integration.
+These are request-path timings, not isolated Bedrock-service latency. The prior
+verification ran **76 backend tests**, production build and browser checks.
+[STATUS.md](STATUS.md) distinguishes those results from this documentation pass.
+
+## Evidence and Limits
+
+Open-Meteo/CAMS global supplies regional forecasts, not measured campus conditions.
+**Local station observations are unavailable.** Model issue time was not supplied;
+retrieval age must not be called model freshness. No Indian AQI conversion,
+automatic GRAP activation or closure inference is made. Pasted notices require
+review; model output cannot approve a plan. No health benefits, exposure reduction
+or forecast accuracy are claimed.
+
+The MVP repairs one affected day in a synthetic weekly timetable and supports
+single-period activities only. One small model call and two planning latency
+samples do not establish reliability at scale. An initial 503 coincided with a
+Lambda throttle at concurrency five; request-level causation is unproven. See
+[the incident record](docs/INCIDENT_503.md). Throttle settings were read back, but
+a small rejected-token burst did not demonstrate 429 enforcement. Logout clears
+the local session, not immediate global revocation of unexpired JWTs;
+tab-scoped sessionStorage remains an XSS-hardening limitation.
+
+## Local Development
+
+Python 3.12 and Node 22 are the verified toolchain. The authenticated backend
+requires existing private runtime configuration and temporary AWS credentials;
+a fresh checkout alone does not reproduce that setup. See
+[WORKFLOW.md](docs/WORKFLOW.md) and [EVIDENCE.md](docs/EVIDENCE.md). Do not rerun
+create-only deployment helpers against existing resources.
+
+From the repository root in PowerShell:
 
 ```powershell
 python -m venv .venv
@@ -24,52 +98,35 @@ python -m venv .venv
 In another terminal:
 
 ```powershell
-.venv\Scripts\python -m backend.app.solver_smoke
-.venv\Scripts\python -m pytest backend/tests -q
 npm --prefix frontend ci
-npm --prefix frontend run generate:api
-npm --prefix frontend run build
 npm --prefix frontend run dev -- --host 127.0.0.1
 ```
 
-Open http://127.0.0.1:5173 . Backend docs: http://127.0.0.1:8002/docs .
-Frontend uses Vite's development proxy; a production API origin is deferred.
-
-## ZIP attempt
-
-Private native runtime spike passed in ap-southeast-2: OR-Tools returned OPTIMAL
-on real Python 3.12/x86_64 Lambda. See [AWS_SMOKE.md](docs/AWS_SMOKE.md).
-The existing Packet A ZIP/function were not rebuilt or redeployed for B/C; the
-authenticated application and evidence workflow run locally, not on that Lambda.
-`scripts/aws_smoke.py` is the dedicated create-only tooling for this follow-up.
-The older script below only updates an explicitly supplied existing smoke target.
+Open [the local frontend](http://127.0.0.1:5173). Default development mode proxies
+the local backend; deployed API configuration is in [HOSTING.md](docs/HOSTING.md).
+Never place AWS credentials in Vite variables.
 
 ```powershell
-.venv\Scripts\python scripts/lambda_zip.py --deploy
+.venv\Scripts\python -m pytest backend/tests -q
+.venv\Scripts\python -m backend.app.solver_smoke
+npm --prefix frontend run generate:api
+npm --prefix frontend run build
 ```
 
-Installs Linux x86_64 Python 3.12 wheels and creates work/airwise-lambda.zip.
-It checks credentials before any upload. To resume deployment, configure AWS
-credentials and AIRWISE_LAMBDA_FUNCTION for an existing dedicated Python 3.12
-x86_64 function with handler backend.app.lambda_smoke.handler. No AWS resources
-are automatically created. The smoke handler imports and executes OR-Tools.
-The API handler is backend.app.main.handler; do not expose the smoke function
-as the production API. An existing staging directory is deliberately not erased.
+## Records and Disclosure
 
-See STATUS.md for executed results, package sizes and blockers. Linux wheel
-resolution does not establish Lambda native compatibility. Docker is a fallback
-only after a demonstrated native compatibility failure in the ZIP path.
-The measured ZIP exceeds direct upload size; the successful spike used S3.
-To reuse an inspected archive without rebuilding in a separately authorized task, pass
-`--existing-zip work/airwise-lambda.zip --deploy`.
+- [Product](docs/PRODUCT.md) and [architecture](docs/ARCHITECTURE.md)
+- [Application deployment and cleanup](docs/AWS_APP.md)
+- [Hosting verification and cleanup](docs/HOSTING.md)
+- [Hackathon writeup draft](docs/HACKATHON.md)
+- [2 minute 50 second demo script](docs/DEMO.md)
 
-Optional browser verification uses Playwright and installed Chrome:
-`node scripts/check_frontend.cjs`. Set PLAYWRIGHT_MODULE to an installed module
-path when Playwright is provided by an external runtime, and PLAYWRIGHT_CHANNEL
-to change the installed browser channel. This tooling is not a frontend dependency.
+Codex assisted code, tests, packaging, deployment tooling, debugging and
+documentation. The owner supplied requirements, deployment constraints and private
+authentication, and retains responsibility for review and submission. Runtime
+interpretation uses Bedrock Nova Lite, distinct from Codex development assistance.
+Dependencies include FastAPI, Pydantic, Mangum, OR-Tools, React, Vite, TypeScript
+and Lucide.
 
-## Attribution
-
-Implementation assisted by Codex. Uses FastAPI, Pydantic, Mangum, Google OR-Tools,
-React, Vite, TypeScript and Lucide. Blueprint is the user's supplied planning
-source. Product and architecture documents describe current scope and later gates.
+No GitHub repository exists yet (owner-confirmed October 9, 2026); this checkout
+has no Git remote. Publication and submission remain manual owner actions.

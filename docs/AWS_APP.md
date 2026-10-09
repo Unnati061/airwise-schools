@@ -1,5 +1,10 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
+Finalization from `25be464` made no deployment/resource changes or new model calls.
+Historical current-plan503 checks confirmed a same-minute Lambda throttle at
+concurrency five, not an exact causal request match; see
+[INCIDENT_503.md](INCIDENT_503.md). Existing cleanup instructions remain unchanged.
+
 ## Hosted verification from 4f8bddf
 
 Actual public app: https://main.d29v8cmldu93l3.amplifyapp.com . Existing API/Lambda,
