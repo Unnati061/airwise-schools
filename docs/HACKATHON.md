@@ -127,6 +127,22 @@ native execution or a complete workflow.
 
 ## Owner Actions Before Submission
 
+Current [event rules](https://www.wemakedevs.org/aws/env/rules), checked October9,
+require a public repository, writeup and AWS-showing YouTube demo under three
+minutes. Test repository/video links signed out. The
+[schedule](https://www.wemakedevs.org/aws/env/schedule) still lacks final clock
+hours; check the actual form/organizer announcements, registration/eligibility
+and official opening compliance. Do not alter history to conceal dates.
+
+[BLUEPRINT_AUDIT.md](BLUEPRINT_AUDIT.md) distinguishes coverage from gaps:
+English/Hindi previews and outdoor student-hour metrics are not implemented;
+there is no SQS/DLQ, ECR/container or automatic evidence-driven revision.
+The synchronous ZIP path is the implemented architecture. Fresh forecast retrieval
+alone does not mark approval for review; confirmed input changes do.
+[ATTRIBUTION.md](ATTRIBUTION.md) records principal licences/source credits, not
+a comprehensive licence or historical secret audit. These omissions must not be
+presented as implemented features.
+
 No GitHub repository exists yet (owner-confirmed October 9, 2026); `git remote -v`
 is empty. Public visibility cannot be verified. Amplify manual deployment does
 not create a source repository. npm's `private` flag is not GitHub visibility.
@@ -134,16 +150,21 @@ not create a source repository. npm's `private` flag is not GitHub visibility.
 1. Check the actual hackathon rules, required fields, AI disclosure and licensing.
    Review working files **and Git history** for secrets/private content before
    publication; ignore rules alone are not a historical audit.
-2. Create an empty GitHub repository yourself. Choose Public if required and
-   appropriate; do not initialize another README/license/gitignore. Choose a
+2. Create an empty public GitHub repository yourself for the required source link;
+   do not initialize another README/license/gitignore. Choose a
    license intentionally rather than assuming one has been granted.
 3. Connect and push the current branch using normal private authentication, never
    tokens in a remote URL. Replace the URL placeholders below.
 4. Open the repository URL signed out to verify source visibility, then add the
    real URL to the writeup/submission. No visibility change is automated here.
-5. Record the [2:50 demo script](DEMO.md) excluding passwords, tokens, account IDs
+5. Record the [2:50 demo script](DEMO.md), including cropped actual AWS evidence
+   and excluding passwords, tokens, account IDs
    and private console content. Review it, then publish/upload and submit yourself
    only as required by the rules.
+
+Inspect remaining credits/gross usage/expiry privately and retain cleanup guidance.
+Judge access uses the workflow video or an organizer-approved private process,
+never public administrator passwords or an authentication bypass.
 
 ```powershell
 git remote add origin https://github.com/YOUR-USER/YOUR-REPO.git

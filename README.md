@@ -120,6 +120,8 @@ npm --prefix frontend run build
 - [Hosting verification and cleanup](docs/HOSTING.md)
 - [Hackathon writeup draft](docs/HACKATHON.md)
 - [2 minute 50 second demo script](docs/DEMO.md)
+- [Blueprint coverage and prioritized gaps](docs/BLUEPRINT_AUDIT.md)
+- [Source/dependency attribution and licence review](docs/ATTRIBUTION.md)
 
 Codex assisted code, tests, packaging, deployment tooling, debugging and
 documentation. The owner supplied requirements, deployment constraints and private
@@ -130,3 +132,8 @@ and Lucide.
 
 No GitHub repository exists yet (owner-confirmed October 9, 2026); this checkout
 has no Git remote. Publication and submission remain manual owner actions.
+Current [event rules](https://www.wemakedevs.org/aws/env/rules) require public
+source and a YouTube demo under three minutes showing AWS; these are incomplete.
+Bilingual previews/outdoor student-hour metrics, SQS/background jobs and automatic
+evidence revisions are not implemented. See the audit rather than treating the
+whole planning blueprint as shipped.

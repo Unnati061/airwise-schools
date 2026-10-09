@@ -1,5 +1,16 @@
 # AirWise architecture
 
+## Current Deployed State
+
+React/Vite on Amplify calls the Sydney JWT-protected HTTP API and Python3.12/x86_64
+ZIP Lambda, reusing Cognito/DynamoDB/Nova Lite. Actual hosted interpretation,
+approval, teacher execution and Review passed; HOSTING.md/AWS_APP.md give results.
+Older packet descriptions below are history, not current deployment claims.
+No SQS/DLQ, ECR, SAM or model agent loop. Raw forecast refresh does not mark a plan
+for review; confirmed input revision does. No bilingual previews/outdoor-hour
+metrics. BLUEPRINT_AUDIT.md maps all requirement groups and current limitations.
+The503 remains inconclusive at request level; no speculative concurrency change.
+
 Browser -> Vite React SPA -> development proxy /api -> local FastAPI.
 FastAPI reads a packaged JSON fixture through typed Pydantic models.
 GET /health returns status, service and data_mode. GET /school returns the
@@ -141,8 +152,9 @@ Dedicated application resources are deployed in Sydney; exact existing artifact
 size/CRC64 and Lambda code SHA256 match verified. Health and unauthenticated denial
 passed. Private real Cognito administrator approval, native solver/independent
 validation, teacher acknowledgement/reporting and role-denial checks passed against
-the deployed API; React Review showed the exception. Full analysis/slow-path and
-remaining security checks are unverified; D2 is not complete. See AWS_APP.md.
+the deployed API; React Review showed the exception. Later hosting also verified
+live forecast and one actual analysis within30s. Wider reliability/security edge
+cases remain unverified, not the whole deployed workflow. See AWS_APP.md.
 Path: local SPA environment-configured API origin -> HTTP API JWT scope
 authorizer -> dedicated Mangum Lambda surface -> existing DynamoDB/Nova. Backend
 also verifies access token/client and trusted identity bindings. Public health is

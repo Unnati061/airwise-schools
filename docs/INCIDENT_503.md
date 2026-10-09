@@ -25,6 +25,21 @@ credentials, account IDs or private notice content exported.
 
 ## Interpretation and Limits
 
+### Read-only Follow-up from d4120e2
+
+Fresh reads used existing Sydney profile/resources, connect4s/read12s, one total
+SDK attempt. Four-page bounds sufficed: pagination completed for both groups in
+11:42:40-11:43:10 UTC, Gateway26 events and Lambda45 events (10 REPORT lines).
+Gateway logged current-plan200 and the same503 request `E-Xx2iVcywMEMNg=`;
+Lambda logged current-plan200, no503. The earlier incomplete window-page limit
+is resolved for this window, not every log outside it. Metrics Complete, again
+Throttles1/ConcurrentExecutionsMax5/Errors0/Invocations10 in the failure minute.
+Configured Gateway fields are requestId, route, status and latency; no integration
+error detail or upstream Lambda request ID. No causal join or code/configuration
+cause found. No app traffic, model calls, load tests, resource changes or fix.
+
+### Unchanged Conclusion
+
 A Lambda concurrency throttle is confirmed in the same minute, at the configured
 limit. This is **consistent with concurrency pressure being the likely cause**,
 but does **not prove that this Gateway request was the throttled invocation or

@@ -23,7 +23,8 @@ Docker is conditional on demonstrated ZIP native compatibility failure.
 Packet D2 authorizes the dedicated Sydney application Lambda/role/HTTP API and
 logs, reusing existing data/auth/model resources. See docs/AWS_APP.md. Existing
 object checksum verified and D2 resources created; deployed administrator approval,
-teacher execution and role denials passed. Full analysis/latency gates remain.
+teacher execution and role denials passed. Hosted forecast/one actual analysis
+also passed; broader latency/security edge cases remain unverified.
 Inspect/reuse these resources, never rerun create-only
 deployment. Do not rebuild/upload again or change the smoke Lambda. Measure
 actual integration latency before deciding synchronous slow paths are adequate.

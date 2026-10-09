@@ -1,5 +1,12 @@
 # Packet C evidence and grounded notice review
 
+This is the Packet C historical record; the later hosted five-view verification
+is in HOSTING.md. The old `scripts.c_demo` below resets synthetic-user passwords
+and is NOT the submission/browser demonstration path. Do not run it against the
+current identities merely to reproduce a video. Use stored actual analysis and
+private existing sign-in as described in DEMO.md; do not spend extra model calls.
+The absent observation feed/model issue time and advisory limitations remain.
+
 ## Verified data and limitations
 
 Fictional school coordinates: 28.4744, 77.5030 (Greater Noida vicinity, not a sensor).

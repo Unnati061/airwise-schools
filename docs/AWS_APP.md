@@ -1,5 +1,12 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
+Blueprint audit from `d4120e2`: no AWS/application changes. Fresh bounded
+historical Gateway/Lambda log reads completed; the503 still cannot be joined to
+a specific upstream request. One throttle at concurrency5 is confirmed, not a
+code cause. See [INCIDENT_503.md](INCIDENT_503.md) and
+[BLUEPRINT_AUDIT.md](BLUEPRINT_AUDIT.md). Synchronous ZIP architecture is preserved;
+remaining submission artifacts are owner actions, not new cloud resources.
+
 Finalization from `25be464` made no deployment/resource changes or new model calls.
 Historical current-plan503 checks confirmed a same-minute Lambda throttle at
 concurrency five, not an exact causal request match; see

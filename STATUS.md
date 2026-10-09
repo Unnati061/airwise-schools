@@ -1,5 +1,43 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
+## Blueprint Audit from d4120e2
+
+Read the full owner-supplied blueprint and its revision, AGENTS/status/product/
+architecture/deployment/source records, contracts, solver, independent validator,
+workflow/storage/auth/evidence services, frontend views/client and tests. Working
+tree initially clean. docs/BLUEPRINT_AUDIT.md maps all clause groups in the
+revision/sections1-11 and separates verified/partial/missing/changed/deferred/
+unverified items. The blueprint is context; later explicit requests govern scope.
+
+Core deployed workflow remains verified, NOT every blueprint feature. Missing
+bilingual previews, outdoor student-hour metrics, SQS/DLQ, automatic evidence
+revision and dedicated room editor are explicitly disclosed rather than added.
+No application code/types/dependency change, AWS mutation/resource creation,
+app traffic, load test, model call, password reset, publication or submission.
+
+Read-only Sydney follow-up: existing historical log window11:42:40-11:43:10UTC,
+Gateway26/Lambda45 events, both pagination complete within four-page bounds.
+Same request `E-Xx2iVcywMEMNg=`503; no Lambda handler503. Gateway format lacks
+integration error/upstream request correlation. Complete minute metrics again:
+Throttles1/ConcurrentMax5/Errors0/Invocations10. Only concurrency pressure evidence,
+no concrete code/configuration cause. No guessed fix or regression-fix claim;
+INCIDENT_503.md updated. One SDK attempt, connect4s/read12s, safe summaries only.
+
+Submission-critical docs corrected: actual AWS screen added to170second demo,
+official current rule links, dependency/source attribution from installed metadata,
+stale product/architecture/AGENTS deployment wording and warning against the old
+password-resetting C demo. No original-code licence chosen automatically.
+Owner must create/push public repo, record/upload YouTube, verify links/access,
+review licences/history/rules/eligibility, inspect credits and submit manually.
+Schedule still lacks exact hours; owner checks actual form/announcements.
+
+Actual local check: `.venv\Scripts\python -m pytest backend/tests -q`:
+76passed, two existing Starlette/Mangum deprecation warnings,24.32s. No paid calls;
+fixture tests are not new hosted verification. Documentation checks passed:
+23 local links, seven contiguous demo segments/170seconds, three required action
+categories and actual AWS demo step. git diff whitespace passed; changed/staged
+files are Markdown only. No browser sign-in or deployment/build rerun for docs.
+
 ## Bounded Finalization from 25be464
 
 Documentation-only pass; working tree clean before edits. Read AGENTS,

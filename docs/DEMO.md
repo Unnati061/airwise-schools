@@ -24,6 +24,11 @@ mutations were made while writing it.
 - The verified example changed `6-a:Mon-2` from field to room-6-a using an approved
   indoor alternative at the same period. If a later draft differs, narrate its
   actual differences/counts rather than reciting the old result.
+- Prepare a read-only AWS console view showing the existing Sydney application
+  Lambda name/runtime (or Amplify app/branch). Crop account/menu details, ARNs,
+  environment variables and private content out of the recording. This is actual
+  AWS evidence, not just a diagram; do not invoke anything or create resources.
+  Keep it ready for the final timed segment.
 
 ## Timed Run
 
@@ -35,11 +40,16 @@ mutations were made while writing it.
 | 01:00 - 01:30 | Plan: prepared draft, differences, baseline, status/validator; approve through UI | "CP-SAT enforces teacher, section and room constraints. A separate validator checks the plan; approval checks current versions. Here an approved indoor alternative keeps the period and changes activity and room. Every activity remains accounted for." |
 | 01:30 - 02:00 | Teacher: refresh new version, acknowledge, report COULD_NOT_IMPLEMENT with synthetic note | "The teacher sees only their approved assignments. Acknowledgement is not execution. I acknowledge this version, then separately report that the synthetic classroom was unavailable." |
 | 02:00 - 02:25 | Administrator Review: refresh, exception and version history | "The administrator sees the exception and retained history. A revision needs another approval: it does not erase the old version or reuse acknowledgements. Counts describe reports, not health benefits." |
-| 02:25 - 02:50 | Keep Review visible; summarize AWS and measurement | "Amplify hosts React; Cognito protects the API Gateway and Python Lambda workflow. DynamoDB stores evidence and versions; Bedrock provides bounded interpretation. The tested analysis request took 2.392 seconds end to end. Codex assisted development. This has no station observations and is not a real-school pilot." |
+| 02:25 - 02:50 | Show prepared cropped actual AWS Lambda/Amplify console view, then hosted URL | "This is the existing Sydney AWS deployment. Amplify hosts React; Cognito protects API Gateway and Python Lambda. DynamoDB stores versions; Bedrock provides bounded interpretation. The tested analysis request took 2.392 seconds end to end. Codex assisted development. Station observations remain unavailable." |
 
 Total planned duration: **170 seconds**, ten seconds below three minutes. The
 deployment records contain actual resource identifiers and verification; do not
 present a diagram as live AWS console proof.
+
+The [event rules](https://www.wemakedevs.org/aws/env/rules), checked October9,
+require AWS usage in the video and a YouTube public/unlisted link tested signed
+out. The owner records/uploads; this pass does neither. Rehearse real delays
+before finalizing the video.
 
 ## If the App Fails During Recording
 

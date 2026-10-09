@@ -1,5 +1,18 @@
 # Product contract
 
+## Current Scope
+
+The complete authenticated core workflow is deployed on AWS with five React views;
+later HOSTING.md/STATUS.md verification supersedes local-only descriptions below.
+The broader blueprint is not fully delivered: English/Hindi previews, outdoor
+student-hour metrics, automatic evidence revisions and asynchronous jobs are
+absent. BLUEPRINT_AUDIT.md records all missing/partial/unverified requirements;
+do not implement them merely to make the planning document appear complete.
+School data remains synthetic, single-period and one affected day. Regional
+forecasts are not station observations; approval remains a human decision.
+
+## Packet History
+
 AirWise Schools supports an administrator repairing school activities after
 reviewing evidence and confirming restrictions. The eventual workflow is evidence,
 confirmed restriction, repaired plan, independent validation, approval, teacher
