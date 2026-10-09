@@ -1,5 +1,18 @@
 # Public Source Publication
 
+## Publication Verified
+
+Owner pushed https://github.com/Unnati061/airwise-schools . On October 9, 2026,
+the signed-out GitHub page displayed Public/main/code/20 commits. Unauthenticated
+GitHub API returned private=false/default_branch=main/latest SHA
+`7b868e11154274b5fe98b63b960cb817e6480f31`, matching local HEAD and `git ls-remote`
+origin/main. Current local branch remains codex/packet-a tracking origin/main.
+Documentation changes are pushed to main with `git push origin HEAD:refs/heads/main`
+and the resulting remote SHA is verified; no force push or history rewrite.
+Initial unavailable-auth/manual instructions below are historical; do not rerun
+repository creation/remote-add steps against this existing repository.
+Binary obligations, ignored archives and no-public-password limits are unchanged.
+
 Prepared October 9, 2026 IST, from `223beea`. Original code is MIT; third-party
 licences, official excerpts and forecast attribution retain their own terms.
 This is source publication, not a cleared native binary release or legal opinion.

@@ -5,6 +5,14 @@ or video upload/publication has been performed.
 
 **App:** https://main.d29v8cmldu93l3.amplifyapp.com
 
+**Public repository:** https://github.com/Unnati061/airwise-schools
+
+**Default branch:** `main`; signed-out page and unauthenticated API verified
+October 9, 2026. Initial verified commit `7b868e11154274b5fe98b63b960cb817e6480f31`
+matched local HEAD. Subsequent documentation push is checked against its new HEAD.
+
+**Demo video:** pending owner recording/upload; no video URL invented.
+
 ## Problem and Users
 
 School administrators need to translate reviewed pollution guidance into a
@@ -149,22 +157,17 @@ alone does not mark approval for review; confirmed input changes do.
 a comprehensive licence or secret-audit guarantee. These omissions must not be
 presented as implemented features.
 
-No GitHub repository exists yet (owner-confirmed October 9, 2026); `git remote -v`
-is empty. Public visibility cannot be verified. Amplify manual deployment does
-not create a source repository. npm's `private` flag is not GitHub visibility.
+The owner published the source repository above. Public visibility, default
+`main` and initial matching commit were verified independently. npm's `private`
+flag does not describe GitHub visibility. Binary deployment artifacts remain
+excluded; native redistribution limitations in NATIVE_REDISTRIBUTION.md persist.
 
 1. Check the actual hackathon rules, required fields, AI disclosure and licensing.
    Review working files **and Git history** for secrets/private content before
    publication; ignore rules alone are not a historical audit.
-2. Create an empty public GitHub repository yourself for the required source link;
-   leave README, .gitignore and licence initialization unchecked:
-   original project code already has the
-   owner-selected MIT LICENSE; third-party terms remain separate.
-3. Connect and push the current branch using normal private authentication, never
-   tokens in a remote URL. Replace the URL placeholders below.
-4. Open the repository URL signed out to verify source visibility, then add the
-   real URL to the writeup/submission. No visibility change is automated here.
-5. Record the [2:50 demo script](DEMO.md), including cropped actual AWS evidence
+2. Use the verified public repository URL above in the submission; keep original
+   MIT and third-party attribution intact. Do not attach native ZIPs to Releases.
+3. Record the [2:50 demo script](DEMO.md), including cropped actual AWS evidence
    and excluding passwords, tokens, account IDs
    and private console content. Review it, then publish/upload and submit yourself
    only as required by the rules.
@@ -173,10 +176,5 @@ Inspect remaining credits/gross usage/expiry privately and retain cleanup guidan
 Judge access uses the workflow video or an organizer-approved private process,
 never public administrator passwords or an authentication bypass.
 
-```powershell
-git remote add origin https://github.com/YOUR-USER/YOUR-REPO.git
-git push -u origin codex/packet-a
-```
-
-Steps follow [GitHub's existing-code guidance](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github).
-No repository, video or submission was published in this pass.
+The repository was published by the owner; this pass updates documentation only.
+No video was published and no hackathon entry submitted.

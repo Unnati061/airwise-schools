@@ -1,5 +1,34 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
+## Public Repository and Final Demo Review
+
+Owner pushed https://github.com/Unnati061/airwise-schools . Unauthenticated API
+private=false/default_branch=main/latest7b868e11154274b5fe98b63b960cb817e6480f31
+matched local HEAD and origin/main. Signed-out browser showed Public/main/code/
+20commits. Repository URL now in README/HACKATHON/PUBLIC_RELEASE/DEMO/audit.
+Local branch remains codex/packet-a tracking origin/main; documentation is pushed
+to main normally, no force push/history rewrite. No binaries or ZIPs published.
+
+Actual hosted read-only private admin/teacher review: Today LIVE source/issue-time
+unknown/station unavailable, Evidence No interpretation selected plus confirmed
+restrictions, current MANUAL OPTIMAL baseline/independent validation,0periods/
+1substitution/0deferrals/1room move, bilingual previews,20planned/20teacher-reported
+completed student-hours and older retained unresolved exception. Teacher current
+version already acknowledged/completed; report dialog status/note/save inspected,
+then closed without saving. Signed out. No Bedrock/plan/approval/report mutations;
+normal Today navigation retrieved live evidence and records its normal audit.
+Revised DEMO gives exact preparation/actions and seven170-second narration cues,
+requires a NEW draft/new approval/version-matched teacher actions, distinguishes
+prior Bedrock timing and MANUAL plan from fresh interpretation/replay. It is a
+recording script, not a recorded/rehearsed duration guarantee. Video/submission
+remain owner actions; nothing submitted or uploaded.
+Documentation checks:7narration blocks/333words, cue lengths15+20+25+30+30+25+25
+=170seconds, each below150words/minute for its slot (not a speech rehearsal).
+25relative Markdown links resolve, whitespace check passed. Prepush limited
+scans:253tracked files/20prior commits/374reachable blobs, no recognized secret/
+private-path or prohibited artifact/magic findings. No application change, full
+suite rerun, load testing or new model analysis needed for this documentation pass.
+
 ## Public Source Preparation from 223beea
 
 Confirmed Git root is outputs/airwise-schools (absolute path in PUBLIC_RELEASE.md),

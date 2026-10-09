@@ -30,11 +30,10 @@ original blueprint has NOT shipped.
 
 ### Required Before Submission
 
-- **P0 / missing:** owner creates/pushes a public GitHub repository after reviewing
-  working files and Git history for private content. No repository exists yet.
-  From223beea: source-only release preparation and exact history-preserving push
-  to default `main` are in PUBLIC_RELEASE.md. GitHub CLI/connector authentication
-  is unavailable here, so creation/push/signed-out verification remain owner actions.
+- **Completed:** owner published https://github.com/Unnati061/airwise-schools .
+  Signed-out Public/main/code page and unauthenticated API confirmed visibility,
+  default main and initial latest7b868e1 matching local HEAD. History preserved;
+  source-only scans pass. See PUBLIC_RELEASE.md for records; no binary release.
 - **P0 / missing:** owner records a YouTube demo under three minutes showing actual
   AWS usage, uploads public/unlisted, and tests its link signed out. Script only.
 - **P0 / unverified:** owner confirms eligibility, registration/check-in, official

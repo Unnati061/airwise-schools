@@ -7,6 +7,8 @@ school deployment or health intervention.
 
 **Hosted app:** [AirWise Schools](https://main.d29v8cmldu93l3.amplifyapp.com)
 
+**Public source:** [Unnati061/airwise-schools](https://github.com/Unnati061/airwise-schools), default branch `main`.
+
 The page is public; school operations require existing Cognito identities.
 There is no self-registration, role selector or public authentication bypass.
 Enter passwords privately. Do not reset demo passwords just to run the app.
@@ -163,12 +165,11 @@ no dependency binaries or deployment ZIPs are offered by this repository.
 Current spending/credits/expiry remain
 unverified after read-only billing timeouts; the owner must check the console.
 
-Public source publication is prepared; GitHub creation/push/public access have
-not been verified because no GitHub CLI/connector authentication is available
-in this environment. Follow [PUBLIC_RELEASE.md](docs/PUBLIC_RELEASE.md) to create
-`airwise-schools`, push the preserved history to default branch `main`, and verify
-signed-out access. Do not attach deployment archives to GitHub Releases.
-The demo video, repository/video submission links and owner eligibility/deadline
+Public source was verified signed out on October 9, 2026; the unauthenticated
+GitHub API reports public visibility and default branch `main`. History is
+preserved. See [PUBLIC_RELEASE.md](docs/PUBLIC_RELEASE.md) for the verification
+record. Do not attach deployment archives to GitHub Releases.
+The demo video, final submission links and owner eligibility/deadline
 checks remain pending; no hackathon entry has been submitted.
 Bilingual previews and synthetic student-hour accounting are deployed;
 [feature completion](docs/FEATURE_COMPLETION.md) records scope and limits.
