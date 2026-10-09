@@ -13,6 +13,13 @@ preflight passed but the single S3 PUT failed with ConnectionClosedError. Object
 state is unverified; no Lambda/Amplify update reached. Hosted verification remains
 pending; exact handoff is in AWS_APP.md. No retry or binary publication.
 
+Subsequent resume from06f8660: owner console-uploaded preserved bytes. Actual
+S3 FULL_OBJECT CRC64/NVME/local SHA256 verified, existing Lambda CodeSha256
+matched, Amplify job3 SUCCEED. Public browser notice hash and private admin revised
+English/Hindi preview/logout verification passed. No model calls, automatic app
+ZIP upload retry, new resources or publication. Historical pending claims below
+are superseded; precise native binary-release obligations remain unchanged.
+
 ## Original Code and Third-party Materials
 
 The owner selected MIT for original AirWise Schools code. Root LICENSE uses

@@ -1,5 +1,17 @@
 # Amplify Hosting - October 9, 2026 IST
 
+## Notice Release Resume from 06f8660
+
+Existing app/main manual job3 SUCCEED, static ZIP134,749 bytes. No new resources
+or auth/CORS changes. Signed-out public notice asset fetched HTTP200/284,227 bytes
+and SHA256c873cedf671c89df0aa8f895f1b9da6dd17b6741ae6796cfcd0e45afa6ee568c,
+matching source/build. Existing app Lambda updated from owner-uploaded artifact;
+no application ZIP upload/rebuild. See AWS_APP.md for checksum/code-hash results.
+Private administrator sign-in verified revised English/Hindi wording through
+the deployed API; preview-only/never-sent labels and caveats retained. Logout
+and reload returned to signed-out sign-in. Desktop Review screenshot inspected.
+No paid model calls or plan/report mutations; teacher workflow not repeated.
+
 ## Verified Follow-up
 
 Follow-up from1b8c067 reused this app/main; manual job2 SUCCEED, staticZIP89,012

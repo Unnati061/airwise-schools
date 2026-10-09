@@ -1,5 +1,27 @@
 # AirWise Schools status - 2026-10-09 (IST)
 
+## Verified Artifact and Existing-app Resume from 06f8660
+
+Owner console-uploaded the byte-identical copy in work/console-upload/<SHA256>/.
+Exact existing object87,593,659 bytes; S3 FULL_OBJECT CRC64NVME6Q7KzjiAt5s=
+matches local CRC64/NVME. Local SHA25610d1de90053d6ac22e4b0c8ec90033cb2fe43e5d36b625455eb8a39b6c9363f9.
+No metadata/ETag presented as a checksum. Guarded resume skips S3 PUT, preserves
+prepared ZIP/dependencies/notices, checks existing ownership/config/code revision.
+Existing app Lambda update Successful and CodeSha256 matches local SHA256.
+Existing Amplify main job3 SUCCEED/static archive134,749 bytes. No new resources,
+paid model calls, application ZIP rebuild/re-upload, auth/config changes or smoke
+Lambda changes. Exact command/checksum/key/cleanup remain in docs/AWS_APP.md.
+Signed-out hosted notice HTTP200,284,227 bytes, exact matching local SHA256.
+Private administrator sign-in verified deployed English/Hindi previews for the
+existing approved MANUAL version, acknowledgement/execution distinction, explicit
+preview-only/never-sent labels and no closure/health-benefit inference. Signed out
+and reload returned to sign-in. Desktop1440x960 Review screenshot inspected;
+no password reset/session export. No plan/report mutation or teacher-flow rerun.
+Relevant tests:11 passed/two existing warnings,24.20s, including checksum mismatch,
+composite-checksum and metadata-only rejection. Licence limitations unchanged;
+source-only release is distinct from unresolved native binary release obligations.
+Prior blocked-upload entries below are historical. No publication/submission.
+
 ## Native Notices and Hosted Release Follow-up from 9acf1fe
 
 Three missing build-tool notices resolved using primary release/source records.

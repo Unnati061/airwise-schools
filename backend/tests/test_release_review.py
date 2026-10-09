@@ -46,3 +46,27 @@ def test_public_repo_artifact_rules():
     assert unsafe_path('frontend/.env.d2')
     assert not unsafe_path('frontend/.env.example')
     assert not unsafe_path('docs/third_party/backend/SCIP/LICENSE')
+
+
+def test_existing_artifact_checksums_reject_metadata_corruption_and_composite(tmp_path):
+    import base64
+    import pytest
+    from awscrt.checksums import crc64nvme
+    from scripts.update_features import verify_existing_artifact
+    content = b'preserved deployment bytes'
+    path = tmp_path / 'deployment.zip'
+    path.write_bytes(content)
+    record = {'archive': str(path), 'compressed_bytes': len(content),
+              'sha256': hashlib.sha256(content).hexdigest()}
+    head = {'ContentLength': len(content), 'ChecksumType': 'FULL_OBJECT',
+            'ChecksumCRC64NVME': base64.b64encode(crc64nvme(content).to_bytes(8, 'big')).decode()}
+    assert verify_existing_artifact(record, head)['algorithm'] == 'CRC64NVME'
+    sha = dict(head, ChecksumSHA256=base64.b64encode(hashlib.sha256(content).digest()).decode())
+    assert verify_existing_artifact(record, sha)['algorithm'] == 'SHA256'
+    with pytest.raises(AssertionError):
+        verify_existing_artifact(record, dict(head, ChecksumType='COMPOSITE'))
+    with pytest.raises(AssertionError):
+        verify_existing_artifact(record, dict(head, ChecksumCRC64NVME='wrong'))
+    with pytest.raises(RuntimeError):
+        verify_existing_artifact(record, {'ContentLength': len(content), 'ChecksumType': 'FULL_OBJECT',
+                                         'Metadata': {'sha256': record['sha256']}})

@@ -7,7 +7,11 @@ checks/deployment. The original baseline mapping below is historical where it
 labels these three requested features missing; it is not a current missing claim.
 Release review from7a803eb adds owner-selected MIT, preserved supplied notices,
 bilingual meaning corrections/tests and read-only billing attempts. Revised
-wording/browser notice asset are local only, not newly deployed. See
+wording/browser notice asset were initially local only. Resume from06f8660 now
+verified owner-uploaded ZIP checksum, existing Lambda update and Amplify job3;
+signed-out browser notice hash/private administrator preview/logout checks passed.
+See AWS_APP.md for actual results; blocked-upload entries below are historical.
+See
 RELEASE_REVIEW.md: billing/credits/expiry unavailable after bounded timeouts,
 native/binary notice obligations unresolved. No publication or submission.
 Other deferred jobs, observation feeds, automatic evidence revision, displacement
@@ -39,11 +43,10 @@ original blueprint has NOT shipped.
   See NATIVE_REDISTRIBUTION.md for specific remaining binary source/SBOM issues.
   Resolve native
   provenance/source obligations before binary distribution. Do not upload dependencies.
-- **P0 / prepared, not deployed:** next bounded hosted update should include
-  browser licence asset and corrected preview wording; current app retains7a803eb.
-  Read-only preflight passed after mobile-data restoration; single artifact PUT
-  failed ConnectionClosedError. No Lambda/Amplify update reached; no upload retry.
-  Exact console handoff and unknown object state are recorded in AWS_APP.md.
+- **Completed:** browser licence asset and corrected preview wording deployed
+  through existing Lambda/Amplify job3 after owner console upload. S3 FULL_OBJECT
+  CRC64/NVME matches preserved ZIP; Lambda CodeSha256 matches its SHA256.
+  Public notice hash/private protected wording/logout verified. No upload retry.
 - **P0 / unverified:** verify repository/video signed-out access and judge access
   expectations. The app sign-in page is public, school data is authenticated.
   Use the verified workflow video; never publish passwords or an auth bypass.

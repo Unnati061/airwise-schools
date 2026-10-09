@@ -68,13 +68,35 @@ def package():
     print(json.dumps(record))
 
 
+def resume_existing():
+    import boto3
+    deploy.BASE_SHA, deploy.RECORD = BASE, RECORD
+    deploy.STATIC = ROOT / 'work/airwise-web-release.zip'
+    record = json.loads(RECORD.read_text())
+    expected_key = f"application/features/{record['sha256']}/airwise-app-features.zip"
+    assert record['object_key'] == expected_key
+    try:
+        head = boto3.Session(profile_name='airwise', region_name=deploy.REGION).client(
+            's3', config=deploy.CONFIG).head_object(
+                Bucket=deploy.BUCKET, Key=expected_key, ChecksumMode='ENABLED')
+        checksum = deploy.verify_existing_artifact(record, head)
+        print(json.dumps({'existing_object_verified': checksum, 'bytes': head['ContentLength']}), flush=True)
+    except Exception as error:
+        print(json.dumps({'status': 'STOPPED', 'step': 'existing_object_verification',
+                          'error_class': type(error).__name__, 'existence': 'UNKNOWN_OR_UNVERIFIED'}))
+        raise SystemExit(1) from None
+    deploy.update(existing_head=head)
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(); parser.add_argument("action", choices=["package", "preflight", "update"])
+    parser = argparse.ArgumentParser(); parser.add_argument("action", choices=["package", "preflight", "update", "resume-existing"])
     args = parser.parse_args()
     if args.action == "package":
         package()
     elif args.action == "preflight":
         preflight()
+    elif args.action == 'resume-existing':
+        resume_existing()
     else:
         deploy.BASE_SHA, deploy.RECORD = BASE, RECORD
         deploy.STATIC = ROOT / "work/airwise-web-release.zip"

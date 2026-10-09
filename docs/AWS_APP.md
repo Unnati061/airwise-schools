@@ -1,5 +1,40 @@
 # Packet D2 application deployment - October 9, 2026 IST
 
+## Console-upload Resume from 06f8660
+
+The exact key's initial bounded HeadObject returned 404. After the owner uploaded
+the verified copy, HeadObject returned 87,593,659 bytes and FULL_OBJECT
+CRC64NVME `6Q7KzjiAt5s=`. Computed CRC64/NVME of the preserved ZIP matches;
+local SHA256 remains `10d1de90053d6ac22e4b0c8ec90033cb2fe43e5d36b625455eb8a39b6c9363f9`.
+This is an actual S3 checksum, not custom metadata, ETag, or S3-reported SHA256.
+The console upload did not expose an S3 SHA256 checksum.
+
+Added a guarded `resume-existing` path: verifies local SHA256/size and full-object
+S3 checksum, skips application artifact PUT entirely, checks existing ownership/
+runtime/code revision, then updates only the existing application Lambda and
+Amplify main branch. Command:
+`.venv\Scripts\python -m scripts.update_release resume-existing`.
+Lambda Successful CodeSha256 decoded to the exact local SHA256 above. Runtime
+remains Python3.12/x86_64,1024MB/28s/concurrency5. ZIP extracted size remains
+241,241,650 bytes. Amplify manual job3 SUCCEED; static archive134,749 bytes.
+No application ZIP rebuild/re-upload, new resources, model calls, role/auth/CORS/
+configuration changes or smoke-Lambda changes. All applicable notices retained;
+binary-release source/relink/SBOM limitations in NATIVE_REDISTRIBUTION.md remain.
+
+Public app: https://main.d29v8cmldu93l3.amplifyapp.com
+Signed-out Chrome fetched `/THIRD_PARTY_NOTICES.txt`: HTTP200,284,227 bytes,
+SHA256 `c873cedf671c89df0aa8f895f1b9da6dd17b6741ae6796cfcd0e45afa6ee568c`,
+matching the source/build asset. Actual private administrator sign-in verified
+English/Hindi revised previews for approved MANUAL version
+`110a2908-9343-4747-9fd5-47398492b0ac`, explicit never-sent labels, separate
+acknowledgement/execution meaning and matching no-closure/health-benefit caveat.
+Sign-out/reload returned to sign-in. Desktop1440x960 Review screenshot inspected.
+No notice analysis, plan/report mutation or teacher-workflow repeat. Passwords
+entered privately, no reset/session export.11 focused tests passed/two existing
+warnings,24.20s. Existing cleanup instructions below remain exact; none executed.
+The earlier failed-upload record below is historical, not the current deployment
+state. No GitHub publication or submission.
+
 ## Release Notice/Wording Update from 9acf1fe
 
 Prepared work/airwise-app-release.zip preserving proven Linux dependency bytes,

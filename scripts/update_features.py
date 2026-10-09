@@ -47,9 +47,31 @@ def package():
     print(json.dumps(record))
 
 
-def update():
+def verify_existing_artifact(record, head):
+    content = Path(record['archive']).read_bytes()
+    assert len(content) == record['compressed_bytes'] == head['ContentLength']
+    assert hashlib.sha256(content).hexdigest() == record['sha256']
+    assert head.get('ChecksumType') == 'FULL_OBJECT'
+    if head.get('ChecksumSHA256'):
+        algorithm = 'SHA256'
+        expected = base64.b64encode(hashlib.sha256(content).digest()).decode()
+    elif head.get('ChecksumCRC64NVME'):
+        from awscrt.checksums import crc64nvme
+        algorithm = 'CRC64NVME'
+        expected = base64.b64encode(crc64nvme(content).to_bytes(8, 'big')).decode()
+    else:
+        raise RuntimeError('No supported full-object S3 checksum; metadata is not verification')
+    assert head['Checksum' + algorithm] == expected
+    return {'algorithm': algorithm, 'value': expected, 'type': 'FULL_OBJECT'}
+
+
+def update(existing_head=None):
     record = json.loads(RECORD.read_text())
-    if record['status'] != 'PREPARED':
+    resume = existing_head is not None
+    if resume:
+        assert record['status'] == 'STOPPED' and record['failure_step'] == 'artifact_upload_once'
+        checksum = verify_existing_artifact(record, existing_head)
+    elif record['status'] != 'PREPARED':
         raise RuntimeError('Partial update exists; inspect rather than repeat upload/deploy')
     def save(**values):
         record.update(values); RECORD.write_text(json.dumps(record, indent=2))
@@ -68,15 +90,18 @@ def update():
         app = amp.get_app(appId=APP)['app']
         assert app['name'] == 'airwise-schools-web-a1f7411817' and app['tags']['Project'] == 'AirWiseSchools'
         s3 = session.client('s3', config=Config(connect_timeout=4, read_timeout=60, retries={'total_max_attempts': 1}))
-        step = 'artifact_upload_once'
+        step = 'verified_existing_artifact' if resume else 'artifact_upload_once'
         key = f"application/features/{record['sha256']}/airwise-app-features.zip"
         save(object_key=key)
-        s3.put_object(Bucket=BUCKET, Key=key, Body=Path(record['archive']).read_bytes(),
-                      ServerSideEncryption='AES256', ChecksumSHA256=base64.b64encode(bytes.fromhex(record['sha256'])).decode())
-        save(status='UPLOADED')
-        head = s3.head_object(Bucket=BUCKET, Key=key, ChecksumMode='ENABLED')
-        assert head['ContentLength'] == record['compressed_bytes']
-        assert head.get('ChecksumSHA256') == base64.b64encode(bytes.fromhex(record['sha256'])).decode()
+        if resume:
+            save(status='EXISTING_OBJECT_VERIFIED', s3_verified_checksum=checksum)
+        else:
+            s3.put_object(Bucket=BUCKET, Key=key, Body=Path(record['archive']).read_bytes(),
+                          ServerSideEncryption='AES256', ChecksumSHA256=base64.b64encode(bytes.fromhex(record['sha256'])).decode())
+            save(status='UPLOADED')
+            head = s3.head_object(Bucket=BUCKET, Key=key, ChecksumMode='ENABLED')
+            assert head['ContentLength'] == record['compressed_bytes']
+            assert head.get('ChecksumSHA256') == base64.b64encode(bytes.fromhex(record['sha256'])).decode()
         step = 'update_existing_lambda_code'
         lam.update_function_code(FunctionName=FUNCTION, S3Bucket=BUCKET, S3Key=key, RevisionId=config['RevisionId'])
         save(status='LAMBDA_UPDATING')
