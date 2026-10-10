@@ -10,6 +10,7 @@ fs.mkdirSync(output, { recursive: true });
 (async () => {
   const browser = await chromium.launch({ headless: true, channel: 'chrome' });
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.addInitScript(() => { if (!sessionStorage.getItem('airwise.mode')) sessionStorage.setItem('airwise.mode', 'REPLAY'); });
   const errors = [];
   let state = 'approved', mutations = 0;
   page.on('pageerror', () => errors.push('Page error'));
@@ -21,12 +22,21 @@ fs.mkdirSync(output, { recursive: true });
     if (p === '/auth/config') value = { region: 'ap-southeast-2', pool_id: 'SYNTHETIC', client_id: 'SYNTHETIC' };
     else if (p === '/me') value = f.admin;
     else if (p === '/inputs') value = f.room_input;
-    else if (p === '/current-plan') value = state === 'none' ? { ...f.room_current, plan_version: null, needs_review: false } : f.room_current;
+    else if (p === '/current-plan') value = state === 'none' ? { ...f.room_current, plan_version: null, needs_review: false } : { ...f.room_current, needs_review: state !== 'neutral' };
     else if (p === '/approved-plans') value = state === 'none' ? [] : f.room_history;
-    else if (p === '/evidence/forecast') value = f.evidence;
+    else if (p === '/evidence/forecast') {
+      value = structuredClone(f.evidence);
+      if (state === 'live') { value.snapshot.mode = 'LIVE'; value.freshness = 'FRESH'; }
+      if (state === 'missing') value.snapshot.points.forEach(p => { if (p.pollutant === 'PM10') p.value = null; });
+    }
     else if (p.startsWith('/draft-plans/')) value = state === 'invalid' ? f.blocked_plan : f.room_plan;
     else if (p.endsWith('/review')) value = state === 'neutral' ? { ...f.room_review, counts: { ...f.room_review.counts, unresolved: 0 }, unresolved_activity_ids: [] } : f.room_review;
-    else if (p.startsWith('/approved-plans/')) value = f.room_detail;
+    else if (p.startsWith('/approved-plans/')) {
+      value = structuredClone(f.room_detail);
+      if (state === 'unrestricted') value.plan.input_snapshot.restrictions = [];
+      if (state === 'scoped') value.plan.input_snapshot.restrictions.forEach(r => { r.period_ids = ['Mon-3']; r.section_ids = ['6-a']; });
+      if (state === 'directional') value.plan.placements.find(a => a.activity_id === '6-a:Mon-4').period_id = 'Tue-4';
+    }
     else return r.fulfill({ status: 404, json: { detail: 'Offline route absent' } });
     return r.fulfill({ json: value });
   });
@@ -44,14 +54,22 @@ fs.mkdirSync(output, { recursive: true });
     await page.getByLabel('Username', { exact: true }).fill('synthetic-admin');
     await page.getByLabel('Password', { exact: true }).fill('SYNTHETIC INPUT NOT A CREDENTIAL');
     await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-    await page.getByRole('link', { name: 'View plan', exact: true }).waitFor();
+    await page.getByRole('link', { name: 'Review plan', exact: true }).waitFor();
     assert((await page.locator('.today-decision-summary').innerText()).includes('2 outdoor lessons: approved indoor alternatives'));
     assert.equal(await page.locator('.today-schedule-row').count(), 8);
     const movement = page.locator('.today-lesson[data-activity="6-a:Mon-2"]');
     assert.equal(await movement.count(), 2);
     assert((await movement.first().innerText()).includes('Sports field'));
     assert((await movement.last().innerText()).includes('Reserve studio'));
-    assert((await page.locator('.today-schedule-row').nth(3).innerText()).includes('classroom lesson'));
+    assert((await page.locator('.today-schedule-row').nth(3).innerText()).includes('Classroom lesson'));
+    assert((await movement.first().innerText()).includes('Outdoor · restricted'));
+    assert((await movement.last().innerText()).includes('Indoor'));
+    assert((await movement.first().innerText()).includes('Period 2 ↔ Period 4'));
+    assert((await page.locator('.today-stale-plan').innerText()).includes('Plan inputs changed since approval. Review before relying on this plan.'));
+    assert.equal(await page.locator('.today-stale-plan a').getAttribute('href'), '#plan');
+    assert((await page.locator('.today-air-chip').innerText()).includes('PM10 260 µg/m³ · SYNTHETIC REPLAY'));
+    assert.equal(await page.locator('.plan-numbers > div').count(), 3);
+    assert((await page.locator('.today-retained').innerText()).includes('240 activities retained'));
     assert(await page.locator('.today-lesson.preserved').count() > 0);
     assert.equal(await page.locator('.today-exception').count(), 1);
     assert.equal(await page.locator('.today-change-details').getAttribute('open'), null);
@@ -68,6 +86,22 @@ fs.mkdirSync(output, { recursive: true });
     }
     await page.getByLabel('Today timetable class').selectOption('6-b');
     assert((await page.locator('.today-schedule-row').nth(2).innerText()).includes('Movement hall'));
+    await switchState('unrestricted');
+    assert.equal(await page.locator('.today-restricted').count(), 0);
+    await switchState('scoped');
+    assert.equal(await page.locator('.today-restricted').count(), 0);
+    await page.getByLabel('Today timetable class').selectOption('6-b');
+    assert.equal(await page.locator('.today-restricted').count(), 0);
+    await switchState('directional');
+    // Rendering-only test double: not a claim that this altered plan is solver-valid.
+    const directional = page.locator('.today-lesson[data-activity="6-a:Mon-2"]').first();
+    assert((await directional.innerText()).includes('Period 2 → Period 4'));
+    assert(!(await directional.innerText()).includes('↔'));
+    await switchState('live');
+    assert((await page.locator('.today-air-chip').innerText()).includes('regional forecast · LIVE'));
+    assert(!(await page.locator('.today-air-chip').innerText()).includes('REPLAY'));
+    await switchState('missing');
+    assert((await page.locator('.today-air-chip').innerText()).includes('PM10 unavailable'));
     await switchState('pending');
     await page.getByRole('link', { name: 'Review draft', exact: true }).waitFor();
     assert((await page.locator('.today-decision-summary').innerText()).includes('proposed indoor alternatives'));
@@ -80,11 +114,13 @@ fs.mkdirSync(output, { recursive: true });
     assert.equal(await page.locator('.today-schedule').count(), 0);
     await switchState('neutral');
     assert.equal(await page.locator('.today-exception').count(), 0);
+    assert.equal(await page.locator('.today-stale-plan').count(), 0);
+    await page.getByRole('link', { name: 'View plan', exact: true }).waitFor();
     const roomAction = page.getByRole('link', { name: 'What if a room is unavailable?', exact: true });
     assert.equal(await roomAction.getAttribute('href'), '#plan');
     await roomAction.click();
     await page.getByLabel('Room to exclude', { exact: true }).waitFor();
     assert.equal(mutations, 0); assert.equal(errors.length, 0);
-    console.log('PASS: approved/pending/invalid/no-plan states, real placement/room swaps, preserved activities, class selection, conditional exceptions, desktop/mobile layout, read-only Today. Offline only.');
+    console.log('PASS: decision states, LIVE/REPLAY/missing PM10, explicit restriction scopes, reciprocal/directional labels, retained count, stale flag/action, desktop/mobile, read-only Today. Offline only.');
   } finally { await browser.close(); }
 })().catch(e => { console.error(e.stack); process.exitCode = 1; });

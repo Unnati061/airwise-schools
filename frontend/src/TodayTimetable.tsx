@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, LockKeyhole } from 'lucide-react';
+import { LockKeyhole } from 'lucide-react';
 import type { Schema } from './client';
 import { activityName, className, roomName } from './names';
 
@@ -25,6 +25,7 @@ export default function TodayTimetable({ plan, proposed }: { plan: Schema<'Draft
   const periods = input.periods.filter(p => p.day === selectedDay).sort((a, b) => a.number - b.number);
   const activities = input.activities.filter(a => a.section_id === selectedSection);
   const placements = new Map(plan.placements.map(p => [p.activity_id, p]));
+  const displayLabel = (label: string) => { const name = activityName(label); return name ? name[0].toUpperCase() + name.slice(1) : name; };
   function lesson(periodId: string, after: boolean) {
     const activity = activities.find(a => (after ? placements.get(a.id)?.period_id : a.original_period_id) === periodId);
     if (!activity) return <div className="today-lesson vacant">No activity assigned</div>;
@@ -34,16 +35,28 @@ export default function TodayTimetable({ plan, proposed }: { plan: Schema<'Draft
     const originalNumber = periodById.get(activity.original_period_id)?.number;
     const nextPeriod = placement?.period_id && periodById.get(placement.period_id);
     const isChanged = changed.has(activity.id);
+    const originalRoom = input.rooms.find(r => r.id === activity.original_room_id);
+    const restricted = !after && originalRoom?.kind === 'outdoor' && input.restrictions?.some(r =>
+      r.kind === 'outdoor_prohibited' && r.administrator_confirmed &&
+      r.section_ids.includes(activity.section_id) && r.period_ids.includes(activity.original_period_id));
+    const indoor = after && !!placement?.alternative_id && !placement.deferred &&
+      input.rooms.some(r => r.id === placement.room_id && r.kind !== 'outdoor');
+    const reciprocal = moved && nextPeriod && nextPeriod.day === periodById.get(activity.original_period_id)?.day &&
+      activities.some(other => other.id !== activity.id && other.original_period_id === placement?.period_id &&
+        placements.get(other.id)?.period_id === activity.original_period_id && !placements.get(other.id)?.deferred);
+    const moveLabel = !nextPeriod ? 'Deferred' : reciprocal && originalNumber !== undefined ?
+      `Period ${Math.min(originalNumber, nextPeriod.number)} ↔ Period ${Math.max(originalNumber, nextPeriod.number)}` :
+      `Period ${originalNumber} → ${nextPeriod.day !== periodById.get(activity.original_period_id)?.day ? `${dayNames[nextPeriod.day] || nextPeriod.day} ` : ''}Period ${nextPeriod.number}`;
     return <div className={`today-lesson ${isChanged ? 'changed' : 'preserved'}`} data-activity={activity.id}>
-      <strong>{activityName(alternative ? alternative.label : activity.label)}</strong>
+      <strong>{displayLabel(alternative ? alternative.label : activity.label)}</strong>
       <span>Room: {roomName(after ? placement?.room_id : activity.original_room_id)}</span>
-      <span className="today-lesson-state">{activity.fixed ? <><LockKeyhole size={14} />Fixed · preserved</> : isChanged ? moved ? <>{nextPeriod ? <>Period {originalNumber} <ArrowRight size={14} />{nextPeriod.day !== periodById.get(activity.original_period_id)?.day && `${dayNames[nextPeriod.day] || nextPeriod.day} `}Period {nextPeriod.number}</> : 'Deferred'}</> : 'Activity / room changed' : 'Preserved'}</span>
+      <span className="today-lesson-state">{restricted && <span className="today-restricted">Outdoor · restricted</span>}{indoor && <span className="today-indoor">Indoor</span>}{activity.fixed ? <><LockKeyhole size={14} />Fixed · preserved</> : isChanged ? moved ? moveLabel : 'Activity / room changed' : 'Preserved'}</span>
     </div>;
   }
   const deferred = activities.filter(a => placements.get(a.id)?.deferred && periodById.get(a.original_period_id)?.day === selectedDay);
   return <div className="today-timetable">
     <div className="today-timetable-controls"><label>Class<select aria-label="Today timetable class" value={selectedSection} onChange={e => setSection(e.target.value)}>{input.sections.map(s => <option key={s.id} value={s.id}>{className(s.id)}</option>)}</select></label>
-      <label>Day<select aria-label="Today timetable day" value={selectedDay} onChange={e => setDay(e.target.value)}>{affectedDays.map(d => <option key={d} value={d}>{dayNames[d] || d}</option>)}</select></label><span>Changed lessons are labelled; unchanged lessons show the full swap.</span></div>
+      <label>Day<select aria-label="Today timetable day" value={selectedDay} onChange={e => setDay(e.target.value)}>{affectedDays.map(d => <option key={d} value={d}>{dayNames[d] || d}</option>)}</select></label></div>
     <div className="today-schedule" role="table" aria-label="Original and repaired timetable"><div className="today-schedule-head" role="row"><strong role="columnheader">Period</strong><strong role="columnheader">Original</strong><strong role="columnheader">{proposed ? 'Proposed · not approved' : 'Approved'}</strong></div>
       {periods.map(period => <div className="today-schedule-row" role="row" key={period.id}><div className="today-period" role="rowheader">Period {period.number}</div><div role="cell"><span className="today-mobile-label">Original · Period {period.number}</span>{lesson(period.id, false)}</div><div role="cell"><span className="today-mobile-label">{proposed ? 'Proposed' : 'Approved'} · Period {period.number}</span>{lesson(period.id, true)}</div></div>)}
     </div>
