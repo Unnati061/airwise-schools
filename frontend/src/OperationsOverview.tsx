@@ -17,6 +17,7 @@ export default function OperationsOverview({ actor, data, forecast }: { actor: A
   }, [version, selected, data.confirmed.revision]);
   const records = resource.value, plan = records?.draft || records?.detail?.plan, execution = records?.execution;
   const pending = !!records?.draft;
+  const staleApproval = !!plan && !pending && data.current.needs_review;
   const usable = !!plan?.successful && !!plan.validation?.valid;
   const indoor = plan?.placements.filter(p => p.alternative_id && !p.deferred &&
     plan.input_snapshot.rooms.some(r => r.id === p.room_id && r.kind !== 'outdoor') &&
@@ -33,7 +34,8 @@ export default function OperationsOverview({ actor, data, forecast }: { actor: A
   return <section className="today-decision" aria-label="Timetable decision">
     <ResourceState resource={resource} />
     {records && <>
-      <div className="today-decision-summary"><div className="today-headline"><h2>{summary}</h2>
+      <div className="today-decision-summary"><div className="today-headline"><h2>{staleApproval ? 'Plan needs review' : summary}</h2>
+        {staleApproval && <p className="today-review-needed">{summary}</p>}
         {snapshot && <span className="today-air-chip">PM10 {pm10?.value ?? 'unavailable'} µg/m³ · {snapshot.mode === 'LIVE' ? 'regional forecast · LIVE' : 'Severe-day scenario'}</span>}
         {pending && <p>Proposed draft · not approved. Review before a separate approval.</p>}
         {!plan && <p>Only an administrator confirms restrictions.</p>}
@@ -41,9 +43,9 @@ export default function OperationsOverview({ actor, data, forecast }: { actor: A
       {data.current.needs_review && <div className="today-stale-plan" role="status"><CircleAlert size={20} /><strong>Plan inputs changed since approval. Review before relying on this plan.</strong><a href="#plan">Review plan <ArrowRight size={18} /></a></div>}
       {plan && usable && <>
         <dl className="plan-numbers">{[['Changed periods', changes], ['Indoor substitutions', indoor], ['Room moves', plan.counts?.room_moves ?? '—']].map(([label, value]) => <div key={label}><dd>{value}</dd><dt>{label}</dt></div>)}</dl>
-        <div className="today-timetable-heading"><strong>Timetable · independently validated</strong>
+        <div className="today-timetable-heading"><div><strong>{staleApproval ? 'Stored timetable · independently validated' : 'Timetable · independently validated'}</strong>{staleApproval && <p className="today-validation-note">Validation applies to this stored version, not the changed inputs.</p>}</div>
           <a className="today-room-action" href="#plan"><DoorOpen size={20} /><span>What if a room is unavailable?</span><ArrowRight size={18} /></a></div>
-        <TodayTimetable plan={plan} proposed={pending} />
+        <TodayTimetable plan={plan} proposed={pending} stale={staleApproval} />
         <p className="today-retained"><strong>{plan.placements.length}</strong> activities retained across the weekly plan</p>
         <details className="today-change-details"><summary>Detailed lesson changes ({plan.differences?.length || 0})</summary>{plan.differences?.length ? plan.differences.map(d => {
           const a = plan.input_snapshot.activities.find(a => a.id === d.activity_id);
