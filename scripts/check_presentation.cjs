@@ -60,8 +60,8 @@ const base = 'http://127.0.0.1:5174';
     }
     await page.goto(base); await login('synthetic-admin');
     stage = 'Today operations overview';
-    await page.getByRole('heading', { name: 'What has actually been implemented' }).waitFor();
-    assert.equal(await page.getByText('Demo school · sample school data', { exact: true }).count(), 1);
+    await page.getByRole('heading', { name: 'Implementation' }).waitFor();
+    assert.equal(await page.getByText('Demo school', { exact: true }).count(), 1);
     await layouts('today');
     stage = 'sample confirmation and before/after';
     await page.getByRole('link', { name: 'Plan comparison', exact: true }).click();
@@ -77,6 +77,7 @@ const base = 'http://127.0.0.1:5174';
     await page.locator('tr[data-activity="6-a:Mon-2"].changed-row').waitFor();
     assert.equal(await page.locator('.changed-row').count(), 3);
     assert((await page.locator('tr[data-activity="6-a:Mon-2"] .after-cell').innerText()).includes('Mon-4'));
+    await page.getByLabel('Changed activities only').uncheck();
     assert((await page.locator('tr[data-activity="7-a:Mon-4"]').innerText()).includes('Preserved · fixed'));
     await page.getByLabel('Changed activities only').check();
     await layouts('comparison');

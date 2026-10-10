@@ -10,7 +10,7 @@ export function short(value?: string | null) { return value ? value.slice(0, 8) 
 export function dateInSchool(value: string) { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(value)); }
 export function words(value: string) { return value.toLowerCase().replaceAll('_', ' ').replace(/^./, c => c.toUpperCase()); }
 export function Mode({ mode }: { mode: 'LIVE' | 'REPLAY' | 'MANUAL' | 'UNKNOWN' }) { return <span className={`badge mode-${mode.toLowerCase()}`}>{mode === 'REPLAY' ? 'SYNTHETIC REPLAY' : mode === 'LIVE' ? 'LIVE regional forecast' : mode === 'UNKNOWN' ? 'Evidence provenance not loaded' : 'Manually confirmed'}</span>; }
-export function Version({ value }: { value: string }) { return <code className="version">{value}</code>; }
+export function Version({ value }: { value: string }) { return <details className="version-detail"><summary>Version details</summary><code className="version">{value}</code></details>; }
 
 export function useResource<T>(load: () => Promise<T>, deps: DependencyList, keepPrevious = false) {
   const [value, setValue] = useState<T | null>(null);

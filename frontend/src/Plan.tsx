@@ -1,23 +1,18 @@
 import { useState } from 'react';
-import { ArrowRight, Check, Plus } from 'lucide-react';
+import { ArrowRight, Check, DoorClosed, Plus } from 'lucide-react';
 import { api, type Actor, type Schema } from './client';
 import type { AdminData } from './App';
-import { ActionNotice, Empty, Heading, Metrics, Mode, Refresh, ResourceState, short, stamp, useAction, useResource, Version } from './ui';
+import { ActionNotice, Empty, Heading, Mode, Refresh, ResourceState, stamp, useAction, useResource, Version } from './ui';
+import Timetable, { PlanNumbers } from './Timetable';
+import { activityName, className, roomName } from './names';
+export { activityName } from './names';
 
-export function changeExplanation(plan: Schema<'DraftPlan'>, difference: Schema<'Difference'>) {
-  const activity = plan.input_snapshot.activities.find(a => a.id === difference.activity_id)!;
-  const proposed = difference.proposed;
-  if (proposed.deferred) return 'Explicitly permitted deferral; activity remains accounted for.';
-  const alternative = (activity.approved_alternatives ?? []).find(a => a.id === proposed.alternative_id);
-  const facts = [];
-  if (alternative) facts.push(`Approved substitution: ${alternative.label}`);
-  if (difference.original.period_id !== proposed.period_id) facts.push(`Period ${difference.original.period_id} to ${proposed.period_id}`);
-  if (difference.original.room_id !== proposed.room_id) facts.push(`Room ${difference.original.room_id} to ${proposed.room_id}`);
-  if (difference.original.period_id === proposed.period_id) facts.push('Original period retained');
-  return facts.join('. ') + '.';
+export function changeExplanation(plan: Schema<'DraftPlan'>, d: Schema<'Difference'>) {
+  const a = plan.input_snapshot.activities.find(a => a.id === d.activity_id)!;
+  if (d.proposed.deferred) return 'Explicitly permitted deferral; activity remains accounted for.';
+  const alternative = (a.approved_alternatives ?? []).find(a => a.id === d.proposed.alternative_id);
+  return [alternative && `Approved substitution: ${activityName(alternative.label)}`, d.original.period_id !== d.proposed.period_id ? `${d.original.period_id} → ${d.proposed.period_id}` : 'Original period retained', d.original.room_id !== d.proposed.room_id && `${roomName(d.original.room_id)} → ${roomName(d.proposed.room_id)}`].filter(Boolean).join('. ');
 }
-
-export function activityName(label: string) { return label.replace(/^Synthetic\s+/i, ''); }
 
 export function Comparison({ plan, compact = false }: { plan: Schema<'DraftPlan'>; compact?: boolean }) {
   const [section, setSection] = useState('all');
@@ -25,61 +20,56 @@ export function Comparison({ plan, compact = false }: { plan: Schema<'DraftPlan'
   const periods = new Map(plan.input_snapshot.periods.map(p => [p.id, p]));
   const placements = new Map(plan.placements.map(p => [p.activity_id, p]));
   const differences = new Map((plan.differences ?? []).map(d => [d.activity_id, d]));
-  const activities = plan.input_snapshot.activities.filter(a => periods.get(a.original_period_id)?.day === plan.input_snapshot.affected_day && (section === 'all' || a.section_id === section) && (!changesOnly || differences.has(a.id))).sort((a, b) => periods.get(a.original_period_id)!.number - periods.get(b.original_period_id)!.number || a.section_id.localeCompare(b.section_id));
-  return <div className="comparison"><div className="section-heading">{!compact && <h2>Original / proposed timetable</h2>}<div className="toolbar"><label className="inline-field">Section<select value={section} onChange={e => setSection(e.target.value)}><option value="all">All sections</option>{plan.input_snapshot.sections.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}</select></label><label className="check-label"><input type="checkbox" checked={changesOnly} onChange={e => setChangesOnly(e.target.checked)} />Changed activities only</label></div></div><p className="muted">Affected day: {plan.input_snapshot.affected_day}. Other weekdays remain unchanged.</p>{activities.length ? <div className="table-scroll"><table className="comparison-table"><thead><tr><th>Section / activity</th><th>Before</th><th>After</th><th>Change / reason</th></tr></thead><tbody>{activities.map(activity => {
-    const placement = placements.get(activity.id), difference = differences.get(activity.id);
-    const label = (activity.approved_alternatives ?? []).find(a => a.id === placement?.alternative_id)?.label ?? activity.label;
-    return <tr key={activity.id} className={difference ? 'changed-row' : 'preserved-row'} data-activity={activity.id}><td><strong>{activity.section_id} · {activityName(activity.label)}</strong><small>{activity.id}{activity.fixed ? ' · Fixed lesson' : ''}</small></td><td className="before-cell"><span className="placement-period">{activity.original_period_id}</span><strong>{activity.original_room_id}</strong><small>{activityName(activity.label)}</small></td><td className="after-cell"><span className="placement-period">{placement ? placement.deferred ? 'Deferred' : placement.period_id : 'No placement returned'}</span><strong>{placement?.room_id || 'No room'}</strong><small>{activityName(label)}</small></td><td>{difference ? <><span className="badge changed">Changed</span><p>{changeExplanation(plan, difference)}</p></> : <span className="badge preserved">Preserved{activity.fixed ? ' · fixed' : ''}</span>}</td></tr>;
-  })}</tbody></table></div> : <Empty>No changed activities match this section.</Empty>}</div>;
+  const activities = plan.input_snapshot.activities.filter(a => periods.get(a.original_period_id)?.day === plan.input_snapshot.affected_day && (section === 'all' || a.section_id === section) && (!changesOnly || differences.has(a.id))).sort((a, b) => a.original_period_id.localeCompare(b.original_period_id) || a.section_id.localeCompare(b.section_id));
+  return <div className="comparison"><div className="section-heading"><h2>Lesson changes</h2><div className="toolbar"><label className="inline-field">Section<select value={section} onChange={e => setSection(e.target.value)}><option value="all">All classes</option>{plan.input_snapshot.sections.map(s => <option key={s.id} value={s.id}>{className(s.id)}</option>)}</select></label><label className="check-label"><input type="checkbox" checked={changesOnly} onChange={e => setChangesOnly(e.target.checked)} />Changed activities only</label></div></div>{activities.length ? <div className="table-scroll"><table className="comparison-table"><thead><tr><th>Class / lesson</th><th>Before</th><th>After</th><th>Change</th></tr></thead><tbody>{activities.map(a => {
+    const p = placements.get(a.id), d = differences.get(a.id);
+    const label = (a.approved_alternatives ?? []).find(v => v.id === p?.alternative_id)?.label || a.label;
+    return <tr key={a.id} className={d ? 'changed-row' : 'preserved-row'} data-activity={a.id}><td><strong>{className(a.section_id)}</strong><span>{activityName(a.label)}</span>{a.fixed && <small>Fixed lesson</small>}</td><td className="before-cell"><span>{a.original_period_id}</span><strong>{roomName(a.original_room_id)}</strong><span>{activityName(a.label)}</span></td><td className="after-cell"><span>{p?.deferred ? 'Deferred' : p?.period_id || 'No placement'}</span><strong>{roomName(p?.room_id)}</strong><span>{activityName(label)}</span></td><td>{d ? <><span className="badge changed">Changed</span><p>{changeExplanation(plan, d)}</p></> : <span className="badge preserved">Preserved{a.fixed ? ' · fixed' : ''}</span>}</td></tr>;
+  })}</tbody></table></div> : <Empty>No changed lessons match this class.</Empty>}</div>;
 }
 
 export default function Plan({ actor, data, reload, refreshing }: { actor: Actor; data: AdminData; reload: () => void; refreshing: boolean }) {
   const storageKey = `airwise.draft.${actor.sub}`;
   const [planId, setPlanId] = useState(() => sessionStorage.getItem(storageKey) || data.current.plan_version || '');
   const [generated, setGenerated] = useState<Schema<'DraftPlan'> | null>(null);
-  const [approvedHere, setApprovedHere] = useState('');
-  const [sample, setSample] = useState<'classroom' | 'shared-resources'>('shared-resources');
+  const [sample, setSample] = useState('room-resilience');
   const [sampleReviewed, setSampleReviewed] = useState(false);
+  const [room, setRoom] = useState('');
+  const [roomReviewed, setRoomReviewed] = useState(false);
+  const [excluded, setExcluded] = useState('');
+  const [comparisonBase, setComparisonBase] = useState<Schema<'DraftPlan'> | null>(null);
   const action = useAction();
-  const loaded = useResource(async () => {
-    if (!planId) return null;
-    const plan = await api<Schema<'DraftPlan'>>(`/draft-plans/${planId}`);
-    const input = plan.input_versions.timetable === data.confirmed.revision ? data.confirmed : await api<Schema<'ConfirmedInput'>>(`/inputs/${plan.input_versions.timetable}`);
-    return { plan, input };
-  }, [planId, data.confirmed.revision]);
-  const plan = generated?.id === planId ? generated : loaded.value?.plan;
-  const source = plan?.input_versions.timetable === data.confirmed.revision ? data.confirmed.evidence_binding : loaded.value?.input.evidence_binding;
-  const sourceMode = plan && (plan.input_versions.timetable === data.confirmed.revision || loaded.value?.plan.id === plan.id) ? source?.mode || 'MANUAL' : 'UNKNOWN';
-  const stale = plan && plan.input_versions.timetable !== data.confirmed.revision;
-  const approved = plan && (approvedHere === plan.id || data.history.some(p => p.plan_version === plan.id));
-  function generate() {
-    if (refreshing) return;
+  const loaded = useResource(() => planId ? api<Schema<'DraftPlan'>>(`/draft-plans/${planId}`) : Promise.resolve(null), [planId, data.confirmed.revision]);
+  const previous = useResource(() => data.current.plan_version ? api<Schema<'DraftPlan'>>(`/draft-plans/${data.current.plan_version}`) : Promise.resolve(null), [data.current.plan_version]);
+  const plan = generated?.id === planId ? generated : loaded.value;
+  const provenance = useResource(async () => plan ? plan.input_versions.timetable === data.confirmed.revision ? data.confirmed : api<Schema<'ConfirmedInput'>>(`/inputs/${plan.input_versions.timetable}`) : null, [plan?.id, data.confirmed.revision]);
+  const approved = !!plan && data.history.some(p => p.plan_version === plan.id);
+  const stale = !!plan && plan.input_versions.timetable !== data.confirmed.revision;
+  const availableRooms = data.confirmed.input.rooms.filter(r => r.kind !== 'outdoor' && r.available_period_ids.some(p => p.startsWith(`${data.confirmed.input.affected_day}-`)));
+  const saveDraft = (result: Schema<'DraftPlan'>) => { setGenerated(result); setPlanId(result.id); sessionStorage.setItem(storageKey, result.id); reload(); };
+  function generate() { void action.run(async () => { const latest = await api<Schema<'ConfirmedInput'>>('/inputs'); return api<Schema<'DraftPlan'>>('/draft-plans', 'POST', latest.input); }, saveDraft, 'Draft generated; approval is still required.'); }
+  function confirmSample() { void action.run(async () => { const input = await api<Schema<'RepairInput'>>(`/repair-fixture?scenario=${sample}`); return api<Schema<'ConfirmedInput'>>('/inputs', 'POST', { expected_revision: data.confirmed.revision, input }); }, () => { setSampleReviewed(false); setGenerated(null); setRoom(''); reload(); }, 'Sample inputs confirmed. Generate a draft; the approved plan is unchanged.'); }
+  function exploreRoom() {
+    if (!room || !roomReviewed) return;
+    const input = structuredClone(data.confirmed.input);
+    input.rooms.find(r => r.id === room)!.available_period_ids = input.rooms.find(r => r.id === room)!.available_period_ids.filter(p => !p.startsWith(`${input.affected_day}-`));
     void action.run(async () => {
-      const latest = await api<Schema<'ConfirmedInput'>>('/inputs');
-      return api<Schema<'DraftPlan'>>('/draft-plans', 'POST', latest.input);
-    }, result => { setGenerated(result); setPlanId(result.id); sessionStorage.setItem(storageKey, result.id); reload(); }, 'Draft generated; approval is still required.');
+      const confirmed = await api<Schema<'ConfirmedInput'>>('/inputs', 'POST', { expected_revision: data.confirmed.revision, input });
+      setExcluded(room); setComparisonBase(previous.value); setRoomReviewed(false); reload();
+      return api<Schema<'DraftPlan'>>('/draft-plans', 'POST', confirmed.input);
+    }, saveDraft, 'Room change confirmed and revised draft generated. The approved plan stays in effect.');
   }
-  function approve() {
-    if (!plan) return;
-    void action.run(() => api<Schema<'ApprovedPlan'>>(`/draft-plans/${plan.id}/approve`, 'POST'), result => { setApprovedHere(result.plan_version); reload(); }, 'Approval recorded for this version.', true);
-  }
-  function confirmSample() {
-    const expectedRevision = data.confirmed.revision;
-    void action.run(async () => {
-      const input = await api<Schema<'RepairInput'>>(`/repair-fixture?scenario=${sample}`);
-      return api<Schema<'ConfirmedInput'>>('/inputs', 'POST', { expected_revision: expectedRevision, input });
-    }, () => { setSampleReviewed(false); reload(); }, 'Sample inputs confirmed. The previous approval remains on record; generate a new draft.');
-  }
-  return <><Heading title="Plan comparison"><Refresh onClick={() => { loaded.reload(); reload(); }} disabled={action.busy || refreshing} /><button className="primary" onClick={generate} disabled={action.busy || refreshing}><Plus size={17} />Generate draft</button></Heading><p className="lead">A validated draft does not replace the approved timetable until administrator approval.</p>{data.current.needs_review && <div className="notice warning"><strong>Approved plan needs review</strong><p>A confirmed input revision changed. The previous approved version remains in effect until a new approval.</p></div>}
-    <div className="section-heading"><div><span className="muted">Current approved version</span><p>{data.current.plan_version ? <Version value={data.current.plan_version} /> : 'None'}</p></div>{data.history.length > 0 && <label className="inline-field">Inspect approved version<select aria-label="Inspect approved version" value={data.history.some(p => p.plan_version === planId) ? planId : ''} onChange={e => { if (e.target.value) { setGenerated(null); setPlanId(e.target.value); sessionStorage.setItem(storageKey, e.target.value); } }}><option value="">Selected draft</option>{data.history.map(p => <option value={p.plan_version} key={p.plan_version}>{short(p.plan_version)} · {p.current ? 'Current' : 'Previous'} · {stamp(p.timestamp)}</option>)}</select></label>}</div>
-    <details className="sample-scenario"><summary>Review a sample repair scenario</summary><label>Sample scenario<select value={sample} onChange={e => { setSample(e.target.value as typeof sample); setSampleReviewed(false); }}><option value="classroom">Classroom alternatives · keep original periods</option><option value="shared-resources">Shared teacher and indoor rooms · period repair</option></select></label>{sample === 'shared-resources' ? <><p>Sections 6-a and 6-b share a PE teacher. Outdoor activities are restricted in Monday periods 2–4. The hall and studio open in periods 3–4; a fixed lesson occupies the hall in period 4.</p><p>The reviewed inputs permit PE to move only within these periods and allow two classroom lessons to swap. Other lessons, supervision and room limits remain hard constraints.</p></> : <p>Outdoor PE has an explicitly approved classroom alternative. Original periods can be retained when the independent validator confirms the baseline.</p>}<p className="muted">Confirming this labelled sample revises the current inputs and marks the approved plan for review. It does not approve or replace a plan.</p><label className="check-label"><input type="checkbox" checked={sampleReviewed} onChange={e => setSampleReviewed(e.target.checked)} />I reviewed and confirm these sample restrictions and permitted placements.</label><button className="secondary" onClick={confirmSample} disabled={!sampleReviewed || action.busy || refreshing}><Check size={16} />Confirm sample inputs</button></details>
-    <ActionNotice action={action} /><ResourceState resource={loaded} />{!planId && <Empty>No draft selected. Current confirmed inputs are ready for draft generation.</Empty>}
-    {plan && <>
-      <div className="plan-status"><div><span className="eyebrow">{approved ? 'Approved version' : 'Draft version'}</span><Version value={plan.id} /></div><div className="status-labels"><span className="badge">Solver: {plan.solver_status}</span><span className={`badge ${plan.validation?.valid ? 'good' : 'bad'}`}>Independent validation: {plan.validation?.valid ? 'Passed' : 'Not passed'}</span><Mode mode={sourceMode} /></div></div>
-      <p><strong>Recommendation:</strong> {plan.recommendation === 'baseline' ? 'Keep original periods using the approved classroom alternatives (baseline).' : plan.recommendation === 'repair' ? 'Use the validated repair.' : 'No successful permitted plan.'}</p>
-      <p className="muted">Baseline validation: {plan.baseline.validation.valid ? 'Passed' : 'Not passed'}. {plan.solver_status === 'UNKNOWN' ? 'Time limit or unknown status is not proven infeasibility.' : ''}</p>
-      {plan.diagnostic && <div className="notice warning">{plan.diagnostic}</div>}
-      {plan.validation && !plan.validation.valid && <div className="notice danger"><ul>{plan.validation.errors.map((e, i) => <li key={i}>{e}</li>)}</ul></div>}
-      <Metrics counts={plan.counts} />{stale && <div className="notice warning" role="alert">This draft uses an older input/restriction revision. Approval is disabled; generate a draft from the current confirmed inputs.</div>}<div className="approval-row"><div>Input revision <Version value={plan.input_versions.timetable} />{source && <small>Evidence {source.mode} · Reviewed date {source.calendar_date}</small>}</div><button className="primary" onClick={approve} disabled={action.busy || loaded.loading || !!stale || !!approved || !plan.successful || !plan.validation?.valid}><Check size={17} />{approved ? 'Approval recorded' : 'Approve this version'}</button></div><Comparison key={plan.id} plan={plan} /><a className="next-link" href="#review">Review execution and history <ArrowRight size={17} /></a>
-    </>}</>;
+  const base = comparisonBase || previous.value;
+  const delta = plan && base && plan.id !== base.id ? plan.placements.filter(p => { const before = base.placements.find(b => b.activity_id === p.activity_id); return before && (p.room_id !== before.room_id || p.period_id !== before.period_id || p.alternative_id !== before.alternative_id || p.deferred !== before.deferred); }) : [];
+  const fixedConflict = plan?.input_snapshot.activities.find(a => a.fixed && !plan.input_snapshot.rooms.find(r => r.id === a.original_room_id)?.available_period_ids.includes(a.original_period_id));
+  return <><Heading title="Plan comparison"><Refresh onClick={() => { loaded.reload(); previous.reload(); reload(); }} disabled={action.busy || refreshing} /><button className="primary" onClick={generate} disabled={action.busy || refreshing}><Plus size={20} />Generate draft</button></Heading><p className="lead">Explore a change. Validate it. Approve only when you are ready.</p>
+    <div className="room-explorer"><div><span className="eyebrow">Sample school data · administrator review</span><h2><DoorClosed size={24} />What if a room is unavailable?</h2><p>Exclude one room for {data.confirmed.input.affected_day === 'Mon' ? 'Monday' : data.confirmed.input.affected_day}. This confirms an availability revision and generates a draft, not an approval.</p><span className="badge">Approved timetable stays in effect</span></div><div className="room-controls"><label>Room to exclude<select aria-label="Room to exclude" value={room} onChange={e => { setRoom(e.target.value); setRoomReviewed(false); }}><option value="">Choose an available room</option>{availableRooms.map(r => <option key={r.id} value={r.id}>{roomName(r.id)}</option>)}</select></label><label className="check-label"><input type="checkbox" checked={roomReviewed} onChange={e => setRoomReviewed(e.target.checked)} />I confirm this sample room is unavailable for the affected day.</label><button className="primary" onClick={exploreRoom} disabled={!room || !roomReviewed || action.busy || refreshing}><DoorClosed size={20} />Generate room-change draft</button></div></div>
+    <details className="sample-scenario"><summary>Review a sample repair scenario</summary><label>Sample scenario<select value={sample} onChange={e => { setSample(e.target.value); setSampleReviewed(false); }}><option value="room-resilience">Room availability · shared teacher and reserve studio</option><option value="shared-resources">Shared teacher and indoor rooms · period repair</option><option value="classroom">Classroom alternatives · keep original periods</option></select></label><p>The room-availability sample adds a declared reserve studio, capacity 40, available only in Monday period 4. PE alternatives explicitly permit it. The shared teacher, fixed hall lesson and outdoor restriction remain hard constraints.</p><label className="check-label"><input type="checkbox" checked={sampleReviewed} onChange={e => setSampleReviewed(e.target.checked)} />I reviewed and confirm these sample restrictions and permitted placements.</label><button onClick={confirmSample} disabled={!sampleReviewed || action.busy || refreshing}>Confirm sample inputs</button></details>
+    {data.current.needs_review && <div className="notice warning"><strong>Approved plan needs review</strong><p>Confirmed inputs changed. Teachers still use the previous approval until you approve a new version.</p></div>}<ActionNotice action={action} /><ResourceState resource={loaded} />
+    {plan && <><div className="section-heading"><div><span className="eyebrow">{approved ? 'Approved timetable' : 'Draft · not yet approved'}</span><h2>{plan.successful ? 'A validated timetable' : 'No valid timetable returned'}</h2></div><span className={`badge ${plan.successful ? 'good' : 'bad'}`}>{plan.validation?.valid ? 'Independent validation passed' : 'Not ready for approval'}</span></div><PlanNumbers plan={plan} />
+      {!plan.successful && <div className="notice warning"><strong>{plan.solver_status === 'INFEASIBLE' ? 'No permitted timetable is feasible' : 'A valid repair was not established'}</strong><p>{fixedConflict ? `${className(fixedConflict.section_id)} has a fixed lesson in ${roomName(fixedConflict.original_room_id)} at ${fixedConflict.original_period_id}. That room is unavailable; this lesson cannot be moved or dropped.` : 'The combined confirmed constraints could not produce a valid placement. A timeout is not proof of infeasibility.'}</p><p>The approved timetable has not been replaced.</p></div>}
+      {plan.successful && <><Timetable plan={plan} previous={excluded && base?.id !== plan.id ? base : null} />{excluded && <div className="scenario-result"><h2>{roomName(excluded)} unavailable</h2><p>{delta.length} assignments differ from the approved plan. No activity is assigned to the excluded room on the affected day.</p>{delta.map(p => { const old = base?.placements.find(a => a.activity_id === p.activity_id); const a = plan.input_snapshot.activities.find(a => a.id === p.activity_id)!; return <div className="revision-pair" key={p.activity_id}><strong>{className(a.section_id)} · {activityName(a.label)}</strong><div><span>Previous approved plan</span><b>{roomName(old?.room_id)}</b><span>{old?.period_id}</span></div><div><span>Revised draft</span><b>{roomName(p.room_id)}</b><span>{p.period_id}</span></div></div>; })}</div>}<details className="constraint-details"><summary>Why these changes? Confirmed constraints</summary><ul>{(plan.input_snapshot.restrictions ?? []).map(r => <li key={r.id}>Outdoor activity prohibited for {r.section_ids.map(className).join(', ')} in {r.period_ids.join(', ')}.</li>)}{plan.input_snapshot.activities.filter(a => a.fixed && a.original_period_id.startsWith(`${plan.input_snapshot.affected_day}-`)).map(a => <li key={a.id}>{className(a.section_id)}: {activityName(a.label)} fixed at {a.original_period_id} in {roomName(a.original_room_id)}.</li>)}{plan.input_snapshot.rooms.filter(r => r.id.includes('movement') || r.id === 'reserve-studio').map(r => <li key={r.id}>{roomName(r.id)}: capacity {r.capacity}, available {r.available_period_ids.join(', ') || 'no periods'}.</li>)}</ul><p>Class 6A and Class 6B PE teacher IDs {plan.input_snapshot.activities.find(a => a.id === '6-a:Mon-2')?.teacher_id === plan.input_snapshot.activities.find(a => a.id === '6-b:Mon-3')?.teacher_id ? 'match: shared supervision' : 'do not match in this input'}. All supervision, class and room overlaps are independently checked.</p></details><Comparison plan={plan} compact /></>}
+      <div className="approval-row"><div><strong>{approved ? 'This version is approved' : 'Separate approval required'}</strong><p>{stale ? 'This draft uses an older revision. Generate a new draft before approval.' : 'Approval reruns validation and checks the current input version.'}</p></div><button className="primary" disabled={action.busy || refreshing || stale || approved || !plan.successful || !plan.validation?.valid} onClick={() => void action.run(() => api<Schema<'ApprovedPlan'>>(`/draft-plans/${plan.id}/approve`, 'POST'), reload, 'Approval recorded for this version.', true)}><Check size={20} />{approved ? 'Approval recorded' : 'Approve this version'}</button></div>
+      <details className="technical-details"><summary>Technical details and version history</summary><p>Solver: {plan.solver_status} · Baseline: {plan.baseline.validation.valid ? 'valid' : 'invalid'} · Recommendation: {plan.recommendation}</p><Version value={plan.id} /><p>Input revision: {plan.input_versions.timetable}</p><Mode mode={provenance.loading || provenance.error ? 'UNKNOWN' : provenance.value?.evidence_binding?.mode || 'MANUAL'} />{plan.diagnostic && <p>{plan.diagnostic}</p>}{plan.baseline.validation.errors.map((e, i) => <p key={i}>{e}</p>)}<label>Inspect approved version<select aria-label="Inspect approved version" value={data.history.some(p => p.plan_version === planId) ? planId : ''} onChange={e => { if (e.target.value) { setGenerated(null); setPlanId(e.target.value); setExcluded(''); } }}><option value="">Selected draft</option>{data.history.map(p => <option key={p.plan_version} value={p.plan_version}>{p.current ? 'Current' : 'Previous'} · {stamp(p.timestamp)}</option>)}</select></label></details></>}
+  </>;
 }

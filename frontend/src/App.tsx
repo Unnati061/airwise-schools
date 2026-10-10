@@ -35,7 +35,7 @@ function Administrator({ actor, view }: { actor: Actor; view: View }) {
   const forecast = useResource(() => api<Schema<'EvidenceView'>>(`/evidence/forecast?mode=${mode}`), [mode]);
   function changeMode(value: 'LIVE' | 'REPLAY') { sessionStorage.setItem('airwise.mode', value); setMode(value); }
   return <>
-    <div className="context-bar"><span className={`plan-state ${data.value?.current.needs_review ? 'needs-review' : ''}`}>{data.value?.current.needs_review ? 'Approved plan needs review' : data.value?.current.plan_version ? 'Approved plan on record' : 'No approved plan'}</span></div>
+    {view !== 'today' && <div className="context-bar"><span className={`plan-state ${data.value?.current.needs_review ? 'needs-review' : ''}`}>{data.value?.current.needs_review ? 'Approved plan needs review' : data.value?.current.plan_version ? 'Approved plan on record' : 'No approved plan'}</span></div>}
     <ResourceState resource={data} />
     {view === 'today' && <Today actor={actor} data={data.value} forecast={forecast} mode={mode} changeMode={changeMode} />}
     {view === 'evidence' && data.value && <Evidence actor={actor} data={data.value} reload={data.reload} forecast={forecast} mode={mode} changeMode={changeMode} />}
@@ -53,7 +53,7 @@ function Workspace({ actor, username }: { actor: Actor; username: string }) {
   return <div className="app-shell">
     <aside className="sidebar"><a className="brand" href={actor.role === 'teacher' ? '#inbox' : '#today'}><School size={25} /><span>AirWise <strong>Schools</strong></span></a><div className="school-label">Greater Noida<span>Six sections · School operations</span></div><nav aria-label="Main navigation">{visible.map(({ id, label, icon: Icon }) => <a key={id} href={`#${id}`} aria-current={view === id ? 'page' : undefined}><Icon size={18} /><span>{label}</span></a>)}</nav><div className="sidebar-footer"><ShieldCheck size={16} /><span>Authenticated school access</span></div></aside>
     <div className="workspace">
-      <header className="topbar"><span className="demo-label">Demo school · sample school data</span><div className="identity"><span><strong>{username}</strong><small>{actor.role === 'teacher' ? 'Teacher' : 'Administrator'}</small></span><button className="sign-out" title="Sign out" onClick={signOut}><LogOut size={18} />Sign out</button></div></header>
+      <header className="topbar"><span className="demo-label" title="Sample school data">Demo school</span><div className="identity"><span><strong>{actor.role === 'teacher' ? 'School teacher' : 'School administrator'}</strong><small>Greater Noida</small></span><button className="sign-out" title="Sign out" onClick={signOut}><LogOut size={18} />Sign out</button></div></header>
       <main className="content">{!allowed ? <div className="notice danger" role="alert">Administrator access required. <a href="#inbox">Open your teacher inbox</a></div> : actor.role === 'teacher' ? <TeacherInbox actor={actor} /> : <Administrator actor={actor} view={view} />}</main>
       <footer className="app-footer"><span>School time · Asia/Kolkata</span><details><summary>Scope and limitations</summary><p>Single-period activities, one affected day. Regional forecasts are not campus measurements. No verified active closure order, measured exposure reduction or health benefit. Indoor placement does not establish indoor air quality.</p></details></footer>
     </div>

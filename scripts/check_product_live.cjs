@@ -45,7 +45,7 @@ let stage = 'startup';
     await page.getByRole('button', { name: 'Sign in', exact: true }).waitFor();
   }
   async function layouts(name) {
-    for (const [width, height] of [[1440, 960], [390, 844]]) {
+    for (const [width, height] of [[1440, 900], [390, 844]]) {
       await page.setViewportSize({ width, height });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
       const rect = await page.getByRole('button', { name: 'Sign out', exact: true }).boundingBox();
@@ -68,7 +68,7 @@ let stage = 'startup';
     stage = 'open sample review';
     await page.getByText('Review a sample repair scenario', { exact: true }).click();
     stage = 'select shared-resource sample';
-    await page.getByLabel('Sample scenario').selectOption('shared-resources');
+    await page.getByLabel('Sample scenario').selectOption('room-resilience');
     await page.getByLabel('I reviewed and confirm these sample restrictions and permitted placements.').check();
     stage = 'confirm sample inputs';
     await page.getByRole('button', { name: 'Confirm sample inputs' }).click();
@@ -82,9 +82,33 @@ let stage = 'startup';
       const p = window.__product.values['/draft-plans'];
       if (!p?.successful || p.solver_status !== 'OPTIMAL' || !p.validation?.valid || p.placements.length !== 240 ||
           p.counts.changed_periods !== 2 || p.counts.substitutions !== 2 || p.counts.room_moves !== 2 || p.counts.deferrals !== 0) throw new Error('Repair differs from validated sample');
-      return { version: p.id, status: p.solver_status, counts: p.counts, activities: p.placements.length };
+      return { version: p.id, status: p.solver_status, counts: p.counts, activities: p.placements.length,
+        occupied_room: p.placements.find(a => a.activity_id === '6-a:Mon-2').room_id };
     });
+    await page.getByLabel('Changed activities only').uncheck();
     assert((await page.locator('tr[data-activity="7-a:Mon-4"]').innerText()).includes('Preserved · fixed'));
+    await page.getByRole('button', { name: 'Approve this version', exact: true }).click();
+    await page.getByRole('button', { name: 'Approval recorded', exact: true }).waitFor();
+    stage = 'exclude occupied room without replacing approval';
+    const baseVersion = draft.version;
+    await page.getByLabel('Room to exclude', { exact: true }).selectOption(draft.occupied_room);
+    await page.getByLabel('I confirm this sample room is unavailable for the affected day.').check();
+    await page.getByRole('button', { name: 'Generate room-change draft', exact: true }).click();
+    await page.getByText('Room change confirmed and revised draft generated.', { exact: false }).waitFor();
+    draft = await page.evaluate(async ({ baseVersion, excluded }) => {
+      const p = window.__product.values['/draft-plans'];
+      const current = await window.__productCall('/current-plan');
+      const frozen = await window.__productCall(`/approved-plans/${baseVersion}`);
+      if (!p.successful || !p.validation.valid || p.solver_status !== 'OPTIMAL' || p.placements.length !== 240 ||
+          current.plan_version !== baseVersion || !current.needs_review ||
+          p.placements.some(a => a.room_id === excluded && a.period_id?.startsWith('Mon-'))) throw new Error('Room exclusion or approval preservation failed');
+      const delta = p.placements.filter(a => { const old = frozen.plan.placements.find(b => b.activity_id === a.activity_id); return a.room_id !== old.room_id || a.period_id !== old.period_id || a.alternative_id !== old.alternative_id; });
+      if (delta.length !== 1 || delta[0].activity_id !== '6-a:Mon-2') throw new Error('Unexpected room-change repair');
+      return { version: p.id, status: p.solver_status, counts: p.counts, activities: p.placements.length,
+        base_version: baseVersion, excluded_room: excluded, revised_room: delta[0].room_id, changed_from_previous: delta.length };
+    }, { baseVersion, excluded: draft.occupied_room });
+    await page.getByLabel('Changed activities only').check();
+    await layouts('room-revision');
     await page.getByRole('button', { name: 'Approve this version', exact: true }).click();
     await page.getByRole('button', { name: 'Approval recorded', exact: true }).waitFor();
     await page.getByLabel('Changed activities only').check();
@@ -99,6 +123,7 @@ let stage = 'startup';
     }
     await login('synthetic-teacher-a');
     stage = 'teacher acknowledgement and exception';
+    if (!process.env.AIRWISE_RESUME_REPORTED) {
     await page.getByRole('button', { name: 'Acknowledge this version', exact: true }).click();
     await page.getByRole('button', { name: 'Acknowledged', exact: true }).waitFor();
     await page.evaluate(async version => {
@@ -110,9 +135,10 @@ let stage = 'startup';
     await page.getByLabel('Note (optional)').fill('Demo report: room unavailable at implementation (sample event, not an observed school condition).');
     await page.getByRole('button', { name: 'Save execution report' }).click();
     await page.getByRole('dialog').waitFor({ state: 'hidden' });
+    }
     await page.evaluate(async version => {
       const path = `/approved-plans/${version}/activities/6-a%3AMon-2/report`;
-      const receipt = window.__product.values[path];
+      const receipt = window.__product.values[path] || (await window.__productCall(`/teachers/teacher-6-a/reports?version=${encodeURIComponent(version)}`)).find(r => r.activity_id === '6-a:Mon-2');
       if (!receipt?.request_id) throw new Error('No report receipt');
       const duplicate = await window.__productCall(path, 'PUT', { request_id: receipt.request_id, status: receipt.status, note: receipt.note });
       if (duplicate.timestamp !== receipt.timestamp) throw new Error('Duplicate report');
@@ -121,6 +147,9 @@ let stage = 'startup';
       await window.__productCall('/inputs', 'GET', undefined, 403);
     }, draft.version);
     await layouts('teacher');
+    await page.evaluate(() => { location.hash = 'inbox'; });
+    await page.waitForFunction(() => location.hash === '#inbox');
+    await page.waitForTimeout(100);
     await page.evaluate(() => { location.hash = 'plan'; });
     await page.getByText('Administrator access required.', { exact: false }).waitFor();
     await page.getByRole('link', { name: 'Open your teacher inbox' }).click();
@@ -139,7 +168,7 @@ let stage = 'startup';
     }, draft.version);
     await layouts('review');
     await page.getByRole('link', { name: 'Today', exact: true }).click();
-    await page.getByRole('heading', { name: 'What has actually been implemented' }).waitFor();
+    await page.getByRole('heading', { name: 'Implementation', exact: true }).waitFor();
     await page.getByText('Demo report: room unavailable at implementation (sample event, not an observed school condition).', { exact: true }).waitFor();
     await layouts('today');
     await page.getByRole('link', { name: 'Plan comparison', exact: true }).click();
@@ -149,6 +178,8 @@ let stage = 'startup';
     fs.writeFileSync('work/product-live-results.json', JSON.stringify({ label: 'ACTUAL HOSTED WORKFLOW, SAMPLE SCHOOL DATA, ZERO MODEL CALLS',
       version: draft.version, status: draft.status, activities: draft.activities,
       repair_counts: draft.counts, execution_counts: result.counts,
+      room_scenario: { base_version: draft.base_version, excluded_room: draft.excluded_room,
+        revised_room: draft.revised_room, changed_from_previous: draft.changed_from_previous },
       metrics: result.metrics, approval_versions: result.approval_versions }, null, 2));
     console.log('PASS: persisted admin Review/Today, version history, planned/reported distinction and desktop/mobile layouts');
     await logout();

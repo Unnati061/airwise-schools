@@ -62,6 +62,15 @@ teacher, indoor room opening times and a fixed hall lesson compete after an expl
 outdoor restriction. It permits a two-period repair without relaxing constraints.
 Sample confirmation follows the existing input/version/approval path.
 
+The room-availability sample declares one reserve studio (capacity 40, Monday
+period 4) as an explicitly permitted alternative. The administrator can exclude a
+room on the affected day by reviewing and confirming its availability revision,
+then generating a draft through the same endpoints. Exploration marks review
+needed but does not change the approved snapshot/current pointer. The UI compares
+the revised assignments with that approval; a separate approval revalidates and
+changes the pointer. A fixed lesson in an excluded hall is a directly verifiable
+conflict, not an invented alternative or relaxed constraint.
+
 ## Evidence and Model Boundary
 
 [Evidence provenance](EVIDENCE.md) distinguishes regional forecast/model values,

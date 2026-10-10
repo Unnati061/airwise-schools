@@ -30,6 +30,12 @@ Two labelled samples are available for administrator review: classroom alternati
 that retain periods, and competing shared-teacher/indoor-room constraints requiring
 a period repair. Confirming a sample revises inputs, not approval.
 
+The room-availability variant includes an explicitly declared reserve studio.
+In Plan comparison, choose a room, confirm its unavailability and generate a
+revised draft. Before/after slots show real placement changes; the approved plan
+remains in effect until separate approval. Impossible fixed-room conflicts are
+reported, not silently relaxed.
+
 ## Run and Test
 
 See [setup](docs/SETUP.md) for exact local commands and authentication prerequisites.

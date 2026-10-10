@@ -55,8 +55,12 @@ def test_sample_endpoint_requires_administrator_and_known_scenario():
         assert result.status_code == 200
         assert result.json()["versions"]["timetable"] == "sample-shared-resources-v1"
         assert len(result.json()["activities"]) == 240
+        resilient = client.get("/repair-fixture?scenario=room-resilience")
+        assert resilient.status_code == 200
+        assert next(r for r in resilient.json()['rooms'] if r['id'] == 'reserve-studio')['available_period_ids'] == ['Mon-4']
         assert client.get("/repair-fixture?scenario=unknown").status_code == 422
         app.dependency_overrides[auth.identity] = lambda: TEACHER
         assert client.get("/repair-fixture?scenario=shared-resources").status_code == 403
+        assert client.get("/repair-fixture?scenario=room-resilience").status_code == 403
     finally:
         app.dependency_overrides.clear()

@@ -1580,7 +1580,7 @@ export interface operations {
     fixture_repair_fixture_get: {
         parameters: {
             query?: {
-                scenario?: "classroom" | "shared-resources";
+                scenario?: "classroom" | "shared-resources" | "room-resilience";
             };
             header?: never;
             path?: never;

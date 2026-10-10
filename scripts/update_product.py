@@ -15,6 +15,8 @@ ROOT = deploy.ROOT
 BASE = "10d1de90053d6ac22e4b0c8ec90033cb2fe43e5d36b625455eb8a39b6c9363f9"
 RECORD = ROOT / "work/product-deployment.json"
 STATIC = ROOT / "work/airwise-web-product.zip"
+SOURCE = ROOT / "work/airwise-app-release.zip"
+TARGET = ROOT / "work/airwise-app-product.zip"
 
 
 def preflight():
@@ -38,8 +40,7 @@ def preflight():
 
 
 def package():
-    old = ROOT / "work/airwise-app-release.zip"
-    new = ROOT / "work/airwise-app-product.zip"
+    old, new = SOURCE, TARGET
     if new.exists() or RECORD.exists():
         raise RuntimeError("Product artifacts already exist; inspect, never overwrite")
     assert hashlib.sha256(old.read_bytes()).hexdigest() == BASE
@@ -94,7 +95,7 @@ def host_frontend():
     """A static-only correction; never upload/redeploy the application ZIP."""
     record = json.loads(RECORD.read_text())
     assert record["status"] == "DEPLOYED_NOT_BROWSER_VERIFIED"
-    target = ROOT / "work/airwise-web-product-mobile.zip"
+    target = STATIC.with_stem(STATIC.stem + '-mobile')
     assert not target.exists()
     stage = "static_preflight"
     try:
@@ -142,7 +143,15 @@ def host_frontend():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=["package", "preflight", "update", "resume-existing", "host-frontend"])
-    action = parser.parse_args().action
+    parser.add_argument("--release", choices=["product", "room"], default="product")
+    args = parser.parse_args()
+    action = args.action
+    if args.release == "room":
+        BASE = "d76e76084641e125d3b5cce57735078695a5299ed56cee05ca0e1d808521240e"
+        RECORD = ROOT / "work/room-deployment.json"
+        STATIC = ROOT / "work/airwise-web-room.zip"
+        SOURCE = ROOT / "work/airwise-app-product.zip"
+        TARGET = ROOT / "work/airwise-app-room.zip"
     if action == "package":
         package()
     elif action == "preflight":

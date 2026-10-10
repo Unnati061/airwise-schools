@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 
 from .auth import identity, workflow, settings
 from .repair_contracts import DraftPlan, RepairInput
-from .repair_fixture import synthetic_week, shared_resources_week
+from .repair_fixture import synthetic_week, shared_resources_week, room_resilience_week
 from .workflow import Workflow, admin
 from .workflow_contracts import (Acknowledgement, Actor, ApprovedPlan, AuditEvent, ConfirmedInput,
                                  CurrentPlan, ExceptionSummary, ExecutionInput, ExecutionReport,
@@ -47,9 +47,11 @@ def teacher_reports(teacher_id: str, version: str, actor: Actor = Depends(identi
 
 
 @router.get("/repair-fixture", response_model=RepairInput)
-def fixture(scenario: Literal['classroom', 'shared-resources'] = 'classroom', actor: Actor = Depends(identity), service: Workflow = Depends(workflow)):
+def fixture(scenario: Literal['classroom', 'shared-resources', 'room-resilience'] = 'classroom', actor: Actor = Depends(identity), service: Workflow = Depends(workflow)):
     admin(actor)
     service.school(actor)
+    if scenario == 'room-resilience':
+        return room_resilience_week()
     return shared_resources_week() if scenario == 'shared-resources' else synthetic_week()
 
 

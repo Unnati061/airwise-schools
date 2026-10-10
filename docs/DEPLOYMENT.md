@@ -60,37 +60,47 @@ Use real private Cognito browser verification before claiming the update works.
 
 ## Current Product Build
 
-October 11, 2026: application ZIP 87,594,316 bytes compressed /241,244,231 bytes
+October 11, 2026: application ZIP 87,594,462 bytes compressed /241,244,926 bytes
 extracted, Python3.12/x86_64. SHA256
-`d76e76084641e125d3b5cce57735078695a5299ed56cee05ca0e1d808521240e`.
+`5542f63b96936ba91094400eb3176b75c840eac61710d20f2474b03822cd0214`.
 All 198 ELF entries and third-party notices were retained byte-for-byte from the
 previous working release. S3 FULL_OBJECT SHA256
-`1252CEZB4SXTtczldzUHhpWlKZ7VbO4Fyg4dgIUhJA4=` matches local bytes; Lambda
+`VUL2O5aTa6kQlEAOsxdrdchA6sYXENIPJHSwOCLNAhQ=` matches local bytes; Lambda
 CodeSha256 matches using the same Base64 encoding, LastUpdateStatus=Successful.
 Exact artifact key:
-`application/features/d76e76084641e125d3b5cce57735078695a5299ed56cee05ca0e1d808521240e/airwise-app-features.zip`.
+`application/features/5542f63b96936ba91094400eb3176b75c840eac61710d20f2474b03822cd0214/airwise-app-features.zip`.
 
 The single application upload completed; no retry or console upload was needed.
-Existing Amplify jobs 4 and 5 succeeded; job 5 includes the verified mobile row
-correction, static ZIP 137,921 bytes. No resources, roles, routes, CORS, model,
+Existing Amplify jobs 6 and 7 succeeded; job 7 includes the mobile evidence-button
+and demo-badge text-size corrections, static ZIP 142,201 bytes. No resources, roles, routes, CORS, model,
 timeout/concurrency settings or smoke Lambda were added/changed. Commands were
-update_product package/preflight/update and the static-only host-frontend action.
-94 backend tests pass (two existing deprecation warnings), generated contracts
+update_product package/preflight/update and the static-only host-frontend action,
+each with --release room. The ignored work/room-deployment.json preserves the
+exact artifact stage. Do not repeat packaging/upload against that record.
+96 backend tests pass (two existing deprecation warnings), generated contracts
 and production build pass, and labelled offline presentation/recovery checks pass.
 Actual private Cognito hosted verification passed: administrator confirmed the
-shared-teacher/room sample, generated an OPTIMAL independently validated repair
+reserve-room sample, generated an OPTIMAL independently validated repair
 and approved it. All 240 weekly activities and the fixed lesson were retained;
 two periods changed, two indoor substitutions and two room moves, no deferrals.
-Duplicate approval kept the same current version. The teacher acknowledged it
+Excluding the occupied reserve studio produced one actual change relative to
+the previous approved plan: Class 6A's indoor movement moved to Movement studio
+in the same repaired period. Independent validation passed and the excluded
+room was never assigned. The previous approval remained current, marked needing
+review, until the revised draft was separately approved. Offline exclusion of
+Movement hall was INFEASIBLE because a fixed lesson requires that room; no
+alternative was fabricated. Duplicate approval kept the same current version.
+The teacher acknowledged it
 without execution, recorded one could-not-implement exception and reused the
 report receipt without duplication. Teacher approval, other-teacher assignments
 and administrator-input access returned 403. After fresh administrator sign-in,
 Review/Today showed one report, zero completions, one unresolved exception and
 the persisted current version/history. Desktop 1440 and mobile 390 checks passed.
 Sign-out followed by reload returned to sign-in. The headed verification runner
-now uses natural window sizing for private sign-in: fixed screenshot emulation
-had clipped controls on the owner's scaled display. No product workaround,
-password reset or additional approval was needed to resume the teacher check.
+uses natural window sizing for private sign-in. Its teacher navigation assertion
+initially timed out after successful reporting/permission checks because it set
+an already-current URL fragment. The runner was corrected and resumed from the
+saved report without another approval or new report. No password reset occurred.
 Public HTML/assets and the unchanged third-party browser notice matched local
 build bytes. This presentation pass made zero Bedrock calls.
 

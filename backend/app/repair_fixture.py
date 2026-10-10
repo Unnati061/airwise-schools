@@ -75,3 +75,14 @@ def shared_resources_week() -> RepairInput:
                             'period_ids': ['Mon-2', 'Mon-3', 'Mon-4'], 'section_ids': ['6-a', '6-b'],
                             'administrator_confirmed': True, 'confirmed_by': 'sample-administrator'}]
     return RepairInput.model_validate(data)
+
+
+def room_resilience_week() -> RepairInput:
+    """Declared sample reserve room; not a discovered real-school resource."""
+    data = shared_resources_week().model_dump()
+    data['versions']['timetable'] = 'sample-room-resilience-v1'
+    data['rooms'].append({'id': 'reserve-studio', 'kind': 'classroom', 'capacity': 40,
+                          'available_period_ids': ['Mon-4']})
+    first = next(a for a in data['activities'] if a['id'] == '6-a:Mon-2')
+    first['approved_alternatives'][0]['room_ids'].append('reserve-studio')
+    return RepairInput.model_validate(data)

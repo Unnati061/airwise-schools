@@ -62,6 +62,7 @@ committed. Start a local Vite server on 5174, then:
 .venv\Scripts\python -m scripts.ui_fixtures
 node scripts/check_features.cjs
 node scripts/check_presentation.cjs
+node scripts/check_room.cjs
 npm --prefix frontend run build
 ```
 
