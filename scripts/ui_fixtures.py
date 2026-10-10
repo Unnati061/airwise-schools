@@ -48,16 +48,16 @@ def run():
     room_plan = workflow.draft(ADMIN, room_input.input)
     workflow.approve(ADMIN, room_plan.id)
     workflow.report(TEACHER, room_plan.id, '6-a:Mon-2', ExecutionInput(request_id='11111111-1111-4111-8111-111111111111', status='COULD_NOT_IMPLEMENT', note='Sample event: room unavailable at implementation.'))
+    records.update(room_input=room_input, room_plan=room_plan, room_fixture=room_resilience_week(),
+                   room_detail=workflow.approved_detail(ADMIN, room_plan.id), room_history=workflow.history(ADMIN),
+                   room_review=workflow.execution_review(ADMIN, room_plan.id), room_current=workflow.current(ADMIN))
     occupied = next(p.room_id for p in room_plan.placements if p.activity_id == '6-a:Mon-2')
     excluded = room_input.input.model_copy(deep=True)
     target = next(r for r in excluded.rooms if r.id == occupied)
     target.available_period_ids = [p for p in target.available_period_ids if not p.startswith('Mon-')]
     revised_input = workflow.confirm(ADMIN, InputUpdate(expected_revision=room_input.revision, input=excluded))
     revised_plan = workflow.draft(ADMIN, revised_input.input)
-    records.update(room_input=room_input, room_plan=room_plan, room_fixture=room_resilience_week(),
-                   room_detail=workflow.approved_detail(ADMIN, room_plan.id), room_history=workflow.history(ADMIN),
-                   room_review=workflow.execution_review(ADMIN, room_plan.id),
-                   room_current=workflow.current(ADMIN), excluded_room=occupied,
+    records.update(revised_current=workflow.current(ADMIN), excluded_room=occupied,
                    revised_input=revised_input, revised_plan=revised_plan)
     blocked_input = revised_input.input.model_copy(deep=True)
     next(r for r in blocked_input.rooms if r.id == 'movement-hall').available_period_ids = []

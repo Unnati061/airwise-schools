@@ -34,7 +34,7 @@ export default function OperationsOverview({ actor, data, forecast }: { actor: A
     <ResourceState resource={resource} />
     {records && <>
       <div className="today-decision-summary"><div className="today-headline"><h2>{summary}</h2>
-        {snapshot && <span className="today-air-chip">PM10 {pm10?.value ?? 'unavailable'} µg/m³ · {snapshot.mode === 'LIVE' ? 'regional forecast · LIVE' : 'SYNTHETIC REPLAY'}</span>}
+        {snapshot && <span className="today-air-chip">PM10 {pm10?.value ?? 'unavailable'} µg/m³ · {snapshot.mode === 'LIVE' ? 'regional forecast · LIVE' : 'Severe-day scenario'}</span>}
         {pending && <p>Proposed draft · not approved. Review before a separate approval.</p>}
         {!plan && <p>Only an administrator confirms restrictions.</p>}
       </div>{(!data.current.needs_review || pending) && <a className="today-action" href={plan ? '#plan' : '#evidence'}>{plan ? pending ? 'Review draft' : 'View plan' : 'Review evidence'}<ArrowRight size={18} /></a>}</div>
