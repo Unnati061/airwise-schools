@@ -74,7 +74,7 @@ const base = 'http://127.0.0.1:5174';
     for (const [width, height] of [[1440, 960], [390, 844]]) {
       await page.setViewportSize({ width, height });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
-      await page.screenshot({ path: `work/features-${width}.png`, fullPage: true });
+      await page.screenshot({ path: `${process.env.AIRWISE_SCREENSHOT_DIR || 'work'}/features-${width}.png`, fullPage: true });
     }
     await page.getByRole('button', { name: 'Sign out', exact: true }).click();
     await login('synthetic-teacher-a');

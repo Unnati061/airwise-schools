@@ -43,7 +43,7 @@ const f = JSON.parse(fs.readFileSync('work/d1-ui-fixtures.json'));
     await page.getByLabel('Password', { exact: true }).fill('SYNTHETIC INPUT NOT A CREDENTIAL');
     await page.getByRole('button', { name: 'Sign in', exact: true }).click();
     await page.getByRole('heading', { name: 'Implementation', exact: true }).waitFor();
-    assert((await page.getByRole('heading', { name: 'Implementation', exact: true }).boundingBox()).y < 900);
+    assert((await page.locator('.today-schedule-row').first().boundingBox()).y < 900);
     assert((await page.locator('.plan-numbers').boundingBox()).y < 900);
     assert(await page.locator('.hourly-chart svg').count());
     assert(await page.evaluate(() => getComputedStyle(document.body).fontSize === '16px'));
@@ -51,7 +51,7 @@ const f = JSON.parse(fs.readFileSync('work/d1-ui-fixtures.json'));
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: width === 1440 ? 900 : 844 });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
-      await page.screenshot({ path: `work/room-today-${width}.png`, fullPage: true });
+      await page.screenshot({ path: `${process.env.AIRWISE_SCREENSHOT_DIR || 'work'}/room-today-${width}.png`, fullPage: true });
     }
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.getByRole('link', { name: 'Plan comparison', exact: true }).click();
@@ -71,7 +71,7 @@ const f = JSON.parse(fs.readFileSync('work/d1-ui-fixtures.json'));
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
       const rect = await page.getByRole('button', { name: 'Sign out', exact: true }).boundingBox();
       assert(rect && rect.x + rect.width <= width);
-      await page.screenshot({ path: `work/room-plan-${width}.png`, fullPage: true });
+      await page.screenshot({ path: `${process.env.AIRWISE_SCREENSHOT_DIR || 'work'}/room-plan-${width}.png`, fullPage: true });
     }
     await page.getByLabel('Room to exclude', { exact: true }).selectOption('movement-hall');
     await page.getByLabel('I confirm this sample room is unavailable for the affected day.').check();
@@ -86,9 +86,9 @@ const f = JSON.parse(fs.readFileSync('work/d1-ui-fixtures.json'));
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: width === 1440 ? 900 : 844 });
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
-      await page.screenshot({ path: `work/room-evidence-${width}.png`, fullPage: true });
+      await page.screenshot({ path: `${process.env.AIRWISE_SCREENSHOT_DIR || 'work'}/room-evidence-${width}.png`, fullPage: true });
     }
     assert.equal(errors.length, 0);
-    console.log('PASS: first-screen summary/status/chart, desktop/mobile, confirmed exclusion, independently validated actual repair fixture, one revision/draft, separate approval. Offline only.');
+    console.log('PASS: first-screen decision/timetable, secondary chart, desktop/mobile, confirmed exclusion, independently validated actual repair fixture, one revision/draft, separate approval. Offline only.');
   } finally { await browser.close(); }
 })().catch(e => { console.log('FAIL: room browser check (' + e.name + ')'); console.log(e.stack.split('\n').filter(l => l.includes('check_room.cjs')).join('\n')); process.exitCode = 1; });

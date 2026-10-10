@@ -48,20 +48,20 @@ const base = 'http://127.0.0.1:5174';
       await page.locator('nav').waitFor();
     }
     async function layouts(name) {
-      for (const [width, height] of [[1440, 960], [390, 844]]) {
+      for (const [width, height] of [[1440, 900], [390, 844]]) {
         await page.setViewportSize({ width, height });
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
         const logout = page.getByRole('button', { name: 'Sign out', exact: true });
         const rect = await logout.boundingBox();
         assert(rect && rect.x >= 0 && rect.x + rect.width <= width);
-        await page.screenshot({ path: `work/presentation-${name}-${width}.png`, fullPage: true });
+        await page.screenshot({ path: `${process.env.AIRWISE_SCREENSHOT_DIR || 'work'}/presentation-${name}-${width}.png`, fullPage: true });
       }
       await page.setViewportSize({ width: 1440, height: 960 });
     }
     await page.goto(base); await login('synthetic-admin');
     stage = 'Today operations overview';
     await page.getByRole('heading', { name: 'Implementation' }).waitFor();
-    assert.equal(await page.getByText('Demo school', { exact: true }).count(), 1);
+    assert.equal(await page.getByText('Demo school · sample school data', { exact: true }).count(), 1);
     await layouts('today');
     stage = 'sample confirmation and before/after';
     await page.getByRole('link', { name: 'Plan comparison', exact: true }).click();
