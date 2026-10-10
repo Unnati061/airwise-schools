@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight, Database, Radio, Wind } from 'lucide-react';
-import type { Schema } from './client';
+import type { Actor, Schema } from './client';
+import type { AdminData } from './App';
+import OperationsOverview from './OperationsOverview';
 import { dateInSchool, Empty, Heading, Mode, Refresh, ResourceState, stamp } from './ui';
 
 export type ForecastResource = { value: Schema<'EvidenceView'> | null; loading: boolean; error: Error | null; reload: () => void };
@@ -27,7 +29,7 @@ export function Provenance({ evidence }: { evidence: Schema<'EvidenceView'> }) {
   </section>;
 }
 
-export default function Today({ forecast, mode, changeMode }: { forecast: ForecastResource; mode: 'LIVE' | 'REPLAY'; changeMode: (mode: 'LIVE' | 'REPLAY') => void }) {
+export default function Today({ forecast, mode, changeMode, data, actor }: { forecast: ForecastResource; mode: 'LIVE' | 'REPLAY'; changeMode: (mode: 'LIVE' | 'REPLAY') => void; data?: AdminData | null; actor: Actor }) {
   const [day, setDay] = useState('');
   const snapshot = forecast.value?.snapshot;
   const future = snapshot?.points.filter(p => snapshot.mode === 'REPLAY' || Date.parse(p.valid_time) >= Date.now()) ?? [];
@@ -36,11 +38,11 @@ export default function Today({ forecast, mode, changeMode }: { forecast: Foreca
   const selectedDay = dates.includes(day) ? day : first ? dateInSchool(first) : dates[0] || '';
   const times = [...new Set(snapshot?.points.filter(p => dateInSchool(p.valid_time) === selectedDay).map(p => p.valid_time) ?? [])];
   const valueAt = (pollutant: string, time?: string) => snapshot?.points.find(p => p.pollutant === pollutant && p.valid_time === time)?.value;
-  return <><Heading title="Today"><ModeSwitch mode={mode} changeMode={changeMode} /><Refresh onClick={forecast.reload} disabled={forecast.loading} label="Refresh forecast" /></Heading><p className="lead">Regional air-pollution forecast · Greater Noida vicinity</p><ResourceState resource={forecast} />{forecast.value && <>
-    {mode === 'REPLAY' && <div className="notice warning"><strong>SYNTHETIC REPLAY</strong><p>Invented concentrations for the October 12 demonstration. These are not current pollution values.</p></div>}
+  return <><Heading title="Today"><ModeSwitch mode={mode} changeMode={changeMode} /><Refresh onClick={forecast.reload} disabled={forecast.loading} label="Refresh forecast" /></Heading><p className="lead">Evidence, timetable decisions and teacher execution · Greater Noida</p><ResourceState resource={forecast} />{forecast.value && <>
+    {snapshot!.mode === 'REPLAY' && <div className="notice warning"><strong>SYNTHETIC REPLAY</strong><p>Invented concentrations for the October 12 demonstration. These are not current pollution values.</p></div>}
     <div className="forecast-strip">{['PM2.5', 'PM10'].map(pollutant => <div key={pollutant}><span className="metric-label"><Wind size={17} />{pollutant}</span><strong>{valueAt(pollutant, first) ?? 'Unavailable'} <small>ug/m3</small></strong><span>Valid {first ? stamp(first) : 'No future values'}</span></div>)}</div>
-    <div className="notice neutral">{mode === 'REPLAY' ? 'Invented replay values, not a forecast or observation.' : 'Regional model output, not measured campus conditions.'} No Indian AQI or legal GRAP stage is inferred.</div>
-    <Provenance evidence={forecast.value} />
-    <section><div className="section-heading"><h2>Hourly forecast</h2><label className="inline-field">Valid date<select value={selectedDay} onChange={e => setDay(e.target.value)}>{dates.map(d => <option key={d}>{d}</option>)}</select></label></div>{times.length ? <div className="table-scroll"><table><thead><tr><th>Valid time (school time)</th><th>PM2.5 (ug/m3)</th><th>PM10 (ug/m3)</th></tr></thead><tbody>{times.map(time => <tr key={time}><td>{stamp(time)}</td><td>{valueAt('PM2.5', time) ?? 'Unavailable'}</td><td>{valueAt('PM10', time) ?? 'Unavailable'}</td></tr>)}</tbody></table></div> : <Empty>No forecast values are available for this date.</Empty>}</section><a className="next-link" href="#evidence">Review evidence and restrictions <ArrowRight size={17} /></a>
-  </>}</>;
+    <p className="forecast-caption"><Mode mode={snapshot!.mode} /> {snapshot!.source} · {snapshot!.resolution} · {snapshot!.mode === 'REPLAY' ? 'Invented scenario values, not current conditions' : 'Regional model, not campus measurements'}<br />{snapshot!.mode === 'LIVE' && <>Retrieved {stamp(snapshot!.retrieved_at)} · Model issue time {snapshot!.model_issue_time ? stamp(snapshot!.model_issue_time) : 'not supplied'} · </>}Station observations unavailable.</p>
+    <details className="evidence-details"><summary>Forecast provenance and limitations</summary><Provenance evidence={forecast.value} /></details>
+    <details className="evidence-details"><summary>Hourly forecast</summary><div className="section-heading"><h2>Hourly forecast</h2><label className="inline-field">Valid date<select value={selectedDay} onChange={e => setDay(e.target.value)}>{dates.map(d => <option key={d}>{d}</option>)}</select></label></div>{times.length ? <div className="table-scroll"><table><thead><tr><th>Valid time (school time)</th><th>PM2.5 (ug/m3)</th><th>PM10 (ug/m3)</th></tr></thead><tbody>{times.map(time => <tr key={time}><td>{stamp(time)}</td><td>{valueAt('PM2.5', time) ?? 'Unavailable'}</td><td>{valueAt('PM10', time) ?? 'Unavailable'}</td></tr>)}</tbody></table></div> : <Empty>No forecast values are available for this date.</Empty>}</details>
+  </>}{data && <OperationsOverview actor={actor} data={data} forecast={forecast} />}{!data && <a className="next-link" href="#evidence">Review evidence and restrictions <ArrowRight size={17} /></a>}</>;
 }

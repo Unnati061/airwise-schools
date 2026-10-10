@@ -1579,7 +1579,9 @@ export interface operations {
     };
     fixture_repair_fixture_get: {
         parameters: {
-            query?: never;
+            query?: {
+                scenario?: "classroom" | "shared-resources";
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -1593,6 +1595,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RepairInput"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

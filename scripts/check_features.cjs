@@ -60,6 +60,7 @@ const base = 'http://127.0.0.1:5174';
     assert.equal(approvalCalls, 2);
     stage = 'bilingual preview and metrics';
     await page.getByRole('link', { name: 'Review', exact: true }).click();
+    await page.getByText('Review English / Hindi message previews · nothing is sent', { exact: true }).click();
     await page.getByRole('heading', { name: 'Administrator message previews' }).waitFor();
     assert((await page.getByLabel('Hindi preview').inputValue()).includes('केवल पूर्वावलोकन'));
     assert(await page.getByRole('button', { name: 'Copy Hindi', exact: true }).isDisabled());
@@ -68,6 +69,7 @@ const base = 'http://127.0.0.1:5174';
     const download = page.waitForEvent('download');
     await page.getByRole('button', { name: 'Download Hindi', exact: true }).click();
     assert((await download).suggestedFilename().endsWith('-hi.txt'));
+    await page.getByText('Outdoor student-hours · planned versus teacher-reported', { exact: true }).click();
     await page.getByRole('heading', { name: 'Outdoor student-hour accounting' }).waitFor();
     for (const [width, height] of [[1440, 960], [390, 844]]) {
       await page.setViewportSize({ width, height });

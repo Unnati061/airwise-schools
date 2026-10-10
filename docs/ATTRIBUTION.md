@@ -1,109 +1,59 @@
-# Sources, Tools and Licence Review
+# Attribution
 
-Recorded October9,2026 from installed metadata/source records. Principal-component
-attribution, **not** exhaustive transitive legal clearance. Preserve distribution
-notices; review locked dependencies before publishing. The owner subsequently
-selected MIT for original project code; root LICENSE records that grant only.
-Third-party software/data/excerpts keep their own terms.
+Original project code and authored bilingual templates are MIT; see ../LICENSE.
+Dependencies, data and official passages retain their own terms. This is a technical
+contents review, not blanket legal clearance.
 
-## Release Review from 7a803eb
+## Software
 
-Follow-up from9acf1fe resolves all three missing build-tool notices (uri release
-code matched a subsequently supplied MIT-0 notice in all8dist files).137 notices
-preserved now, with upstream provenance; initial supplied115 retained unchanged.
-Exact binary obligations/scope and unresolved wheel-build provenance are in
-[NATIVE_REDISTRIBUTION.md](NATIVE_REDISTRIBUTION.md). Dependency references in Git
-are distinct from native ELF in ignored/private ZIPs and browser-delivered JS.
-The chronological review below describes the earlier115-file checkpoint.
-
-115 supplied licence/NOTICE/AUTHORS files preserved byte-for-byte under third_party,
-with SHA256 provenance in its manifest. The actual Linux ZIP was inspected,
-including NumPy's libgfortran GPL3 with GCC exception and libquadmath LGPL2.1+
-terms, AWS CRT's XXHash BSD2 notice, dateutil's mixed BSD/Apache text, and native
-libraries bundled by OR-Tools. Three frontend build packages had no standalone
-notice despite declaring MIT. Missing exact-version native/tool provenance and
-binary source/relinking obligations are NOT cleared. Browser notice asset is
-prepared for the next build; not newly deployed. See [RELEASE_REVIEW.md](RELEASE_REVIEW.md)
-for findings, original-source versus binary-release scope and owner actions.
-
-## Follow-up Release Review
-
-Reviewed metadata for all31 pinned Python runtime distributions and55 installed
-npm packages; all had licence declarations. No dependencies were added. NumPy
-declares BSD-3-Clause/0BSD/MIT/Zlib/CC0-1.0 components; python-dateutil declares
-dual BSD/Apache licensing. Cryptography is Apache-2.0 OR BSD-3-Clause; cffi MIT-0,
-typing_extensions PSF-2.0. These declarations are not a full bundled-native
-notice/legal compatibility audit: review OR-Tools/NumPy/awscrt/cryptography
-distribution notices and preserve required attribution before public release.
-English/Hindi templates are authored project code, not third-party translation.
-
-Read-only scripts/release_scan.py scans currently tracked file contents and every
-reachable unique Git blob using bounded patterns for AWS access IDs, JWT literals,
-private keys, GitHub tokens, credential URLs and quoted secret assignments.
-It reports only locations/kinds, never matched values. After staging all intended
-files:101 tracked working files and184 reachable unique history blobs, zero
-pattern matches and zero private-path findings. A post-commit scan covers the new
-commit as well; its blob count increases with this checkpoint.
-Ignored work/env/cache files, credential caches, remote secrets and unreachable
-objects/reflogs are excluded. No entropy scan or credential validation: absence
-of these patterns is not proof of absence of every secret/private document.
-Owner still reviews content/history and remaining third-party obligations; no
-public repository, visibility change, push or submission was performed.
-
-## AI Assistance
-
-Codex assisted code, tests, packaging, AWS tooling, browser-check harnesses,
-debugging and docs. The owner supplied the blueprint/requirements/constraints,
-entered credentials privately and retains review/submission responsibility.
-Bedrock `amazon.nova-lite-v1:0` is the separate runtime interpreter. Neither
-model approves plans or computes official metrics.
-
-## Principal Components
-
-Installed declarations inspected locally, not inferred from remembered licences.
-Upstream distributions and their bundled/transitive notices remain authoritative.
-
-| Component | Version | Declared Licence |
+| Component | Version | Installed declaration |
 | --- | --- | --- |
 | FastAPI | 0.143.0 | MIT |
 | Pydantic | 2.13.5 | MIT |
 | Mangum | 0.22.0 | MIT |
-| OR-Tools | 9.15.6755 | Apache 2.0 |
+| OR-Tools | 9.15.6755 | Apache-2.0 |
 | boto3 / botocore | 1.43.109 | Apache-2.0 |
 | PyJWT | 2.15.1 | MIT |
 | cryptography | 50.0.2 | Apache-2.0 OR BSD-3-Clause |
-| uvicorn (local) | 0.54.0 | BSD-3-Clause |
-| pytest | 9.1.1 | MIT |
 | React / React DOM | 19.3.0 | MIT |
-| Lucide React icons | 1.53.0 | ISC (installed package declaration) |
+| Lucide React | 1.53.0 | ISC |
 | Vite | 8.3.4 | MIT |
 | TypeScript | 5.9.3 | Apache-2.0 |
-| @vitejs/plugin-react | 6.1.2 | MIT |
 | openapi-typescript | 7.13.0 | MIT |
 
-Full pinned/resolved trees: backend/requirements.txt, requirements-dev.txt,
-frontend/package.json and package-lock.json. Browser harnesses use external
-installed Playwright, not a bundled frontend dependency. No third-party photos
-or custom AI mascot are application assets; interface icons come from Lucide.
+Locked trees are in backend/requirements*.txt and frontend/package-lock.json.
+137 supplied licence/NOTICE/AUTHORS files and provenance hashes are retained under
+[third_party](third_party/manifest.json). Initial upstream notice bytes are unchanged.
+The public browser asset THIRD_PARTY_NOTICES.txt accompanies the delivered
+React/React DOM/Scheduler/Lucide JavaScript; no native .node/.so/.dll/.wasm is delivered
+by the frontend. Browser tests use separately installed Playwright.
 
-## Data and Documents
+Missing build-tool notice recovery is documented in
+[native redistribution](NATIVE_REDISTRIBUTION.md), including change-case, Rolldown's
+Windows binding and uri-js-replace's subsequently supplied MIT-0 terms. The latter
+was checked against all eight unchanged installed dist files, not misrepresented
+as a licence originally shipped in the 1.0.1 tarball.
 
-- Forecast: [Open-Meteo Air Quality API](https://open-meteo.com/en/docs/air-quality-api),
-  underlying CAMS global. Regional model output, not station data.
-  [Open-Meteo terms](https://open-meteo.com/en/terms) specify CC BY4.0 data and
-  non-commercial free-API conditions. Preserve Open-Meteo/CAMS source credit,
-  metadata/limitations; review terms before commercial reuse.
-- Official excerpts: Ministry of Health/NCDC advisories November1,2025 and
-  September2022; exact passage/page references and hashes in
-  [EVIDENCE.md](EVIDENCE.md) and backend/app/data/policy_excerpts.json. Attribution
-  is not legal activation, endorsement or a blanket grant to republish complete
-  government PDFs. Owner reviews source terms before redistribution.
-- OpenAQ: candidate documentation consulted, **no observations ingested**.
-- Timetable/teacher identities/internal policy/pasted notices/REPLAY concentrations
-  are synthetic. No child identities/medical records.
-- Owner-supplied blueprint is planning input, not copied wholesale into this
-  candidate public repository. Preserve its true date and implementation history.
+Private Lambda ZIPs contain 198 ELF entries; LGPL/GPL-with-GCC-exception/EPL/MPL
+source/relink/build-provenance and static-dependency notice issues are not fully
+resolved for public binary redistribution. Full supplied texts remain in the ZIPs.
+Do not publish deployment archives or dependency binaries. Source dependency
+references are not distributions of those binaries. See the precise obligations
+and outstanding source/build/SBOM requirements in NATIVE_REDISTRIBUTION.md.
 
-References/hashes show what was reviewed, not accuracy, legal effect, campus
-exposure or health benefit. MIT for original code was selected explicitly by
-the owner, not imposed on third-party materials.
+## Evidence
+
+[Open-Meteo](https://open-meteo.com/en/docs/air-quality-api) supplies underlying
+CAMS global regional model output. Its [terms](https://open-meteo.com/en/terms)
+specify CC BY 4.0 data and non-commercial free-API conditions. Preserve source credit
+and limitations; review terms before commercial reuse.
+
+Ministry of Health/NCDC advisories dated November 1, 2025 and September 2022 are
+credited with exact excerpts, page references, source URLs and document/excerpt
+hashes in backend/app/data/policy_excerpts.json. See [evidence](EVIDENCE.md).
+Attribution does not establish an active order, endorsement or blanket permission
+to redistribute entire government PDFs.
+
+Timetable, section sizes, teachers, internal school policy and replay concentrations
+are sample data. No child identities or medical records are included. OpenAQ
+documentation was investigated but no station observations were ingested.

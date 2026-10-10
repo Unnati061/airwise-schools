@@ -1,50 +1,27 @@
 # AirWise Schools
 
-Read STATUS.md, docs/PRODUCT.md and docs/ARCHITECTURE.md first.
-Implement only the requested packet. One agent; no scope expansion.
-Python 3.12 / FastAPI / OR-Tools; React / Vite / TypeScript.
-Use synthetic aggregate school data only; never commit secrets or child data.
-Keep LIVE, REPLAY and SYNTHETIC evidence distinct; never infer legal activation.
-Future plans require independent validation, authorized approval and version checks.
-No paid services or broader AWS infrastructure in this foundation packet.
-The user authorized a separate private S3/IAM/Lambda/log-group runtime smoke
-spike; see docs/AWS_SMOKE.md. Do not change organization policies to bypass denial.
-Packet B2 authorizes only its DynamoDB table, Cognito pool/client/synthetic users
-and least-privilege local runtime role in Sydney. Protected APIs require real
-Cognito access tokens; never add a runtime memory/authentication bypass.
-Do not alter the Packet A smoke Lambda for B2. See docs/WORKFLOW.md.
-Packet C authorizes bounded Sydney Nova Lite calls through the existing runtime
-role and evidence persistence in the existing table. No new infrastructure,
-cross-region inference, automatic legal activation or model-driven approval.
-See docs/EVIDENCE.md for source provenance, review gates and daily limits.
-Packet D1 adds a local authenticated interface only. No new AWS resources or
-deployment. See docs/INTERFACE.md; Vite proxies the local backend on port 8002.
-Docker is conditional on demonstrated ZIP native compatibility failure.
-Packet D2 authorizes the dedicated Sydney application Lambda/role/HTTP API and
-logs, reusing existing data/auth/model resources. See docs/AWS_APP.md. Existing
-object checksum verified and D2 resources created; deployed administrator approval,
-teacher execution and role denials passed. Hosted forecast/one actual analysis
-also passed; broader latency/security edge cases remain unverified.
-Inspect/reuse these resources, never rerun create-only
-deployment. Do not rebuild/upload again or change the smoke Lambda. Measure
-actual integration latency before deciding synchronous slow paths are adequate.
-Hosting follow-up authorizes the existing frontend's tagged Amplify static app
-and exact API CORS origin only. See docs/HOSTING.md for the deployed app/branch;
-reuse them, never rerun create-only helpers. Cognito direct sign-in has no OAuth
-callback. Keep model calls bounded, private sign-in manual and credentials out
-of logs/artifacts. Do not redesign or recreate API/data/auth/smoke resources.
-The follow-up from1b8c067 authorizes recovery, reviewed bilingual previews and
-synthetic student-hours plus updates to existing Lambda/Amplify only. Deployed
-and privately verified; see docs/FEATURE_COMPLETION.md. Do not rerun one-shot
-updates, create resources or make model calls merely for verification. Release
-scan is pattern-limited; never publish private artifacts or credentials.
+Read README.md and docs/ARCHITECTURE.md; use docs/SETUP.md and docs/DEPLOYMENT.md
+for operating instructions. Work only on the user-requested scope, with one agent.
 
-From repository root (PowerShell):
-- `.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8002`
-- `.venv\Scripts\python -m backend.app.solver_smoke`
-- `.venv\Scripts\python -m pytest backend/tests -q`
-- `npm --prefix frontend ci`
-- `npm --prefix frontend run build`
-- `npm --prefix frontend run dev -- --host 127.0.0.1`
+- Python 3.12 / FastAPI / OR-Tools; React / Vite / generated TypeScript contracts.
+- Keep school data fictional and aggregate. Never commit credentials, passwords,
+  tokens, private notices, caches, dependency binaries or deployment archives.
+- Preserve independent validation, server-side Cognito identity/school/teacher
+  authorization, transactional approval, versions and idempotent report receipts.
+- Keep LIVE and REPLAY distinct. Regional model output is not campus observation.
+  Do not infer legal restrictions, measured health benefits or indoor-air safety.
+- Model proposals require administrator review; deterministic metrics do not use AI.
+- Use profile airwise, ap-southeast-2 only. Inspect and reuse owned resources.
+  No policy/account changes, create-only reruns or smoke-Lambda changes.
+- Private passwords are entered by the owner; never reset them automatically.
+  Bound spending/retries; do not make model calls merely for verification.
+- Deployment requires checked Linux Python3.12/x86_64 ZIP bytes and actual runtime/
+  browser verification. Stop after upload connectivity failure; use the exact
+  preserved ZIP for the console fallback. No speculative Docker workaround.
+- Preserve applicable third-party notices and Git history/timestamps.
 
-Run relevant checks, record actual failures and blockers, then make one checkpoint commit.
+Relevant checks: .venv\Scripts\python -m pytest backend/tests -q;
+npm --prefix frontend run generate:api (local backend 8002);
+npm --prefix frontend run build. Browser harnesses clearly separate test doubles
+from real authentication. Record real results in concise operating documentation,
+not new packet/audit diaries. Use product-focused commit messages.

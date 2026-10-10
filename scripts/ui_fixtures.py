@@ -7,7 +7,7 @@ from backend.app.durable_store import DynamoStore
 from backend.app.evidence_contracts import AnalysisResult, EvidenceBinding, NoticeInterpretation
 from backend.app.policy_catalog import catalog
 from backend.app.pollution import replay_forecast
-from backend.app.repair_fixture import synthetic_week
+from backend.app.repair_fixture import shared_resources_week, synthetic_week
 from backend.app.workflow import Workflow
 from backend.app.workflow_contracts import InputUpdate
 from backend.tests.test_workflow import ADMIN, TEACHER, FakeDynamo
@@ -41,6 +41,9 @@ def run():
         'assignments': workflow.assignments(TEACHER, TEACHER.teacher_id), 'policies': catalog(), 'analysis': analysis,
         'evidence': {'snapshot': snapshot, 'freshness': 'REPLAY', 'checked_at': datetime.now(timezone.utc), 'observations_available': False,
                      'observation_limitation': 'SYNTHETIC OFFLINE TEST: no observation feed'}}
+    shared_input = workflow.confirm(ADMIN, InputUpdate(expected_revision=next_input.revision, input=shared_resources_week()))
+    shared_plan = workflow.draft(ADMIN, shared_input.input)
+    records.update(shared_input=shared_input, shared_plan=shared_plan, shared_fixture=shared_resources_week())
     def encode(value):
         if hasattr(value, 'model_dump'):
             return value.model_dump(mode='json')
