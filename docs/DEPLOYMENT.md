@@ -104,6 +104,50 @@ saved report without another approval or new report. No password reset occurred.
 Public HTML/assets and the unchanged third-party browser notice matched local
 build bytes. This presentation pass made zero Bedrock calls.
 
+## Today Update
+
+October 11, 2026: Amplify main job 8 succeeded for the frontend-only Today update.
+Static ZIP: 145,301 bytes, SHA256
+`4adf51b753d521ad20c2e4e730b414e95acaaf0f34e0fd98e26afaeae50237fb`.
+Published HTML, CSS, JavaScript and THIRD_PARTY_NOTICES.txt matched local build
+bytes. The application Lambda CodeSha256 remained unchanged. No resources,
+permissions, backend code or approval enforcement were changed; zero Bedrock calls.
+
+The reproduced replay false-stale warning was a test-fixture chronology error:
+ui_fixtures captured room_current after confirming room unavailability, while
+presenting the earlier just-approved baseline. That explicit update genuinely
+changed the input revision. The fix captures baseline approval state first and
+keeps revised_current separately. The regression verifies matching approved input
+revision/needs_review=false and a later explicit revision/needs_review=true.
+This was not evidence that reading replay forecasts changed production inputs.
+
+Actual private Cognito hosted verification passed Today -> room unavailable ->
+revised draft -> separate approval -> teacher exception -> administrator Review.
+Replay baseline approval stayed current after Today reload. Excluding the occupied
+reserve studio preserved the old approval and marked it stale, including reload.
+The independently validated OPTIMAL revision assigned no activities to the excluded
+room on Monday and changed Class 6A's movement room to Movement studio. Separate
+approval cleared staleness and stayed current after reload. All 240 activities and
+the fixed lesson were retained; two changed periods, two substitutions, two room
+moves, no deferrals. Teacher acknowledgement did not become execution; one
+COULD_NOT_IMPLEMENT report persisted and duplicate receipt reuse did not add totals.
+Teacher approval, another teacher's assignments and administrator inputs returned
+403. Administrator Review showed one report, zero completions, one unresolved
+exception and the current approval in history. Sign-out/reload returned to sign-in.
+The runner was interrupted at the final administrator sign-in; its saved request
+log confirmed completed teacher checks. Final administrator checks resumed read-only,
+without another approval/report. Replay provenance remained explicit; LIVE wording
+and separation were also checked with labelled offline responses, not a new live
+forecast freshness measurement.
+
+Passed: 15 targeted Python workflow/room tests (two existing warnings), production
+Vite build --mode d2, check_today, check_room, check_presentation and check_features
+offline browser checks, actual check_product_live hosted workflow, node syntax and
+git diff checks. Desktop 1440x900 and mobile 390x844 authenticated screenshots were
+saved outside Git and inspected; no horizontal clipping, mobile comparisons scroll.
+The ignored work/today-deployment.json and preserved static ZIP record this update.
+Do not rerun its one-shot deployment. Existing cleanup guidance remains applicable.
+
 ## Runtime Limits
 
 Previously verified hosted admin/teacher approval, reports, stale-version rejection,

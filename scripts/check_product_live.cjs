@@ -2,6 +2,10 @@
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const path = require('node:path');
+const output = process.env.AIRWISE_SCREENSHOT_DIR;
+assert(output, 'Set AIRWISE_SCREENSHOT_DIR outside the repository');
+fs.mkdirSync(output, { recursive: true });
 const API = 'https://lbckjkbfb4.execute-api.ap-southeast-2.amazonaws.com';
 const HOSTED_URL = 'https://main.d29v8cmldu93l3.amplifyapp.com';
 assert.equal(new URL(API + '/me').pathname, '/me');
@@ -16,6 +20,7 @@ let stage = 'startup';
     if (response.url().startsWith(API)) requests.push({ method: response.request().method(), path: new URL(response.url()).pathname, status: response.status() });
   });
   await page.addInitScript(api => {
+    sessionStorage.setItem('airwise.mode', 'REPLAY');
     window.__product = { values: {} };
     const original = window.fetch;
     window.fetch = async (...args) => {
@@ -50,7 +55,7 @@ let stage = 'startup';
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
       const rect = await page.getByRole('button', { name: 'Sign out', exact: true }).boundingBox();
       assert(rect && rect.x >= 0 && rect.x + rect.width <= width);
-      await page.screenshot({ path: `work/product-live-${name}-${width}.png`, fullPage: true });
+      await page.screenshot({ path: path.join(output, `product-live-${name}-${width}.png`), fullPage: true });
     }
     await display.send('Emulation.clearDeviceMetricsOverride');
   }
@@ -89,6 +94,19 @@ let stage = 'startup';
     assert((await page.locator('tr[data-activity="7-a:Mon-4"]').innerText()).includes('Preserved · fixed'));
     await page.getByRole('button', { name: 'Approve this version', exact: true }).click();
     await page.getByRole('button', { name: 'Approval recorded', exact: true }).waitFor();
+    stage = 'replay approval remains current after Today reload';
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    await page.getByRole('link', { name: 'View plan', exact: true }).waitFor();
+    await page.reload();
+    await page.getByRole('link', { name: 'View plan', exact: true }).waitFor();
+    assert.equal(await page.locator('.today-stale-plan').count(), 0);
+    assert((await page.locator('.today-air-chip').innerText()).includes('Severe-day scenario'));
+    await page.evaluate(async version => {
+      const current = await window.__productCall('/current-plan');
+      if (current.plan_version !== version || current.needs_review) throw new Error('Replay approval became stale after reload');
+    }, draft.version);
+    console.log('PASS: actual REPLAY approval remains current after Today reload');
+    await page.getByRole('link', { name: 'What if a room is unavailable?', exact: true }).click();
     stage = 'exclude occupied room without replacing approval';
     const baseVersion = draft.version;
     await page.getByLabel('Room to exclude', { exact: true }).selectOption(draft.occupied_room);
@@ -109,6 +127,11 @@ let stage = 'startup';
     }, { baseVersion, excluded: draft.occupied_room });
     await page.getByLabel('Changed activities only').check();
     await layouts('room-revision');
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    await page.locator('.today-stale-plan').waitFor();
+    await page.reload();
+    await page.locator('.today-stale-plan').waitFor();
+    await page.getByRole('link', { name: 'Review plan', exact: true }).click();
     await page.getByRole('button', { name: 'Approve this version', exact: true }).click();
     await page.getByRole('button', { name: 'Approval recorded', exact: true }).waitFor();
     await page.getByLabel('Changed activities only').check();
@@ -119,8 +142,14 @@ let stage = 'startup';
       if (approved.plan_version !== version || current.plan_version !== version || current.needs_review) throw new Error('Approval pointer mismatch');
     }, draft.version);
     console.log('PASS: actual sample confirmation, OPTIMAL repair, independent validation, 240 activities, fixed lesson, approval and duplicate receipt');
+    await page.getByRole('link', { name: 'Today', exact: true }).click();
+    await page.reload();
+    await page.getByRole('link', { name: 'View plan', exact: true }).waitFor();
+    assert.equal(await page.locator('.today-stale-plan').count(), 0);
+    console.log('PASS: genuine room change marks old approval stale; separately approved revision stays current after reload');
     await logout();
     }
+    if (!process.env.AIRWISE_RESUME_ADMIN_ONLY) {
     await login('synthetic-teacher-a');
     stage = 'teacher acknowledgement and exception';
     if (!process.env.AIRWISE_RESUME_REPORTED) {
@@ -154,7 +183,9 @@ let stage = 'startup';
     await page.getByText('Administrator access required.', { exact: false }).waitFor();
     await page.getByRole('link', { name: 'Open your teacher inbox' }).click();
     console.log('PASS: actual separate acknowledgement/exception, report receipt reuse, teacher approval/cross-teacher/input denials and navigation guard');
-    await logout(); await login('synthetic-admin');
+    await logout();
+    }
+    await login('synthetic-admin');
     stage = 'administrator persisted report and overview';
     await page.getByRole('link', { name: 'Review', exact: true }).click();
     await page.getByRole('heading', { name: 'Execution exceptions', exact: true }).waitFor();
@@ -162,14 +193,17 @@ let stage = 'startup';
     const result = await page.evaluate(async version => {
       const r = await window.__productCall(`/approved-plans/${version}/review`);
       const history = await window.__productCall('/approved-plans');
+      const current = await window.__productCall('/current-plan');
       if (r.counts.reported !== 1 || r.counts.completed !== 0 || r.counts.unresolved !== 1 ||
-          !history.find(p => p.plan_version === version && p.current)) throw new Error('Persisted review mismatch');
+          !history.find(p => p.plan_version === version && p.current) || current.plan_version !== version || current.needs_review) throw new Error('Persisted review mismatch');
       return { counts: r.counts, metrics: r.outdoor_metrics, approval_versions: history.length };
     }, draft.version);
     await layouts('review');
     await page.getByRole('link', { name: 'Today', exact: true }).click();
     await page.getByRole('heading', { name: 'Implementation', exact: true }).waitFor();
-    await page.getByText('Demo report: room unavailable at implementation (sample event, not an observed school condition).', { exact: true }).waitFor();
+    await page.locator('.today-exception').waitFor();
+    assert.equal(await page.locator('.today-stale-plan').count(), 0);
+    assert((await page.locator('.today-air-chip').innerText()).includes('Severe-day scenario'));
     await layouts('today');
     await page.getByRole('link', { name: 'Plan comparison', exact: true }).click();
     await page.getByRole('button', { name: 'Approval recorded', exact: true }).waitFor();
@@ -186,7 +220,7 @@ let stage = 'startup';
   } catch (e) {
     console.log('FAIL: ' + stage + ' (' + e.name + '); credentials and bodies withheld');
     fs.writeFileSync('work/product-live-failure.json', JSON.stringify({ stage, error_class: e.name, requests }, null, 2));
-    if (await page.locator('nav').count() && !await page.locator('input[type="password"]').count()) await page.screenshot({ path: 'work/product-live-failure.png', fullPage: true });
+    if (!page.isClosed() && await page.locator('nav').count() && !await page.locator('input[type="password"]').count()) await page.screenshot({ path: path.join(output, 'product-live-failure.png'), fullPage: true });
     process.exitCode = 1;
   }
   finally { await browser.close(); }
