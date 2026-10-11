@@ -62,6 +62,11 @@ Cognito identities: no public self-registration, role selector or published pass
 
 ## Architecture and Verification
 
+![AirWise Schools AWS architecture: Amplify, Cognito, API Gateway, Python Lambda with OR-Tools and independent validator, DynamoDB, and Bedrock Nova Lite](docs/images/architecture.png)
+
+Conceptual service overview: the frontend signs in with Cognito and calls API
+Gateway with its token; requests do not pass through Cognito as a proxy.
+
 React/Vite is hosted on Amplify. Cognito authenticates users; API Gateway HTTP API
 protects application routes, while FastAPI independently enforces school, role and
 teacher permissions. A Python 3.12/x86_64 Lambda runs the solver and validator;
@@ -113,7 +118,7 @@ school operations without the required configuration.
   Session-storage XSS hardening, finite concurrency and synchronous API timeouts
   remain operational limitations.
 
-## Licence and AI Assistance
+## Licence
 
 Original project code is [MIT licensed](LICENSE). Dependencies, forecasts and
 official excerpts retain their own terms; preserve [attribution](docs/ATTRIBUTION.md)
@@ -123,6 +128,5 @@ this source repository. [Native redistribution obligations](docs/NATIVE_REDISTRI
 remain unresolved for a downloadable binary release; do not attach private
 deployment archives to GitHub Releases. Source publication is not blanket legal clearance.
 
-Codex assisted implementation, testing, packaging, debugging and documentation.
-The owner directed requirements and reviewed the work. Runtime interpretation
-uses Bedrock Nova Lite, not Codex; neither model confirms restrictions or approves plans.
+Runtime notice interpretation uses Bedrock Nova Lite; it cannot confirm
+restrictions or approve plans.

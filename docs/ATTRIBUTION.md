@@ -1,5 +1,12 @@
 # Attribution
 
+## Development Assistance
+
+Codex assisted implementation, testing, packaging, debugging and documentation.
+The owner directed requirements and reviewed the work. Runtime interpretation
+uses Bedrock Nova Lite, not Codex; neither model confirms restrictions or approves plans.
+The architecture illustration was supplied by the project owner as a Gemini-generated image.
+
 Original project code and authored bilingual templates are MIT; see ../LICENSE.
 Dependencies, data and official passages retain their own terms. This is a technical
 contents review, not blanket legal clearance.
