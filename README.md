@@ -58,7 +58,21 @@ from planned changes.
 
 The five views are **Today**, **Evidence & restrictions**, **Plan comparison**,
 **Teacher inbox** and **Review**. School operations require privately provisioned
-Cognito identities: no public self-registration, role selector or published passwords.
+Cognito identities: no public self-registration or role selector.
+
+## Demo Access
+
+Use these shared demo accounts in the [hosted app](https://main.d29v8cmldu93l3.amplifyapp.com):
+
+| Role | Username | Password |
+| --- | --- | --- |
+| School administrator | `synthetic-admin` | `Singh@6441111111` |
+| Class 6A teacher | `synthetic-teacher-a` | `Singh@6441222222` |
+
+These credentials are intentionally public for demonstration. Administrator
+actions can change the shared sample inputs, approvals and records; other visitors
+may change the state while you explore. Use fictional data only. Teacher access
+is limited to that teacher's assignments. Sign out before switching accounts.
 
 ## Architecture and Verification
 
