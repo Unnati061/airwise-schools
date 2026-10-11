@@ -1,179 +1,92 @@
 # Deployment
 
-Existing resources use profile airwise in ap-southeast-2 (Sydney). Do not rerun
-create-only helpers, broaden permissions, change account/region or alter the
-separate smoke-test Lambda. No credentials are in browser builds or ZIPs.
+The hosted application uses existing resources in ap-southeast-2 (Sydney),
+profile airwise. Inspect ownership before any operation; do not rerun create-only
+helpers, alter the separate smoke-test Lambda or broaden permissions.
 
 | Resource | Existing identifier |
 | --- | --- |
 | Hosted app | https://main.d29v8cmldu93l3.amplifyapp.com |
-| Amplify WEB app / branch | d29v8cmldu93l3 / main |
+| Amplify app / branch | d29v8cmldu93l3 / main |
 | HTTP API | lbckjkbfb4 |
 | API URL | https://lbckjkbfb4.execute-api.ap-southeast-2.amazonaws.com |
 | Application Lambda | airwise-app-api-a1f7411817 |
-| Application execution role | airwise-app-role-a1f7411817 |
-| DynamoDB PAY_PER_REQUEST table | airwise-b2-data-a1f7411817 |
+| Execution role | airwise-app-role-a1f7411817 |
+| DynamoDB on-demand table | airwise-b2-data-a1f7411817 |
 | Cognito pool | ap-southeast-2_LhIz6g1r9 |
 | Public Cognito client | 5gq58g4sp2o7ic7grg8k7cld2 |
 | Local scoped runtime role | airwise-b2-runtime-a1f7411817 |
 | Private artifact bucket | airwise-smoke-artifacts-a1f7411817 |
 | Bedrock model | amazon.nova-lite-v1:0 |
 
-Project=AirWiseSchools tags identify owned resources. Lambda is Python3.12/x86_64,
-1024 MB, 28-second timeout, reserved concurrency five, no provisioned concurrency.
-HTTP integration timeout is 30 seconds; default throttles are rate five/burst ten,
-with rate 0.2/burst one on the paid analysis/explanation routes.
-CloudWatch retention is seven days. Runtime access is scoped to the exact table,
-model and logging, not administrator credentials. Health is public/status-only;
-application routes use Cognito JWT/access scope and independent backend role checks.
+These resource/client identifiers are not credentials. Project=AirWiseSchools
+tags identify owned resources. Lambda uses its execution role, never a copied
+local AWS profile. No password, token or presigned URL belongs in a build or Git.
 
-CORS allows only http://127.0.0.1:5173 and the exact hosted origin. Direct Cognito
-password/refresh sign-in has no OAuth callback flow. No callbacks or role selector
-are needed. Local and hosted app configuration contains only public identifiers.
+## Runtime Configuration
 
-## Updating Existing Resources
+- Python 3.12/x86_64, 1024 MB memory, 28-second Lambda timeout, reserved concurrency
+  five; no provisioned concurrency. HTTP integration timeout is 30 seconds.
+- Default API throttles: rate five/burst ten; analysis/explanation: rate 0.2/burst
+  one. Seven-day CloudWatch retention; logs omit bodies, passwords and tokens.
+- Runtime permissions are scoped to the exact table, model and logging.
+- Health is public/status-only. Application routes require Cognito access-token
+  JWT/scope and independent backend school/administrator/teacher authorization.
+- Exact CORS origins: http://127.0.0.1:5173 and the hosted app URL above. Direct
+  Cognito password/refresh authentication has no OAuth callback or role selector.
+- Paid analysis has bounded requests, no automatic retries and a server-enforced
+  daily allowance. Measured synchronous requests fit the integration timeout, but
+  a few samples do not establish reliability or scale. Concurrency can throttle;
+  do not increase limits speculatively or load-test the shared demonstration.
 
-The proven packaging approach installs Linux Python3.12 binary wheels, never
-Windows site-packages. Product updates reuse verified dependency bytes from the
-preserved release ZIP, replace application source/data and retain full notices.
-Check compressed/extracted sizes, 250 MiB extracted limit, ELF architecture,
-local SHA256, S3 FULL_OBJECT checksum and Base64 Lambda CodeSha256.
+## Build and Update
+
+Use [setup](SETUP.md) for public frontend configuration and private authentication.
+Build frontend assets with the actual API/Cognito variables set:
 
 ```powershell
 npm --prefix frontend run build -- --mode d2
-.venv\Scripts\python -m scripts.update_product package
-.venv\Scripts\python -m scripts.update_product preflight
-.venv\Scripts\python -m scripts.update_product update
 ```
 
-These one-shot commands refuse existing/partial artifacts. Inspect state first;
-do not blindly rerun them. The ignored work/product-deployment.json records the
-exact artifact/key/stage without credentials. An interrupted S3 PUT does not prove
-absence: stop, inspect the exact object and use the preserved file for console
-upload. resume-existing verifies a supported full-object checksum and skips PUT.
-Never treat custom metadata or multipart ETag as verified SHA256.
+Environment files containing private local settings are ignored and not supplied
+by cloning. Verify the build contains the intended public API URL before hosting.
+Frontend-only changes require an Amplify deployment, not a Lambda redeployment.
+Keep the browser notice asset with the published assets.
 
-The updater checks ownership, prior code hash and RevisionId, updates only the
-application Lambda, then manually deploys dist to the existing Amplify main branch.
-Presigned URLs are never printed/persisted. Keep the previous working artifact.
-Use real private Cognito browser verification before claiming the update works.
+Backend packaging must use Linux Python 3.12/x86_64 wheels, never Windows
+site-packages. The existing update_product/update_features tools reuse verified
+dependency bytes, retain notices and check ownership, prior code hash and RevisionId.
+Their pinned source ZIP/hash and ignored work/*-deployment.json state are specific
+to a release: inspect and prepare a fresh record before use. Do not blindly rerun
+historical commands or overwrite preserved artifacts.
 
-## Current Product Build
+Check extracted size against Lambda's 250 MiB limit, native architecture, local
+SHA256, S3 supported FULL_OBJECT checksum and Base64 Lambda CodeSha256. An
+interrupted upload means object existence is unknown until checked. Stop retries;
+use the exact preserved ZIP for a console upload if needed. Custom metadata and
+multipart ETag are not verified SHA256. Keep the previous working artifact.
 
-October 11, 2026: application ZIP 87,594,462 bytes compressed /241,244,926 bytes
-extracted, Python3.12/x86_64. SHA256
-`5542f63b96936ba91094400eb3176b75c840eac61710d20f2474b03822cd0214`.
-All 198 ELF entries and third-party notices were retained byte-for-byte from the
-previous working release. S3 FULL_OBJECT SHA256
-`VUL2O5aTa6kQlEAOsxdrdchA6sYXENIPJHSwOCLNAhQ=` matches local bytes; Lambda
-CodeSha256 matches using the same Base64 encoding, LastUpdateStatus=Successful.
-Exact artifact key:
-`application/features/5542f63b96936ba91094400eb3176b75c840eac61710d20f2474b03822cd0214/airwise-app-features.zip`.
+The working backend artifact is 87,594,462 bytes compressed / 241,244,926 bytes
+extracted; SHA256 `5542f63b96936ba91094400eb3176b75c840eac61710d20f2474b03822cd0214`.
+It contains private native binaries, not a cleared public binary release.
+See [native redistribution](NATIVE_REDISTRIBUTION.md) before transferring archives.
 
-The single application upload completed; no retry or console upload was needed.
-Existing Amplify jobs 6 and 7 succeeded; job 7 includes the mobile evidence-button
-and demo-badge text-size corrections, static ZIP 142,201 bytes. No resources, roles, routes, CORS, model,
-timeout/concurrency settings or smoke Lambda were added/changed. Commands were
-update_product package/preflight/update and the static-only host-frontend action,
-each with --release room. The ignored work/room-deployment.json preserves the
-exact artifact stage. Do not repeat packaging/upload against that record.
-96 backend tests pass (two existing deprecation warnings), generated contracts
-and production build pass, and labelled offline presentation/recovery checks pass.
-Actual private Cognito hosted verification passed: administrator confirmed the
-reserve-room sample, generated an OPTIMAL independently validated repair
-and approved it. All 240 weekly activities and the fixed lesson were retained;
-two periods changed, two indoor substitutions and two room moves, no deferrals.
-Excluding the occupied reserve studio produced one actual change relative to
-the previous approved plan: Class 6A's indoor movement moved to Movement studio
-in the same repaired period. Independent validation passed and the excluded
-room was never assigned. The previous approval remained current, marked needing
-review, until the revised draft was separately approved. Offline exclusion of
-Movement hall was INFEASIBLE because a fixed lesson requires that room; no
-alternative was fabricated. Duplicate approval kept the same current version.
-The teacher acknowledged it
-without execution, recorded one could-not-implement exception and reused the
-report receipt without duplication. Teacher approval, other-teacher assignments
-and administrator-input access returned 403. After fresh administrator sign-in,
-Review/Today showed one report, zero completions, one unresolved exception and
-the persisted current version/history. Desktop 1440 and mobile 390 checks passed.
-Sign-out followed by reload returned to sign-in. The headed verification runner
-uses natural window sizing for private sign-in. Its teacher navigation assertion
-initially timed out after successful reporting/permission checks because it set
-an already-current URL fragment. The runner was corrected and resumed from the
-saved report without another approval or new report. No password reset occurred.
-Public HTML/assets and the unchanged third-party browser notice matched local
-build bytes. This presentation pass made zero Bedrock calls.
+After any update, verify published asset bytes and privately authenticated
+administrator/teacher workflows. Replay approval must stay current after reload;
+explicit input changes must preserve the old approval while marking it stale.
+Revised drafts need independent validation and separate approval. Check teacher
+permissions, report idempotency, persistence and logout; screenshots stay outside Git.
+Read-only health or a successful ZIP upload is not sufficient verification.
 
-## Today Update
+## Retiring Resources
 
-October 11, 2026: Amplify main job 8 succeeded for the frontend-only Today update.
-Static ZIP: 145,301 bytes, SHA256
-`4adf51b753d521ad20c2e4e730b414e95acaaf0f34e0fd98e26afaeae50237fb`.
-Published HTML, CSS, JavaScript and THIRD_PARTY_NOTICES.txt matched local build
-bytes. The application Lambda CodeSha256 remained unchanged. No resources,
-permissions, backend code or approval enforcement were changed; zero Bedrock calls.
+Nothing is deleted automatically. Confirm ownership and dependencies first.
+Application-only retirement covers HTTP API lbckjkbfb4, the application Lambda and
+its /aws/lambda/airwise-app-api-a1f7411817 log group, and its dedicated role after
+removing only that role's inline policy. Delete Amplify app d29v8cmldu93l3 only
+when the hosted URL is no longer required.
 
-The reproduced replay false-stale warning was a test-fixture chronology error:
-ui_fixtures captured room_current after confirming room unavailability, while
-presenting the earlier just-approved baseline. That explicit update genuinely
-changed the input revision. The fix captures baseline approval state first and
-keeps revised_current separately. The regression verifies matching approved input
-revision/needs_review=false and a later explicit revision/needs_review=true.
-This was not evidence that reading replay forecasts changed production inputs.
-
-Actual private Cognito hosted verification passed Today -> room unavailable ->
-revised draft -> separate approval -> teacher exception -> administrator Review.
-Replay baseline approval stayed current after Today reload. Excluding the occupied
-reserve studio preserved the old approval and marked it stale, including reload.
-The independently validated OPTIMAL revision assigned no activities to the excluded
-room on Monday and changed Class 6A's movement room to Movement studio. Separate
-approval cleared staleness and stayed current after reload. All 240 activities and
-the fixed lesson were retained; two changed periods, two substitutions, two room
-moves, no deferrals. Teacher acknowledgement did not become execution; one
-COULD_NOT_IMPLEMENT report persisted and duplicate receipt reuse did not add totals.
-Teacher approval, another teacher's assignments and administrator inputs returned
-403. Administrator Review showed one report, zero completions, one unresolved
-exception and the current approval in history. Sign-out/reload returned to sign-in.
-The runner was interrupted at the final administrator sign-in; its saved request
-log confirmed completed teacher checks. Final administrator checks resumed read-only,
-without another approval/report. Replay provenance remained explicit; LIVE wording
-and separation were also checked with labelled offline responses, not a new live
-forecast freshness measurement.
-
-Passed: 15 targeted Python workflow/room tests (two existing warnings), production
-Vite build --mode d2, check_today, check_room, check_presentation and check_features
-offline browser checks, actual check_product_live hosted workflow, node syntax and
-git diff checks. Desktop 1440x900 and mobile 390x844 authenticated screenshots were
-saved outside Git and inspected; no horizontal clipping, mobile comparisons scroll.
-The ignored work/today-deployment.json and preserved static ZIP record this update.
-Do not rerun its one-shot deployment. Existing cleanup guidance remains applicable.
-
-## Runtime Limits
-
-Previously verified hosted admin/teacher approval, reports, stale-version rejection,
-permission denials, JWT tamper/ID-token rejection and session refresh/local logout.
-One actual Nova request took 2,392 ms browser /978 ms handler /992 ms integration;
-planning samples took 18,948 ms and 5,429 ms browser time. These are request-path
-samples, not a service-latency distribution or reliability SLA.
-
-An earlier single 503 coincided with a Lambda throttle at concurrency five, but
-request-level causation remains unproven. No speculative concurrency fix was made.
-Configured throttles were read back; 429 enforcement was not established by those
-checks. No load test, extra model call or resource change is justified by that record.
-Spending/remaining credits/expiry require the owner's billing-console check after
-previous read-only access timeouts.
-
-## Cleanup
-
-Nothing is deleted automatically. To retire the application, first confirm ownership
-and that no working app depends on each resource. Delete API lbckjkbfb4, Lambda
-airwise-app-api-a1f7411817 and its /aws/lambda/airwise-app-api-a1f7411817 log group;
-remove only that role's inline policy before deleting the role. Delete Amplify app
-d29v8cmldu93l3 only when its hosted URL is no longer needed.
-
-The table, pool, local runtime role, bucket and smoke Lambda are shared across
-verified work; do not include them in application-only cleanup. Artifact cleanup
-must target the exact unused object key, never recursively empty the shared bucket.
-Preserve approved history/evidence or intentionally export it before any separate
-data-retirement task. Private native archives are not cleared for public release;
-see NATIVE_REDISTRIBUTION.md.
+The table, pool, local runtime role, bucket and smoke Lambda are shared; do not
+include them in application-only cleanup. Target only exact unused artifact keys,
+never recursively empty the shared bucket. Preserve approved history/evidence or
+deliberately export it before any separate data-retirement operation.

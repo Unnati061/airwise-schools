@@ -380,10 +380,10 @@
       "sha256": "92bb818822d131f7c4987ee5c4191eb3d73ea831b1f40904ea4f028b3cde1d64"
     },
     {
-      "file": "frontend/@redocly/openapi-core/src/rules/common/__tests__/license-url.test.ts",
-      "origin": "npm node_modules/@redocly/openapi-core@1.34.20: src/rules/common/__tests__/license-url.test.ts",
-      "bytes": 1717,
-      "sha256": "4b0af236f71ef3e7a38be5093970c974000c48946dde599a2218ec0e72dfaf7d"
+      "file": "upstream/frontend/@redocly/openapi-core/LICENSE.md",
+      "origin": "Upstream notice: https://raw.githubusercontent.com/Redocly/redocly-cli/b563864727f1c7524021196d27bad4524f32e667/LICENSE.md",
+      "bytes": 1052,
+      "sha256": "f6bf9ce4d84b47c1cdda9d8988ac977efc314f00ad65e498fc514ddf118440b5"
     },
     {
       "file": "frontend/@rolldown/pluginutils/LICENSE",

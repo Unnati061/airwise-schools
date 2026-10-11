@@ -1,6 +1,18 @@
 {
   "entries": [
     {
+      "file": "upstream/frontend/@redocly/openapi-core/LICENSE.md",
+      "source_url": "https://raw.githubusercontent.com/Redocly/redocly-cli/b563864727f1c7524021196d27bad4524f32e667/LICENSE.md",
+      "scope": "frontend",
+      "bytes": 1052,
+      "sha256": "f6bf9ce4d84b47c1cdda9d8988ac977efc314f00ad65e498fc514ddf118440b5",
+      "package": "@redocly/openapi-core",
+      "version": "1.34.20",
+      "registry_url": "https://registry.npmjs.org/%40redocly%2Fopenapi-core/1.34.20",
+      "git_ref": "b563864727f1c7524021196d27bad4524f32e667",
+      "ref_basis": "registry gitHead; actual MIT notice, replacing a misclassified upstream test"
+    },
+    {
       "file": "upstream/frontend/change-case/LICENSE",
       "source_url": "https://raw.githubusercontent.com/blakeembrey/change-case/8aaff31471c918d3eac2b40939c601bee37375dd/LICENSE",
       "scope": "frontend",

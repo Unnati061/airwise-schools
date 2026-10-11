@@ -59,7 +59,9 @@ Use separately installed Playwright/Chrome via PLAYWRIGHT_MODULE; no binaries ar
 committed. Start a local Vite server on 5174, then:
 
 ```powershell
+$env:AIRWISE_SCREENSHOT_DIR=Join-Path (Split-Path (Get-Location) -Parent) 'airwise-private-screenshots'
 .venv\Scripts\python -m scripts.ui_fixtures
+node scripts/check_today.cjs
 node scripts/check_features.cjs
 node scripts/check_presentation.cjs
 node scripts/check_room.cjs
@@ -69,3 +71,5 @@ npm --prefix frontend run build
 These checks use labelled offline responses and synthetic non-credentials.
 The hosted workflow harness requires private sign-in and explicitly mutates only
 sample school versions/reports. It makes no model call.
+Run node scripts/check_product_live.cjs with AIRWISE_SCREENSHOT_DIR set outside
+the repository, only with the owner's permission to change sample versions.

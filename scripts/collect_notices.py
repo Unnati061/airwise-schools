@@ -11,6 +11,8 @@ OUTPUT = ROOT / "docs/third_party"
 
 def notice(name):
     base = PurePosixPath(name).name.upper()
+    if base.endswith(('.TS', '.JS', '.PY', '.MAP')):
+        return False
     return base.startswith(("LICENSE", "LICENCE", "COPYING", "COPYRIGHT", "AUTHORS")) or base in (
         "NOTICE", "NOTICE.TXT", "THIRD-PARTY-LICENSE", "THIRDPARTYNOTICETEXT.TXT")
 

@@ -1,6 +1,6 @@
 # Source Release and Binary Redistribution
 
-October9,2026; follow-up from9acf1fe. This is a technical licence/contents review,
+This is technical licence and artifact guidance,
 not a legal opinion or blanket clearance. Original code remains MIT. Upstream
 notice texts are unchanged, with hashes/URLs in third_party manifests.
 
@@ -8,17 +8,17 @@ notice texts are unchanged, with hashes/URLs in third_party manifests.
 
 | Surface | Inspected contents | Consequence |
 | --- | --- | --- |
-| Proposed source repository and reachable history | Initial audit17commits/222unique paths/328blobs; no prohibited ZIP/wheel/native binary/cache/env paths, no ELF/PE/ZIP/GZIP magic findings. Requirements/npm lock only reference dependencies. Textual licences/AUTHORS/NOTICE files are not dependency executables. | Publishing this source/history is NOT offering the Linux dependency ZIP or installed node_modules for download. No automatic deletion/history rewrite required. Pattern secret review separately applies. |
+| Source repository | Requirements/npm lock reference dependencies, not bundled executables. Retained licence/AUTHORS/NOTICE texts are not dependency binaries. Check current files and reachable history separately with the supplied scan tools before publication. | Publishing source is not offering the Linux deployment ZIP or installed node_modules for download. Removing current files does not remove historical objects. |
 | Local Vite build for hosting | index.html, one JavaScript bundle, one CSS file, THIRD_PARTY_NOTICES.txt. No .node/.so/.dll/.wasm files. React/React DOM/Scheduler/Lucide code is bundled JavaScript, which IS delivered to browser users. | Preserve applicable runtime copyright/licence text in the public notice asset. Build-tool code/notices are attributed, but installed Rolldown native binary is not in this build. |
 | Private application Lambda ZIP | Actual198ELF entries, including OR-Tools libraries, NumPy/OpenBLAS/GCC runtimes, cryptography Rust/OpenSSL, AWS CRT and other extensions. Python3.12/x86_64. | Native binary obligations apply to any transfer/distribution of those binaries; private cloud execution does not magically relicense them. The browser receives API JSON, not these ELF files. No public binary release is authorized or cleared. |
-| Separate smoke/deployment archives in ignored work | ZIPs stay local/private S3, not Git. No smoke redeployment or archive deletion. | Never attach these to GitHub Releases merely because original source is MIT. |
+| Separate smoke/deployment archives in ignored work | ZIPs stay local/private S3, not Git. | Never attach these to GitHub Releases merely because original source is MIT. |
 
 scripts/repository_artifacts.py checks EVERY reachable commit tree, not just one
 path per Git object, plus all reachable blobs for common archive/native signatures.
 It reports locations only. Ignore probes confirm workZIPs, node_modules, venv,
 Python/test caches, frontend private environment and dist are excluded. This
 does not inspect credential caches or prove absence of arbitrary secrets/binary
-formats; unreachable/reflog/remote objects are outside this proposed-ref audit.
+formats; unreachable/reflog/remote objects are outside this reachable-ref scan.
 
 ## Three Build-tool Notice Gaps
 

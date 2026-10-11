@@ -22,6 +22,9 @@ def test_notices_preserve_upstream_bytes_and_browser_runtime_terms():
     numpy = (ROOT / 'docs/third_party/backend/numpy-2.5.3.dist-info/licenses/LICENSE.txt').read_text()
     assert 'LGPL-2.1-or-later' in numpy and 'GCC-exception-3.1' in numpy
     assert notice('ThirdPartyNoticeText.txt') and not notice('notice_provider.py')
+    assert not notice('license-url.test.ts')
+    redocly = (ROOT / 'docs/third_party/upstream/frontend/@redocly/openapi-core/LICENSE.md').read_bytes()
+    assert b'Copyright 2019 Redocly Inc.' in redocly and redocly in public
 
 
 def test_missing_tools_resolved_and_native_licences_preserved():

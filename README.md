@@ -66,8 +66,8 @@ Student-hours use declared sample duration and section size; teacher reports are
 self-reports, not independent observation. Bilingual text is a reviewed preview,
 not messaging. Small latency samples do not prove reliability at scale.
 Logout clears the local tab session, not immediate global JWT revocation;
-sessionStorage requires further XSS hardening. See deployment notes for the
-unproven request-level cause of an earlier 503 and the finite concurrency limit.
+sessionStorage requires further XSS hardening. Finite concurrency and synchronous
+API timeouts are documented in the deployment guide.
 
 ## Licence and Assistance
 

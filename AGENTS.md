@@ -24,4 +24,4 @@ Relevant checks: .venv\Scripts\python -m pytest backend/tests -q;
 npm --prefix frontend run generate:api (local backend 8002);
 npm --prefix frontend run build. Browser harnesses clearly separate test doubles
 from real authentication. Record real results in concise operating documentation,
-not new packet/audit diaries. Use product-focused commit messages.
+not internal task diaries. Use product-focused commit messages.

@@ -34,6 +34,10 @@ Windows binding and uri-js-replace's subsequently supplied MIT-0 terms. The latt
 was checked against all eight unchanged installed dist files, not misrepresented
 as a licence originally shipped in the 1.0.1 tarball.
 
+The openapi-core MIT notice is retained from its npm-recorded release commit.
+A misclassified upstream license-rule test was replaced with that actual notice;
+the manifests preserve its source URL and byte hash. No dependency was upgraded.
+
 Private Lambda ZIPs contain 198 ELF entries; LGPL/GPL-with-GCC-exception/EPL/MPL
 source/relink/build-provenance and static-dependency notice issues are not fully
 resolved for public binary redistribution. Full supplied texts remain in the ZIPs.
